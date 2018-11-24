@@ -1,0 +1,66 @@
+<div class="wrapper row3">
+  <main class="hoc container clear">
+    <!-- main body -->
+
+    <div class="content three_quarter first money overflow">
+
+      <h1>Opłaty</h1>
+      <form class="btmspace-50" method="POST">
+        <p id="payment-rate">Zadeklarowana stawka w semestrze* - </p>
+        <div *ngIf="value; then thenBlock; else elseBlock" ></div>
+        <ng-template #thenBlock>
+          <i>{{value}}</i>
+        </ng-template>
+          <ng-template #elseBlock>
+            <select class="d-inline" name="rate">
+              <option value="130">130 PLN</option>
+              <option value="170">170 PLN</option>
+              <option value="200">200 PLN</option>
+              <option value="210">210 PLN</option>
+              <option value="230">230 PLN</option>
+              <option value="250">250 PLN</option>
+              <option value="280">280 PLN</option>
+              <option value="310">310 PLN</option>
+            </select>
+          </ng-template>
+          <a id="payment-rate-btn" class="btn btn-def">Edytuj</a>
+
+          <p id="back-payment-rate">* - Na postawie tabeli na stronie
+            <a href="http://www.sktt.pwr.edu.pl/sktt/pages/skladki-czlonkowskie">składki członkowskie.</a>
+          </p>
+      </form>
+
+      <h1 class="center">Potwierdzenie wpłaty</h1>
+
+      <form id="payment-confirmation" ENCTYPE='multipart/form-data' method="POST">
+        <table class="info table charges-table">
+          <tbody>
+            <tr>
+              <th>I rata</th>
+              <th>II rata</th>
+              <th>III rata</th>
+
+            </tr>
+            <tr>
+              <td>
+                <a href="#">{{semester1}}</a>
+              </td>
+              <td>
+                <a href="#">{{semester2}}</a>
+              </td>
+              <td>
+                <a href="#">{{semester3}}</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </form>
+
+    </div>
+
+    <app-menu></app-menu>
+
+    <!-- / main body -->
+    <div class="clear"></div>
+  </main>
+</div>

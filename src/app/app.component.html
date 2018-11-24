@@ -1,20 +1,237 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Welcome to {{ title }}!
-  </h1>
-  <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
-</div>
-<h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://github.com/angular/angular-cli/wiki">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
-  </li>
-</ul>
+<!--Header-->
 
+
+<div class="wrapper row0">
+  <div id="topbar" class="hoc clear">
+    <ul>
+      <li>
+        <a href="http://www.sktt.pwr.edu.pl">
+          <i class="fa fa-lg fa-home"></i>
+        </a>
+      </li>
+      <li>
+        <i class="fa fa-clock-o"></i>
+        <a id="change" class="drop" href="http://www.sktt.pwr.edu.pl/sktt/pages/terminy-zajec">Dni i godziny zajęć</a>
+        <ul>
+            <li class="active">Poniedziałek - H14
+                <ul>
+                    <li>grupa podstawowa I: 17:00-18:30</li>
+                    <li>grupa średniozaawansowana: 18:30-20:00</li>
+                    <li>grupa zaawansowana: 20:00-21:30</li>
+                </ul>
+            </li>
+            <li class="active">Wtorek - LO9
+                <ul>
+                    <li>grupa podstawowa+: 20:30-22:00</li>
+                </ul>
+            </li>
+            <li class="active">Środa - LO9
+                <ul>
+                    <li>grupa średniozaawansowana: 18:00-19:30</li>
+                    <li>grupa zaawansowana: 19:30-21:00</li>
+                </ul>
+            </li>
+            <li class="active">Czwartek - H14
+                <ul>
+                    <li>grupa podstawowa II: 20:00-21:30</li>
+                </ul>
+            </li>
+            <li>Piątek - Brak zajęć</li>
+        </ul>
+      </li>
+      <li>
+        <i class="fa fa-envelope-o"></i>
+        <a href="mailto:sktt@pwr.edu.pl">sktt@pwr.edu.pl</a>
+      </li>
+    </ul>
+
+    <div class="log">
+      <app-account></app-account>
+    </div>
+
+  </div>
+</div>
+
+<a id="bars">
+  <i class="fa fa-lg fa-bars"></i>
+</a>
+
+<a id='box_btn'>
+  <i class="fa fa-lg fa-bars"></i>
+</a>
+
+<div class="wrapper row1">
+  <header id="header" class="hoc clear">
+
+    <div id="logo" class="fl_left">
+      <h1>
+        <a href="http://www.sktt.pwr.edu.pl">SKTT ISKRA PWr</a>
+      </h1>
+    </div>
+    <div class="fl_right">
+      <a class="btn2" href="https://www.facebook.com/SKTTIskra/" target="_blank">Znajdź Nas na Facebooku!</a>
+    </div>
+
+  </header>
+</div>
+
+<div class="bgded" style="background-image:url('../src/assets/images/iskra14.png');">
+
+  <div class="wrapper row2">
+    <nav id="mainav" class="hoc clear">
+      <ul class="clear">
+        <li class="active">
+          <a href="http://www.sktt.pwr.edu.pl">STRONA GŁÓWNA</a>
+        </li>
+        <li>
+          <a class="drop" href="http://www.sktt.pwr.edu.pl/sktt/pages/o-nas">O klubie</a>
+          <ul>
+            <li>
+              <a href="http://www.sktt.pwr.edu.pl/sktt/pages/o-nas">O Nas</a>
+            </li>
+            <li>
+              <a href="http://www.sktt.pwr.edu.pl/sktt/pages/zarzad">Zarząd</a>
+            </li>
+            <li>
+              <a href="http://www.sktt.pwr.edu.pl/sktt/pages/galeria">Galeria</a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <a class="drop" href="#">Przydatne informacje</a>
+          <ul>
+            <li>
+              <a href="http://www.sktt.pwr.edu.pl/sktt/pages/aktualnosci">Aktualnosci</a>
+            </li>
+            <li>
+              <a href="http://www.sktt.pwr.edu.pl/sktt/pages/dojazd-na-zajecia">Dojazd</a>
+            </li>
+            <li>
+              <a href="http://www.sktt.pwr.edu.pl/sktt/pages/kontakt">Kontakt</a>
+            </li>
+            <li>
+              <a href="http://www.sktt.pwr.edu.pl/sktt/pages/logotyp">Logotyp</a>
+            </li>
+            <li>
+              <a href="http://www.sktt.pwr.edu.pl/sktt/pages/do-pobrania">Do pobrania</a>
+            </li>
+            <li>
+              <a href="http://www.sktt.pwr.edu.pl/sktt/pages/faq">FAQ</a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <a href="http://www.sktt.pwr.edu.pl/sktt/pages/pierwszy-krok">Pierwszy "krok"</a>
+        </li>
+        <li>
+          <a href="http://www.sktt.pwr.edu.pl/sktt/pages/terminy-zajec">Terminy zajęć</a>
+        </li>
+        <li>
+          <a href="http://www.sktt.pwr.edu.pl/sktt/pages/skladki-czlonkowskie">Składki członkowskie</a>
+        </li>
+        <li>
+          <a href="http://www.sktt.pwr.edu.pl/sktt/pages/statut">Statut</a>
+        </li>
+      </ul>
+
+    </nav>
+  </div>
+
+  <div class="wrapper overlay">
+    <div id="breadcrumb" class="hoc clear">
+
+       <ul>
+
+        <app-path></app-path>
+
+      </ul>
+
+    </div>
+  </div>
+
+</div>
+<!--End Header-->
+
+<router-outlet></router-outlet>
+
+<!--Footer-->
+<div class="wrapper row7">
+  <footer id="footer" class="hoc clear">
+    <div class="one_third first">
+      <h6 class="heading">Gdzie się znajdujemy</h6>
+      <ul class="nospace btmspace-30 linklist contact">
+        <li>
+          <i class="fa fa-map-marker"></i>
+          <address>
+            Wybrzeże Stanisława Wyspiań­skiego 40
+            <br> 50-370 Wrocław
+          </address>
+        </li>
+        <li>
+          <i class="fa fa-envelope-o"></i>
+          <a href="mailto:sktt@pwr.edu.pl">sktt@pwr.edu.pl</a>
+        </li>
+      </ul>
+      <ul class="faico clear">
+        <li>
+          <a class="faicon-facebook" href="https://www.facebook.com/SKTTIskra/" target="_blank">
+            <i class="fa fa-facebook"></i>
+          </a>
+        </li>
+        <li>
+          <a class="faicon-instagram" href="https://www.instagram.com/iskrapwr/" target="_blank">
+            <i class="fa fa-instagram"></i>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="one_third">
+      <h6 class="heading">Kilka ciekawych informacji tanecznych </h6>
+      <ul class="nospace linklist">
+        <li>
+          <article>
+            <h2 class="nospace font-x1">
+              <a href="http://www.taniec.pl/?page=51+historia_ptt" target="_blank">Historia PTT</a>
+            </h2>
+            <p class="somespace">Polskie Towarzystwo Taneczne - organizacja taneczna o najdłuższych tradycjach w Polsce. [&hellip;]</p>
+          </article>
+        </li>
+        <li>
+          <article>
+            <h2 class="nospace font-x1">
+              <a href="https://pl.wikipedia.org/wiki/Taniec_towarzyski" target="_blank">Historia tańca twarzyskiego</a>
+            </h2>
+            <p class="somespace">Taniec towarzyski – forma rozrywki wywodząca się z tańców salonowych i zabaw ludowych, uprawiana od początku
+              XX wieku [&hellip;]</p>
+          </article>
+        </li>
+      </ul>
+    </div>
+    <div class="one_third">
+      <h6 class="heading">Wydarzenia w które byliśmy zaangażowani </h6>
+      <ul class="nospace linklist">
+        <li>
+          <article>
+            <h2 class="nospace font-x1">
+              <a href="https://www.facebook.com/tvs.styk/videos/1346934448708277/" target="_blank">"Z uczuciem przez muzykę"</a>
+            </h2>
+            <p class="somespace">Relacja z warsztatów muzycznych zorganizowanych przez Centrum Edukacyjne Narodowego Forum Muzyki.</p>
+          </article>
+        </li>
+
+      </ul>
+    </div>
+  </footer>
+</div>
+<div class="wrapper row8">
+  <div id="copyright" class="hoc clear">
+
+    <p class="fl_left">Copyright &copy; 2018 - All Rights Reserved -
+      <a href="http://www.sktt.pwr.edu.pl">SKTT ISKRA PWr</a>
+    </p>
+    <p class="fl_right">Template by
+      <a target="_blank" href="http://www.os-templates.com/" title="Free Website Templates">OS Templates</a>
+    </p>
+
+  </div>
+</div>

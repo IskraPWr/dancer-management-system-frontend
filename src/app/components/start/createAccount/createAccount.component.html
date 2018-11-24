@@ -1,0 +1,174 @@
+<div class="wrapper row3">
+  <main class="hoc container clear">
+    <!-- main body -->
+
+    <div class="content">
+
+      <h1>Dane tancerza</h1>
+      <form id="formModel" class="checking" ENCTYPE='multipart/form-data' [formGroup]="formModel" (ngSubmit)="onSubmit($event)"
+        novalidate>
+        <div class="form-row">
+          <div class="form-group col-md-5">
+            <label for="name">Imię<span>*</span></label>
+            <input type="text" class="form-control" id="name" placeholder="Jan" formControlName="name" (focusout)="checkFormInput($event)"
+              (keyup)="checkFormInput($event)">
+            <div class="invalid-feedback">
+            </div>
+          </div>
+          <div class="form-group col-md-5">
+            <label for="surname">Nazwisko<span>*</span></label>
+            <input type="text" class="form-control" id="surname" placeholder="Kowalski" formControlName="surname"
+              (focusout)="checkFormInput($event)" (keyup)="checkFormInput($event)">
+            <div class="invalid-feedback">
+            </div>
+          </div>
+          <div class="form-group col-md-2">
+            <label for="gender">Płeć<span>*</span></label>
+            <select class="form-control select" id="gender" formControlName="gender" (focusout)="checkFormInput($event)"
+              (change)="checkFormInput($event)">
+              <option>Kobieta</option>
+              <option selected>Mężczyzna</option>
+            </select>
+            <div class="invalid-feedback">
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-4">
+            <label for="login">Login<span>*</span></label>
+            <input type="text" class="form-control" id="login" placeholder="bestdancer123" formControlName="login"
+              (focusout)="checkFormInput($event)" (keyup)="checkFormInput($event)">
+            <div class="invalid-feedback">
+            </div>
+          </div>
+          <div formGroupName="passwordsGroup" class="col-md-8 formGroup" id="passwordsGroup">
+            <div class="row mx0">
+              <div class="form-group col-md-6 pxr">
+                <label for="pass1">Hasło<span>*</span></label>
+                <input type="password" class="form-control" id="pass1" formControlName="pass1" (focusout)="checkFormInput($event)"
+                  (keyup)="checkFormInput($event)">
+                <div class="invalid-feedback">
+                </div>
+              </div>
+              <div class="form-group col-md-6 pxl">
+                <label for="pass2">Powtórz hasło<span>*</span></label>
+                <input type="password" class="form-control" id="pass2" formControlName="pass2" (focusout)="checkFormInput($event)"
+                  (keyup)="checkFormInput($event)">
+                <div class="invalid-feedback">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="email">E-mail<span>*</span></label>
+            <input type="email" class="form-control" id="email" placeholder="jankowalski@gmail.com" formControlName="email"
+              (focusout)="checkFormInput($event)" (keyup)="checkFormInput($event)">
+            <div class="invalid-feedback">
+            </div>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="phone">Telefon<span>*</span></label>
+            <input type="text" class="form-control" id="phone" placeholder="+48 000 000 000" formControlName="phone"
+              (focusout)="checkFormInput($event)" (keyup)="checkFormInput($event)">
+            <div class="invalid-feedback">
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-4">
+            <label for="university">Nazwa uczelni</label>
+            <select class="form-control select" id="university" formControlName="university" (focusout)="checkFormInput($event)"
+              (change)="checkFormInput($event)">
+              <option>Akademia Muzyczna we Wrocławiu</option>
+              <option>Akademia Sztuk Pięknych we Wrocławiu</option>
+              <option>Akademia Lądowych we Wrocławiu</option>
+              <option>AWF - Akademia Wychowania Fizycznego we Wrocławiu</option>
+              <option>Dolnośląska Szkoła Wyższa we Wrocławiu</option>
+              <option>Ewangelikalna Wyższa Szkoła Teologiczna we Wrocławiu</option>
+              <option>Instytut Konfucjusza w Uniwersytecie Wrocławskim</option>
+              <option>Metropolitalne Wyższe Seminarium Duchowne we Wrocławiu</option>
+              <option>Międzynarodowa Wyższa Szkoła Logistyki i Transportu we Wrocławiu</option>
+              <option>AST - Akademia Sztuk Teatralnych - filia Wrocławiu</option>
+              <option>Papieski Wydział Teologiczny we Wrocławiu</option>
+              <option>Politechnika Wrocławska</option>
+              <option>Uniwersytet SWPS Wrocław</option>
+              <option>Szkoła Wyższa Rzemiosł Artystycznych i Zarządzania we Wrocławiu</option>
+              <option>Uniwersytet Ekonomiczny we Wrocławiu</option>
+              <option>Uniwersytet Medyczny we Wrocławiu</option>
+              <option>Uniwersytet Przyrodniczy we Wrocławiu</option>
+              <option>Uniwersytet Wrocławski</option>
+              <option>Wyższa Szkoła Bankowa we Wrocławiu</option>
+              <option>Wyższa Szkoła Filologiczna we Wrocławiu</option>
+              <option>Wyższa Szkoła Handlowa we Wrocławiu</option>
+              <option>Wyższa Szkoła Humanistyczna we Wrocławiu</option>
+              <option>Wyższa Szkoła Informatyki i Zarządzania Copernicus we Wrocławiu</option>
+              <option>Wyższa Szkoła Prawa</option>
+              <option>Wyższa Szkoła Zarządzania „Edukacja”</option>
+              <option>Wyższa Szkoła Zarządzania i Coachingu we Wrocławiu</option>
+              <option>Wrocławska Wyższa Szkoła Informatyki Stosowanej „Horyzont”</option>
+              <option>Inna</option>
+            </select>
+            <div class="invalid-feedback">
+            </div>
+          </div>
+          <div class="form-group col-md-4">
+            <label for="department">Wydział</label>
+            <input type="text" class="form-control" id="department" formControlName="department" (focusout)="checkFormInput($event)"
+              (keyup)="checkFormInput($event)">
+            <div class="invalid-feedback">
+            </div>
+          </div>
+          <div class="form-group col-md-2">
+            <label for="year">Rok studiów</label>
+            <input type="text" class="form-control" id="year" formControlName="year" (focusout)="checkFormInput($event)"
+              (keyup)="checkFormInput($event)">
+            <div class="invalid-feedback">
+            </div>
+          </div>
+          <div class="form-group col-md-2">
+            <label for="index">Numer indeksu</label>
+            <input type="text" class="form-control" id="index" formControlName="index" (focusout)="checkFormInput($event)"
+              (keyup)="checkFormInput($event)">
+            <div class="invalid-feedback">
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="key1">Klucz 1<span>**</span></label>
+            <input type="text" class="form-control" id="key1" formControlName="key1" (focusout)="checkFormInput($event)"
+              (keyup)="checkFormInput($event)">
+            <div class="invalid-feedback">
+            </div>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="key2">Klucz 2</label>
+            <input type="text" class="form-control" id="key2" formControlName="key2" (focusout)="checkFormInput($event)"
+              (keyup)="checkFormInput($event)">
+            <div class="invalid-feedback">
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" formControlName="gridCheck" id="gridCheck" (change)="checkFormInput($event)">
+            <label class="form-check-label" for="gridCheck"></label>
+            <a href="#">Zgoda na przetwarzanie danych osobowych</a>
+            <div class="invalid-feedback">
+            </div>
+          </div>
+        </div>
+        <p>** - Możliwość uzupełnienia na zajęciach</p>
+        <div class="btmspace-30">
+          <ngx-recaptcha2 #captchaElem [siteKey]="siteKey" [size]="size" [hl]="lang" [theme]="theme" [type]="type"
+            (expire)="handleExpire()" (load)="handleLoad()" (success)="handleSuccess($event)" formControlName="recaptcha">
+          </ngx-recaptcha2>
+        </div>
+        <input type="submit" class="btn btn-def fl_right" value="Prześlij">
+      </form>
+    </div>
+    <div class="clear"></div>
+  </main>
+</div>

@@ -1,0 +1,228 @@
+<div class="wrapper row3">
+  <main class="hoc container clear">
+    <!-- main body -->
+
+    <div class="content three_quarter first">
+
+      <h1>Edytuj dane</h1>
+
+      <form  id="formModel" class="btmspace-80 checking" [formGroup]="formModel" (ngSubmit)="onSubmit($event)" novalidate>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group row">
+              <label class="col-sm-5 col-form-label" for="name">Imię
+                <span>*</span>
+              </label>
+              <div class="col-sm-7">
+                <input type="text" class="form-control" id="name" [(ngModel)]="user.name" formControlName="name" (focusout)="checkFormInput($event)" (keyup)="checkFormInput($event)">
+                <div class="invalid-feedback">
+                </div>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-5 col-form-label" for="surname">Nazwisko
+                <span>*</span>
+              </label>
+              <div class="col-sm-7">
+                <input type="text" class="form-control" id="surname" [(ngModel)]="user.surname" formControlName="surname" (focusout)="checkFormInput($event)" (keyup)="checkFormInput($event)">
+                <div class="invalid-feedback">
+                </div>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-5 col-form-label" for="email">E-mail
+                <span>*</span>
+              </label>
+              <div class="col-sm-7">
+                <input type="email" class="form-control" id="email" [(ngModel)]="user.email" formControlName="email" (focusout)="checkFormInput($event)" (keyup)="checkFormInput($event)">
+                <div class="invalid-feedback">
+                </div>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-5 col-form-label" for="phone">Telefon
+                <span>*</span>
+              </label>
+              <div class="col-sm-7">
+                <input type="text" class="form-control" id="phone" [(ngModel)]="user.phone" formControlName="phone" (focusout)="checkFormInput($event)" (keyup)="checkFormInput($event)">
+                <div class="invalid-feedback">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group row">
+              <label class="col-sm-5 col-form-label" for="university">Nazwa uczelni</label>
+              <div class="col-sm-7">
+                <select class="form-control select" id="university" formControlName="university" (focusout)="checkFormInput($event)"
+              (change)="checkFormInput($event)">
+              <option>Akademia Muzyczna we Wrocławiu</option>
+              <option>Akademia Sztuk Pięknych we Wrocławiu</option>
+              <option>Akademia Lądowych we Wrocławiu</option>
+              <option>AWF - Akademia Wychowania Fizycznego we Wrocławiu</option>
+              <option>Dolnośląska Szkoła Wyższa we Wrocławiu</option>
+              <option>Ewangelikalna Wyższa Szkoła Teologiczna we Wrocławiu</option>
+              <option>Instytut Konfucjusza w Uniwersytecie Wrocławskim</option>
+              <option>Metropolitalne Wyższe Seminarium Duchowne we Wrocławiu</option>
+              <option>Międzynarodowa Wyższa Szkoła Logistyki i Transportu we Wrocławiu</option>
+              <option>AST - Akademia Sztuk Teatralnych - filia Wrocławiu</option>
+              <option>Papieski Wydział Teologiczny we Wrocławiu</option>
+              <option>Politechnika Wrocławska</option>
+              <option>Uniwersytet SWPS Wrocław</option>
+              <option>Szkoła Wyższa Rzemiosł Artystycznych i Zarządzania we Wrocławiu</option>
+              <option>Uniwersytet Ekonomiczny we Wrocławiu</option>
+              <option>Uniwersytet Medyczny we Wrocławiu</option>
+              <option>Uniwersytet Przyrodniczy we Wrocławiu</option>
+              <option>Uniwersytet Wrocławski</option>
+              <option>Wyższa Szkoła Bankowa we Wrocławiu</option>
+              <option>Wyższa Szkoła Filologiczna we Wrocławiu</option>
+              <option>Wyższa Szkoła Handlowa we Wrocławiu</option>
+              <option>Wyższa Szkoła Humanistyczna we Wrocławiu</option>
+              <option>Wyższa Szkoła Informatyki i Zarządzania Copernicus we Wrocławiu</option>
+              <option>Wyższa Szkoła Prawa</option>
+              <option>Wyższa Szkoła Zarządzania „Edukacja”</option>
+              <option>Wyższa Szkoła Zarządzania i Coachingu we Wrocławiu</option>
+              <option>Wrocławska Wyższa Szkoła Informatyki Stosowanej „Horyzont”</option>
+              <option>Inna</option>
+            </select>
+                <div class="invalid-feedback">
+                </div>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-5 col-form-label" for="department">Wydział</label>
+              <div class="col-sm-7">
+                <input type="text" class="form-control" id="department" [(ngModel)]="user.department" formControlName="department" (focusout)="checkFormInput($event)" (keyup)="checkFormInput($event)">
+                <div class="invalid-feedback">
+                </div>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-5 col-form-label" for="year">Rok studiów</label>
+              <div class="col-sm-7">
+                <input type="text" class="form-control" id="year" [(ngModel)]="user.year" formControlName="year" (focusout)="checkFormInput($event)" (keyup)="checkFormInput($event)">
+                <div class="invalid-feedback">
+                </div>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-5 col-form-label" for="index">Numer indeksu</label>
+              <div class="col-sm-7">
+                <input type="text" class="form-control" id="index" [(ngModel)]="user.index" formControlName="index" (focusout)="checkFormInput($event)" (keyup)="checkFormInput($event)">
+                <div class="invalid-feedback">
+                </div>
+              </div>
+            </div>
+            <input type="submit" class="btn btn-def fl_right" value="Prześlij">
+          </div>
+        </div>
+      </form>
+        <form id="formModelKeys" class="btmspace-80" [formGroup]="formModelKeys" (ngSubmit)="onSubmit($event)"  novalidate>
+          <h1>Zmień klucze</h1>
+          <div class="row">
+          <div class="col-md-6">
+              <div class="form-group row">
+                  <label class="col-sm-5 col-form-label" for="key1">Klucz 1</label>
+                  <div class="col-sm-7">
+                    <input type="text" class="form-control" id="key1" [(ngModel)]="user.key1" formControlName="key1" (focusout)="checkFormInput($event)" (keyup)="checkFormInput($event)">
+                    <div class="invalid-feedback">
+                    </div>
+                  </div>
+                </div>
+          </div>
+          <div class="col-md-6">
+              <div class="form-group row">
+                  <label class="col-sm-5 col-form-label" for="key2">Klucz 2</label>
+                  <div class="col-sm-7">
+                    <input type="text" class="form-control" id="key2" [(ngModel)]="user.key2" formControlName="key2" (focusout)="checkFormInput($event)" (keyup)="checkFormInput($event)">
+                    <div class="invalid-feedback">
+                    </div>
+                  </div>
+                </div>
+                <input type="submit" class="btn btn-def fl_right" value="Prześlij">
+          </div>
+        </div>
+        </form>
+      <div class="row">
+        <form id="formModelLogin" class="btmspace-80 col-md-6" [formGroup]="formModelLogin" (ngSubmit)="onSubmit($event)"  novalidate>
+          <h1>Zmień login</h1>
+          <div class="form-group row">
+            <label class="col-sm-5 col-form-label" for="ologin">Stary login
+              <span>*</span>
+            </label>
+            <div class="col-sm-7">
+              <input type="text" class="form-control" id="ologin" formControlName="ologin" (focusout)="checkFormInput($event)" (keyup)="checkFormInput($event)">
+              <div class="invalid-feedback">
+              </div>
+            </div>
+          </div>
+          <div id="loginsGroup" formGroupName="loginsGroup" class="formGroup">
+            <div class="form-group row">
+              <label class="col-sm-5 col-form-label" for="login1">Nowy login
+                <span>*</span>
+              </label>
+              <div class="col-sm-7">
+                <input type="text" class="form-control" id="login1" formControlName="login1" (focusout)="checkFormInput($event)" (keyup)="checkFormInput($event)">
+                <div class="invalid-feedback">
+                </div>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-5 col-form-label" for="login2">Powtórz login
+                <span>*</span>
+              </label>
+              <div class="col-sm-7">
+                <input type="text" class="form-control" id="login2" formControlName="login2" (focusout)="checkFormInput($event)" (keyup)="checkFormInput($event)">
+                <div class="invalid-feedback">
+                </div>
+              </div>
+            </div>
+          </div>
+          <input type="submit" class="btn  btn-def fl_right" value="Prześlij">
+        </form>
+
+        <form id="formModelPassword"  class="btmspace-80 col-md-6" [formGroup]="formModelPassword" (ngSubmit)="onSubmit($event)"  novalidate>
+          <h1>Zmień hasło</h1>
+          <div class="form-group row">
+            <label class="col-sm-5 col-form-label" for="opass">Stare hasło
+              <span>*</span>
+            </label>
+            <div class="col-sm-7">
+              <input type="password" class="form-control" id="opass" formControlName="opass" (focusout)="checkFormInput($event)" (keyup)="checkFormInput($event)">
+              <div class="invalid-feedback">
+              </div>
+            </div>
+          </div>
+          <div  id="passwordsGroup" formGroupName="passwordsGroup" class="formGroup">
+            <div class="form-group row">
+              <label class="col-sm-5 col-form-label" for="pass1">Nowe hasło
+                <span>*</span>
+              </label>
+              <div class="col-sm-7">
+                <input type="password" class="form-control" id="pass1" formControlName="pass1" (focusout)="checkFormInput($event)" (keyup)="checkFormInput($event)">
+                <div class="invalid-feedback">
+                </div>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-5 col-form-label" for="pass2">Powtórz hasło
+                <span>*</span>
+              </label>
+              <div class="col-sm-7">
+                <input type="password" class="form-control" id="pass2" formControlName="pass2" (focusout)="checkFormInput($event)" (keyup)="checkFormInput($event)">
+                <div class="invalid-feedback">
+                </div>
+              </div>
+            </div>
+          </div>
+          <input type="submit" class="btn btn-def fl_right" value="Prześlij">
+        </form>
+      </div>
+    </div>
+
+    <app-menu></app-menu>
+
+    <!-- / main body -->
+    <div class="clear"></div>
+  </main>
+</div>

@@ -1,0 +1,131 @@
+<div class="wrapper row3">
+  <main class="hoc container clear">
+      <!-- main body -->
+
+      <div class="content three_quarter first money overflow">
+
+          <h1 class="header-spec">Obecność na zajęciach</h1>
+          <button class="btn btn-def fl_right btn-shadow-no " mat-raised-button (click)="openDialog()">Statystyki</button>
+
+          <mat-form-field>
+              <mat-select placeholder="Wybierz tydzień">
+                  <mat-option *ngFor="let week of weeks" [value]="week.value">
+                  {{week.viewValue}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field >
+                <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Szukaj">
+              </mat-form-field>
+
+              <button id="table-button" mat-icon-button [matMenuTriggerFor]="menu">
+                  <mat-icon>list</mat-icon>
+                </button>
+                <mat-menu #menu="matMenu">
+                  <button mat-menu-item>
+                    <mat-icon>archive</mat-icon>
+                    <span>Przenieś zaznaczone do archiwum</span>
+                  </button>
+                  <button mat-menu-item>
+                    <mat-icon>notes</mat-icon>
+                    <span>Dodaj notatkę do zaznaczonych</span>
+                  </button>
+                </mat-menu>
+
+            <div class="mat-elevation-z8">
+              <table mat-table [dataSource]="dataSource" matSort>
+
+                <ng-container matColumnDef="select">
+                     <th mat-header-cell *matHeaderCellDef>
+                       <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()"
+                         [indeterminate]="selection.hasValue() && !isAllSelected()">
+                      </mat-checkbox>
+                    </th>
+                    <td mat-cell *matCellDef="let row">
+                      <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"
+                         [checked]="selection.isSelected(row)">
+                      </mat-checkbox>
+                     </td>
+                   </ng-container>
+
+                <ng-container matColumnDef="name">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header> Imię </th>
+                  <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="surname">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header> Nazwisko </th>
+                  <td mat-cell *matCellDef="let element"> {{element.surname}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="mon">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Poniedziałek </th>
+                    <td mat-cell *matCellDef="let element"> {{element.mon}} </td>
+                  </ng-container>
+
+                <ng-container matColumnDef="tue">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header> Wtorek </th>
+                  <td mat-cell *matCellDef="let element"> {{element.tue}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="wed">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header> Środa </th>
+                  <td mat-cell *matCellDef="let element"> {{element.wed}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="thu">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header> Czwartek </th>
+                  <td mat-cell *matCellDef="let element"> {{element.thu}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="fri">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header> Piątek </th>
+                  <td mat-cell *matCellDef="let element"> {{element.fri}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="sat">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header> Sobota </th>
+                  <td mat-cell *matCellDef="let element"> {{element.sat}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="sun">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header> Niedziela </th>
+                  <td mat-cell *matCellDef="let element"> {{element.sun}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="note">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Notatki </th>
+                    <td mat-cell *matCellDef="let element">
+                        <mat-form-field class="example-chip-list">
+                            <mat-chip-list #chipList>
+                              <mat-chip *ngFor="let note of notes" [selectable]="selectable"
+                                       [removable]="removable" (removed)="remove(note)">
+                                {{note.name}}
+                                <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                              </mat-chip>
+                              <input placeholder="Nowa notatka..."
+                                     [matChipInputFor]="chipList"
+                                     [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                     [matChipInputAddOnBlur]="addOnBlur"
+                                     (matChipInputTokenEnd)="add($event)">
+                            </mat-chip-list>
+                          </mat-form-field>
+                    </td>
+                  </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+              </table>
+
+              <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+            </div>
+
+      </div>
+
+       <app-menu></app-menu>
+
+      <!-- / main body -->
+      <div class="clear"></div>
+  </main>
+</div>

@@ -1,6 +1,8 @@
+import { RemindPasswordComponent } from './components/start/remindPassword/remindPassword.component';
 import { TestBed, async } from '@angular/core/testing';
 import { AppComponent } from './app.component';
-describe('AppComponent', () => {
+
+/*describe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
@@ -24,4 +26,13 @@ describe('AppComponent', () => {
     const compiled = fixture.debugElement.nativeElement;
     expect(compiled.querySelector('h1').textContent).toContain('Welcome to my-app!');
   }));
-});
+});*/
+/*describe('Greeting Component', () => {
+  it('should emit greeting event', (done) => {
+      const child = new RemindPasswordComponent();
+      child.path.subscribe(g => {
+         expect(g).toEqual('Logowanie');
+         done();
+      });
+      });
+});*/
