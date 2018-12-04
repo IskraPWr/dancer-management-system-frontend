@@ -2,6 +2,8 @@ import { PathService } from './../../service';
 import { FormGroup, FormControl} from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 import { Component, AfterViewInit } from '@angular/core';
+import { Router } from '@angular/router';
+
 declare var window: any;
 declare var FB: any;
 
@@ -15,14 +17,17 @@ export class LoginComponent implements AfterViewInit {
     password: new FormControl(''),
   });
 
-  constructor (private Service: PathService, private titleService: Title ) {
+  constructor (private Service: PathService, private titleService: Title, private _router: Router ) {
     this.Service.updateFlag('Logowanie');
     this.titleService.setTitle('Logowanie');
 
   }
 
   onSubmit() {
-    console.log('Dziala');
+    const number = Math.floor(Math.random() * 2);
+    let link;
+    number ? link = 'konto/dane' : link = 'admin/dane';
+    this._router.navigate([link]);
   }
 
 

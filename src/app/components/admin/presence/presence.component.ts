@@ -1,16 +1,17 @@
 import { ModalComponent } from './modal';
-import { OnInit, Component, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, ViewChild, AfterViewInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 
 import { PathService } from './../../service';
+import { ServerService } from './../../../server/server.service';
 
-import {MatDialog, MatDialogRef} from '@angular/material';
+import { MatDialog, MatDialogRef } from '@angular/material';
 import { NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
-import {MatPaginator, MatTableDataSource} from '@angular/material';
-import {MatSort} from '@angular/material';
-import {SelectionModel} from '@angular/cdk/collections';
-import {COMMA, ENTER} from '@angular/cdk/keycodes';
-import {MatChipInputEvent} from '@angular/material';
+import { MatPaginator, MatTableDataSource } from '@angular/material';
+import { MatSort } from '@angular/material';
+import { SelectionModel } from '@angular/cdk/collections';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { MatChipInputEvent } from '@angular/material';
 
 export interface PeriodicElement {
   name: string;
@@ -33,34 +34,52 @@ export interface Week {
   viewValue: string;
 }
 
-const ELEMENT_DATA: PeriodicElement[] = [
-  {name: 'Grzegorz', surname: 'Kikut', mon: '|', tue: '|', wed: '', thu: '', fri: '', sat: '', sun: '|'}
-];
-
-
 @Component({
   templateUrl: './presence.component.html'
 })
-export class PresenceComponent implements OnInit {
-  constructor(private Service: PathService, private titleService: Title, public dialog: MatDialog) {
+export class PresenceComponent {
+  constructor(
+    private server: ServerService,
+    private Service: PathService,
+    private titleService: Title,
+    public dialog: MatDialog
+  ) {
     this.Service.updateFlag('Admin');
     this.titleService.setTitle('Obecność');
+    this.server.getPresence().subscribe(
+      data => {
+        this.ELEMENT_DATA = Object.values({ ...data });
+        this.weeks.push(this.ELEMENT_DATA[0]['week']);
+        this.ELEMENT_DATA = this.ELEMENT_DATA[0]['data'];
+        this.initiateTable();
+      },
+      error => console.log(error)
+    );
   }
 
-  displayedColumns: string[] = ['select', 'name', 'surname', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun', 'note'];
-  dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
-  selection = new SelectionModel<PeriodicElement>(true, []);
-  weeks: Week[] = [
-    {value: 'week-0', viewValue: 'Steak'},
-    {value: 'week-1', viewValue: 'Pizza'},
-    {value: 'week-2', viewValue: 'Tacos'}
+  displayedColumns: string[] = [
+    'select',
+    'name',
+    'surname',
+    'mon',
+    'tue',
+    'wed',
+    'thu',
+    'fri',
+    'sat',
+    'sun',
+    'note'
   ];
+  selection = new SelectionModel<PeriodicElement>(true, []);
+  weeks: Week[] = [];
   visible = true;
   selectable = true;
   removable = true;
   addOnBlur = true;
+  dataSource;
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
   notes: Note[] = [];
+  ELEMENT_DATA;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -68,10 +87,13 @@ export class PresenceComponent implements OnInit {
   openDialog(): void {
     this.dialog.open(PresenceModalComponent, {
       width: 'auto'
-  });
+    });
   }
 
-  ngOnInit() {
+  initiateTable() {
+    this.dataSource = new MatTableDataSource<PeriodicElement>(
+      this.ELEMENT_DATA
+    );
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
@@ -92,9 +114,9 @@ export class PresenceComponent implements OnInit {
 
   /** Selects all rows if they are not all selected; otherwise clear selection. */
   masterToggle() {
-    this.isAllSelected() ?
-        this.selection.clear() :
-        this.dataSource.data.forEach(row => this.selection.select(row));
+    this.isAllSelected()
+      ? this.selection.clear()
+      : this.dataSource.data.forEach(row => this.selection.select(row));
   }
 
   add(event: MatChipInputEvent): void {
@@ -102,7 +124,7 @@ export class PresenceComponent implements OnInit {
     const value = event.value;
 
     if ((value || '').trim()) {
-      this.notes.push({name: value.trim()});
+      this.notes.push({ name: value.trim() });
     }
 
     if (input) {
@@ -125,21 +147,43 @@ export class PresenceComponent implements OnInit {
   providers: [NgbCarouselConfig]
 })
 export class PresenceModalComponent implements AfterViewInit {
-
-  chart: ModalComponent = new ModalComponent;
+  chart: ModalComponent = new ModalComponent();
 
   constructor(
     public dialogRef: MatDialogRef<PresenceModalComponent>,
-    config: NgbCarouselConfig) {
-      config.interval = 0;
-    }
+    config: NgbCarouselConfig,
+    private server: ServerService
+  ) {
+    this.server.getStatPeople().subscribe((data) => {
+      const value = Object.values({...data});
+      this.setPeople(value[0]);
+    }, error => console.log(error));
+    config.interval = 0;
+  }
 
+  setPeople (value) {
+   let i = 0;
+   const array = this.chart.getNamelist();
+   // tslint:disable-next-line:forin
+   for (const elem in value) {
+      // tslint:disable-next-line:forin
+      for (const el in value[elem].men[0]) {
+        this.chart[array[i]].config.data.datasets[0].data.push(value[elem].men[0][el]);
+      }
+      // tslint:disable-next-line:forin
+      for (const el in value[elem].women[0]) {
+        this.chart[array[i]].config.data.datasets[1].data.push(value[elem].women[0][el]);
+      }
+    this.chart[array[i]].update();
+    i++;
+    }
+  }
 
   onNoClick(): void {
     this.dialogRef.close();
   }
 
-  ngAfterViewInit () {
+  ngAfterViewInit() {
     this.chart.getChart();
   }
 }

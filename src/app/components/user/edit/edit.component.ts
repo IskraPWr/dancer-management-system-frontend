@@ -4,7 +4,22 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component } from '@angular/core';
 import { Valid } from '../../validators/validators';
 
+import { ServerService } from './../../../server/server.service';
+
 import * as $ from 'jquery';
+
+interface User {
+  name;
+  surname;
+  email;
+  phone;
+  university;
+  department;
+  year;
+  index;
+  key1;
+  key2;
+}
 
 @Component({
   templateUrl: './edit.component.html'
@@ -17,24 +32,31 @@ export class EditComponent {
   name: string;
   valid = new Valid();
 
-  user: any = {
-    name: 'Greg',
-    surname: 'Kikut',
+  user: User = {
+    name : '',
+    surname: '',
     email: '',
     phone: '',
     university: '',
     department: '',
     year: '',
-    index: ''
+    index: '',
+    key1: '',
+    key2: '',
   };
 
   constructor(
+    private server: ServerService,
     private Service: PathService,
     private titleService: Title,
     fb: FormBuilder
   ) {
     this.Service.updateFlag('Konto');
     this.titleService.setTitle('Edytuj konto');
+
+    this.server.getUserById().subscribe((data) => {
+      this.user = Object.values({...data})[0];
+    }, error => console.log(error));
 
     this.formModel = fb.group({
       name: [

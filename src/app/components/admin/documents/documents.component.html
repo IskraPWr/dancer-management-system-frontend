@@ -57,6 +57,11 @@
             <td mat-cell *matCellDef="let element"> {{element.amount}} </td>
           </ng-container>
 
+          <ng-container matColumnDef="entryFee">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Wpisowe </th>
+            <td mat-cell *matCellDef="let element"> {{element.entryFee}} </td>
+          </ng-container>
+
           <ng-container matColumnDef="payment1">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Wpłata I </th>
             <td mat-cell *matCellDef="let element"> {{element.payment1}} </td>
@@ -162,34 +167,34 @@
           </td>
         </ng-container>
 
-        <ng-container matColumnDef="id">
+        <ng-container matColumnDef="id_sys">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
-          <td mat-cell *matCellDef="let list"> {{list.id}} </td>
-        </ng-container>
-
-        <ng-container matColumnDef="sum">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Suma </th>
-          <td mat-cell *matCellDef="let list"> {{list.sum}} </td>
-        </ng-container>
-
-        <ng-container matColumnDef="date">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Data </th>
-          <td mat-cell *matCellDef="let list"> {{list.date}} </td>
+          <td mat-cell *matCellDef="let list"> {{list.id_sys}} </td>
         </ng-container>
 
         <ng-container matColumnDef="name">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Imie </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Imię i nazwisko </th>
           <td mat-cell *matCellDef="let list"> {{list.name}} </td>
         </ng-container>
 
-        <ng-container matColumnDef="surname">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Nazwisko </th>
-          <td mat-cell *matCellDef="let list"> {{list.surname}} </td>
+        <ng-container matColumnDef="product_name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Nazwa produktu </th>
+          <td mat-cell *matCellDef="let list"> {{list.product_name}} </td>
         </ng-container>
 
-        <ng-container matColumnDef="product">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Produkt </th>
-          <td mat-cell *matCellDef="let list"> {{list.product}} </td>
+        <ng-container matColumnDef="price">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Cena </th>
+          <td mat-cell *matCellDef="let list"> {{list.price}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="quantiti">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Ilość </th>
+          <td mat-cell *matCellDef="let list"> {{list.quantiti}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="value">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Suma </th>
+          <td mat-cell *matCellDef="let list"> {{list.value}} </td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumnsList"></tr>

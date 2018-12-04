@@ -1,6 +1,7 @@
 import { Title } from '@angular/platform-browser';
 import { PathService } from './../../service';
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component,  ViewChild, AfterViewInit } from '@angular/core';
+import { ServerService } from './../../../server/server.service';
 
 import {MatPaginator, MatTableDataSource} from '@angular/material';
 import {MatSort} from '@angular/material';
@@ -21,28 +22,32 @@ export interface PeriodicElement {
   sun: string;
 }
 
-const ELEMENT_DATA: PeriodicElement[] = [
-  {week: '14.10.2018-21.10.2018', mon: '|', tue: '|', wed: '', thu: '', fri: '||', sat: '', sun: ''}
-];
-
-
 @Component({
   templateUrl: './presence.component.html'
 })
-export class PresenceComponent implements OnInit {
+export class PresenceComponent {
 
+  ELEMENT_DATA;
   displayedColumns: string[] = ['week', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
-  dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
+  dataSource;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  constructor(private Service: PathService, private titleService: Title, public dialog: MatDialog) {
+  constructor(private Service: PathService, private titleService: Title, public dialog: MatDialog, private server: ServerService) {
     this.Service.updateFlag('Konto');
     this.titleService.setTitle('Obecność');
+
+    this.server.getPresenceById(21).subscribe(
+      data => {
+        this.ELEMENT_DATA = Object.values({ ...data });
+        this.setPresence();
+      },
+      error => console.log(error));
   }
 
-  ngOnInit() {
+  setPresence() {
+    this.dataSource = new MatTableDataSource<PeriodicElement>(this.ELEMENT_DATA);
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }

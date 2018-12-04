@@ -1,16 +1,21 @@
 import { Title } from '@angular/platform-browser';
-import { PathService } from './../../service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, ViewChild, AfterViewInit, Inject } from '@angular/core';
 import * as Chart from 'chart.js';
 import { Valid } from '../../validators/validators';
+import {MAT_DIALOG_DATA} from '@angular/material';
 
-import {MatDialog, MatDialogRef} from '@angular/material';
-import {MatPaginator, MatTableDataSource} from '@angular/material';
-import {MatSort} from '@angular/material';
-import {SelectionModel} from '@angular/cdk/collections';
-import {COMMA, ENTER} from '@angular/cdk/keycodes';
-import {MatChipInputEvent} from '@angular/material';
+import { ServerService } from './../../../server/server.service';
+import { PathService } from './../../service';
+import {RandomColor} from '../../items/colorGenerator/colorGenerator';
+
+import { MatDialog, MatDialogRef } from '@angular/material';
+import { MatPaginator, MatTableDataSource } from '@angular/material';
+import { MatSort } from '@angular/material';
+import { SelectionModel } from '@angular/cdk/collections';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { MatChipInputEvent } from '@angular/material';
+
 
 import * as $ from 'jquery';
 
@@ -21,34 +26,28 @@ export interface PeriodicElement {
   payment1: string;
   payment2: string;
   payment3: string;
+  entryFee: string;
   sum: number;
 }
 
 export interface PeriodicElementList {
   id: number;
-  sum: number;
-  date: string;
+  id_sys: number;
   name: string;
-  surname: string;
-  product: string;
+  product_name: string;
+  price: string;
+  quantiti: number;
+  value: string;
 }
 
 export interface Note {
   name: string;
 }
 
-const ELEMENT_DATA: PeriodicElement[] = [
-  {name: 'Grzegorz', surname: 'Kikut', amount: 1.0079, payment1: '212', payment2: '23232', payment3: '2323', sum: 231313}
-];
-
-const LIST_DATA: PeriodicElementList[] = [
-  {id: 1111, sum: 23, date: '1.0079', name: 'greg', surname: 'kikut', product: 'kon'}
-];
-
 @Component({
   templateUrl: './documents.component.html'
 })
-export class DocumentsComponent implements OnInit {
+export class DocumentsComponent {
   formModel: FormGroup;
   valid = new Valid();
   visible = true;
@@ -57,8 +56,18 @@ export class DocumentsComponent implements OnInit {
   addOnBlur = true;
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
   notes: Note[] = [];
+  ELEMENT_DATA;
+  dataSource;
+  LIST_DATA;
+  dataSourceList;
 
-  constructor(private Service: PathService, private titleService: Title, public dialog: MatDialog, fb: FormBuilder ) {
+  constructor(
+    private server: ServerService,
+    private Service: PathService,
+    private titleService: Title,
+    public dialog: MatDialog,
+    fb: FormBuilder
+  ) {
     this.Service.updateFlag('Admin');
     this.titleService.setTitle('Dokumenty');
 
@@ -72,24 +81,72 @@ export class DocumentsComponent implements OnInit {
         ]
       ]
     });
+
+    this.server.getCharges().subscribe(
+      data => {
+        this.ELEMENT_DATA = Object.values({ ...data });
+        this.ELEMENT_DATA = Object.values({...data});
+        this.initiateTable();
+      },
+      error => console.log(error)
+    );
+
+    this.server.getList().subscribe(
+      data => {
+        this.LIST_DATA = Object.values({ ...data });
+        this.LIST_DATA = Object.values({...data});
+        this.initiateTableList();
+      },
+      error => console.log(error)
+    );
   }
 
-  displayedColumns: string[] = ['select', 'name', 'surname', 'amount', 'payment1', 'payment2', 'payment3', 'sum', 'stat', 'note'];
-  dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
+  displayedColumns: string[] = [
+    'select',
+    'name',
+    'surname',
+    'amount',
+    'entryFee',
+    'payment1',
+    'payment2',
+    'payment3',
+    'sum',
+    'stat',
+    'note'
+  ];
+
   selection = new SelectionModel<PeriodicElement>(true, []);
 
-  displayedColumnsList: string[] = ['select', 'id', 'sum', 'date', 'name', 'surname', 'product'];
-  dataSourceList = new MatTableDataSource<PeriodicElementList>(LIST_DATA);
+  displayedColumnsList: string[] = [
+    'select',
+    'id_sys',
+    'name',
+    'product_name',
+    'price',
+    'quantiti',
+    'value'
+  ];
+
   selectionList = new SelectionModel<PeriodicElementList>(true, []);
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
+  initiateTable() {
+    this.dataSource = new MatTableDataSource<PeriodicElement>(this.ELEMENT_DATA);
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
+
+  initiateTableList() {
+    this.dataSourceList = new MatTableDataSource<PeriodicElementList>(this.LIST_DATA);
+  }
+
   openDialog(nr?): void {
-    console.log(nr);
     this.dialog.open(DocumentsModalComponent, {
-      width: '50%'
-  });
+      width: '50%',
+      data : {id : nr ? nr.id : null},
+    });
   }
 
   add(event: MatChipInputEvent): void {
@@ -97,7 +154,7 @@ export class DocumentsComponent implements OnInit {
     const value = event.value;
 
     if ((value || '').trim()) {
-      this.notes.push({name: value.trim()});
+      this.notes.push({ name: value.trim() });
     }
 
     if (input) {
@@ -111,11 +168,6 @@ export class DocumentsComponent implements OnInit {
     if (index >= 0) {
       this.notes.splice(index, 1);
     }
-  }
-
-  ngOnInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
   }
 
   applyFilter(filterValue: string) {
@@ -134,9 +186,9 @@ export class DocumentsComponent implements OnInit {
 
   /** Selects all rows if they are not all selected; otherwise clear selection. */
   masterToggle() {
-    this.isAllSelected() ?
-        this.selection.clear() :
-        this.dataSource.data.forEach(row => this.selection.select(row));
+    this.isAllSelected()
+      ? this.selection.clear()
+      : this.dataSource.data.forEach(row => this.selection.select(row));
   }
 
   onSubmit($event) {
@@ -153,63 +205,124 @@ export class DocumentsComponent implements OnInit {
     if (file) {
       $('.custom-file-label').text(file.name);
     }
-      this.valid.checkInputs($event.target, this.formModel.controls.file.errors);
+    this.valid.checkInputs($event.target, this.formModel.controls.file.errors);
   }
 }
 
 @Component({
   selector: 'app-modal',
-  template: '<mat-dialog-content><canvas id="myChart"></canvas></mat-dialog-content>'
+  template:
+    '<mat-dialog-content><canvas id="myChart"></canvas></mat-dialog-content>'
 })
 export class DocumentsModalComponent implements AfterViewInit {
+  constructor(public dialogRef: MatDialogRef<DocumentsModalComponent>, @Inject(MAT_DIALOG_DATA) public data: any,
+   private server: ServerService) {
 
-  constructor(
-    public dialogRef: MatDialogRef<DocumentsModalComponent>) {}
+    if (this.data.id !== null) {
+      this.server.getPresenceById(this.data.id).subscribe((dat) => {
+        const value = Object.values({...dat});
+        this.setModalPresence(value);
+      }, error => console.log(error));
+    } else {
+      this.server.getStatCharges().subscribe((dat) => {
+        const value = Object.values({...dat});
+        this.setModal(value);
+      }, error => console.log(error));
+    }
+   }
 
+   color = new RandomColor;
+   chart;
+   ctx: HTMLCanvasElement;
+
+  setModalPresence(value) {
+    this.chart = new Chart(this.ctx, {
+      type: 'doughnut',
+
+      data: {
+        datasets: [{
+          data: [],
+          backgroundColor: [
+          ],
+          label: 'Ilość wizyt'
+        }],
+        labels: [
+          'Podstawowa I',
+          'Podstawowa II',
+          'Podstawowa +',
+          'Średnio-zaawansowana - pon',
+          'Średnio-zaawansowana - śr',
+          'Zaawansowana - pon',
+          'Zaawansowana - śr',
+          'Nieprzyporządkowane'
+        ]
+      },
+      options: {
+        legend: {
+          display: true,
+        },
+        responsive: true,
+        title: {
+          display: true,
+          text: 'Ilość wizyt na zajęciach w tym semestrze'
+          }
+      }
+    });
+
+    this.chart.config.data.datasets[0].data = Object.values(value[0]);
+    // tslint:disable-next-line:forin
+    for (const ele in value[0]) {
+      this.chart.config.data.datasets[0].backgroundColor.push(this.color.getRandomColor());
+    }
+    this.chart.update();
+
+  }
+
+   setModal (value) {
+    this.chart = new Chart(this.ctx, {
+      type: 'pie',
+      data: {
+        datasets: [
+          {
+            data: [],
+            backgroundColor: [
+            ],
+            label: 'Dataset 1'
+          }
+        ],
+        labels: [
+          '1 blok',
+          '2 bloki',
+          '3 bloki',
+          '4 bloki',
+          '5 bloków',
+          '6 bloków',
+          'BO'
+        ]
+      },
+      options: {
+        responsive: true,
+        title: {
+          display: true,
+          text: 'Deklarowane wysokości składek'
+        }
+      }
+    });
+
+    this.chart.config.data.datasets[0].data = Object.values(value[0]);
+    // tslint:disable-next-line:forin
+    for (const ele in value[0]) {
+      this.chart.config.data.datasets[0].backgroundColor.push(this.color.getRandomColor());
+    }
+    this.chart.update();
+  }
   onNoClick(): void {
     this.dialogRef.close();
   }
 
-  ngAfterViewInit () {
-    const ctx: HTMLCanvasElement = document.getElementById('myChart') as HTMLCanvasElement;
-    const chartUniversity = new Chart(ctx, {
-        // The type of chart we want to create
-        type: 'pie',
-
-        // The data for our dataset
-        data: {
-          datasets: [{
-            data: [12, 19, 3, 5, 2, 30, 21, 2],
-            backgroundColor: [
-              'rgba(255, 99, 132, 1)',
-              'rgba(225, 89, 142, 1)',
-              'rgba(185, 79, 152, 1)',
-              'rgba(155, 69, 162, 1)',
-              'rgba(125, 59, 172, 1)',
-              'rgba(95, 49, 182, 1)',
-              'rgba(65, 39, 192, 1)',
-              'rgba(35, 29, 212, 1)'
-            ],
-            label: 'Dataset 1'
-          }],
-          labels: [
-            '130 PLN',
-            '170 PLN',
-            '200 PLN',
-            '210 PLN',
-            '230 PLN',
-            '250 PLN',
-            '280 PLN',
-            '310 PLN'
-          ]
-        },
-        options: {
-          responsive: true,
-          title: {
-            display: true,
-            text: 'Deklarowane wysokości składek'
-            }
-        }
-      });
+  ngAfterViewInit() {
+    this.ctx = document.getElementById(
+      'myChart'
+    ) as HTMLCanvasElement;
   }
 }

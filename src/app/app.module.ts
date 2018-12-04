@@ -1,8 +1,10 @@
+import { ServerService } from './server/server.service';
 import { environment } from './../environments/environment.prod';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
+import { HttpClientModule } from '@angular/common/http';
 
 import { PathService } from './components/service';
 import { PathComponent as Path} from './components/items/path/path.component';
@@ -41,6 +43,7 @@ const routes: Routes = [
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     RouterModule.forRoot(routes),
     UserModule,
     AdminModule,
@@ -52,7 +55,7 @@ const routes: Routes = [
     AngularFireAuthModule
 
   ],
-  providers: [Title, {provide: LocationStrategy, useClass: HashLocationStrategy}, PathService],
+  providers: [Title, {provide: LocationStrategy, useClass: HashLocationStrategy}, PathService, ServerService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -6,21 +6,21 @@
 
       <h1>Opłaty</h1>
       <form class="btmspace-50" method="POST">
-        <p id="payment-rate">Zadeklarowana stawka w semestrze* - </p>
+        <p id="payment-rate">Zadeklarowana ilość bloków w semestrze * - </p>
         <div *ngIf="value; then thenBlock; else elseBlock" ></div>
         <ng-template #thenBlock>
           <i>{{value}}</i>
         </ng-template>
           <ng-template #elseBlock>
             <select class="d-inline" name="rate">
-              <option value="130">130 PLN</option>
-              <option value="170">170 PLN</option>
-              <option value="200">200 PLN</option>
-              <option value="210">210 PLN</option>
-              <option value="230">230 PLN</option>
-              <option value="250">250 PLN</option>
-              <option value="280">280 PLN</option>
-              <option value="310">310 PLN</option>
+              <option value="1">1 blok</option>
+              <option value="2">2 bloki</option>
+              <option value="3">3 bloki</option>
+              <option value="4">4 bloki</option>
+              <option value="5">5 bloków</option>
+              <option value="6">6 bloków</option>
+              <option value="99">BO</option>
+
             </select>
           </ng-template>
           <a id="payment-rate-btn" class="btn btn-def">Edytuj</a>
@@ -43,13 +43,13 @@
             </tr>
             <tr>
               <td>
-                <a href="#">{{semester1}}</a>
+                <a href="#"></a>
               </td>
               <td>
-                <a href="#">{{semester2}}</a>
+                <a href="#"></a>
               </td>
               <td>
-                <a href="#">{{semester3}}</a>
+                <a href="#"></a>
               </td>
             </tr>
           </tbody>

@@ -3,58 +3,51 @@ import { PathService } from './../../service';
 import { Component, AfterViewInit } from '@angular/core';
 import * as Chart from 'chart.js';
 import {RandomColor} from '../../items/colorGenerator/colorGenerator';
-
-
-
+import { ServerService } from './../../../server/server.service';
 
 @Component({
   templateUrl: './main.component.html'
 })
 export class MainComponent implements AfterViewInit {
 
-
-user: any = {
-  name: 'Greg',
-  surname: 'Kikut',
-  email: '',
-  tel: '',
-  university: '',
-  department: '',
-  year: '',
-  index: '',
-  key1: '',
-  key2: '',
-  declaration: ''
-};
-
+user = {};
 color = new RandomColor;
+chart;
 
-  constructor (private Service: PathService, private titleService: Title  ) {
+  constructor (private Service: PathService, private titleService: Title, private server: ServerService ) {
     this.Service.updateFlag('Konto');
     this.titleService.setTitle('Dane');
+
+    this.server.getUserById().subscribe((data) => {
+      this.user = Object.values({...data})[0];
+    }, error => console.log(error));
+
+    this.server.getStatPresenceAllById(21).subscribe((data) => {
+      const value = Object.values({...data});
+      this.setPresence(value);
+    }, error => console.log(error));
+  }
+
+  setPresence (value) {
+    this.chart.config.data.datasets[0].data = Object.values(value[0]);
+    // tslint:disable-next-line:forin
+    for (const ele in value[0]) {
+      this.chart.config.data.datasets[0].backgroundColor.push(this.color.getRandomColor());
+    }
+    this.chart.update();
   }
 
   ngAfterViewInit() {
     const ctx: HTMLCanvasElement = document.getElementById('myCharty') as HTMLCanvasElement;
     ctx.getContext('2d');
-    const chart = new Chart(ctx, {
+    this.chart = new Chart(ctx, {
       type: 'doughnut',
 
       // The data for our dataset
       data: {
         datasets: [{
-          data: [12, 19, 32, 23, 12, 12, 1, 3, 1, 5],
+          data: [],
           backgroundColor: [
-            this.color.getRandomColor(),
-            this.color.getRandomColor(),
-            this.color.getRandomColor(),
-            this.color.getRandomColor(),
-            this.color.getRandomColor(),
-            this.color.getRandomColor(),
-            this.color.getRandomColor(),
-            this.color.getRandomColor(),
-            this.color.getRandomColor(),
-            this.color.getRandomColor()
           ],
           label: 'Ilość wizyt'
         }],
@@ -66,8 +59,6 @@ color = new RandomColor;
           'Średnio-zaawansowana - śr',
           'Zaawansowana - pon',
           'Zaawansowana - śr',
-          'Practise - sob',
-          'Practise - niedz',
           'Nieprzyporządkowane'
         ]
       },

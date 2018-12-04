@@ -1,7 +1,10 @@
-import { OnInit, Component, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, ViewChild, AfterViewInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import * as Chart from 'node_modules/chart.js';
+import {RandomColor} from '../../items/colorGenerator/colorGenerator';
+
 import { PathService } from './../../service';
+import { ServerService } from './../../../server/server.service';
 
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { MatPaginator, MatTableDataSource } from '@angular/material';
@@ -19,44 +22,38 @@ export interface PeriodicElement {
   department: string;
   year: string;
   index: string;
+  notes: Array<string>;
 }
 
 export interface Note {
   name: string;
 }
 
-const ELEMENT_DATA: PeriodicElement[] = [
-  {
-    name: 'Grzegorz',
-    surname: 'Kikut',
-    email: 'grzegorzkikut1@gmail.com',
-    phone: '515951120',
-    university: 'Politechnika Wrocławska',
-    department: 'W12',
-    year: '3',
-    index: '227574'
-  }
-];
-
 @Component({
   templateUrl: './main.component.html'
 })
-export class MainComponent implements OnInit {
-  visible = true;
-  selectable = true;
-  removable = true;
-  addOnBlur = true;
-  readonly separatorKeysCodes: number[] = [ENTER, COMMA];
-  notes: Note[] = [];
-
-  constructor(
+export class MainComponent {
+   constructor(
+    private server: ServerService,
     private Service: PathService,
     private titleService: Title,
     public dialog: MatDialog
   ) {
     this.Service.updateFlag('Admin');
     this.titleService.setTitle('Przegląd osób');
+    this.server.getUsers().subscribe((data) => {
+      this.ELEMENT_DATA = Object.values({...data});
+      this.initiateTable();
+    }, error => console.log(error));
   }
+
+  visible = true;
+  selectable = true;
+  removable = true;
+  addOnBlur = true;
+  readonly separatorKeysCodes: number[] = [ENTER, COMMA];
+  notes: Note[] = [];
+  ELEMENT_DATA;
 
   displayedColumns: string[] = [
     'select',
@@ -70,7 +67,7 @@ export class MainComponent implements OnInit {
     'index',
     'note'
   ];
-  dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
+  dataSource;
   selection = new SelectionModel<PeriodicElement>(true, []);
 
   @ViewChild(MatPaginator)
@@ -84,7 +81,8 @@ export class MainComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
+  initiateTable() {
+    this.dataSource = new MatTableDataSource<PeriodicElement>(this.ELEMENT_DATA);
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
@@ -139,96 +137,59 @@ export class MainComponent implements OnInit {
     </canvas><canvas class="col-6" id="myChart1"></canvas></div></mat-dialog-content>'
 })
 export class MainModalComponent implements AfterViewInit {
-  constructor(public dialogRef: MatDialogRef<MainModalComponent>) {}
+  constructor(private server: ServerService, public dialogRef: MatDialogRef<MainModalComponent>) {
+    this.server.getStatUniversity().subscribe((data) => {
+      const value = Object.values({...data});
+      this.setUniversity(value);
+    }, error => console.log(error));
+    this.server.getStatGender().subscribe((data) => {
+      const value = Object.values({...data});
+      this.setGender(value);
+    }, error => console.log(error));
+  }
+
+  color = new RandomColor;
+  chartGender: Chart;
+  chartUniversity: Chart;
 
   onNoClick(): void {
     this.dialogRef.close();
   }
 
+  setGender(value) {
+    this.chartGender.config.data.datasets[0].data[0] = value[1].value;
+    this.chartGender.config.data.datasets[0].data[1] = value[0].value;
+    this.chartGender.update();
+  }
+
+  setUniversity(value) {
+    value.forEach(element => {
+      this.chartUniversity.config.data.datasets[0].data.push(element.value);
+      this.chartUniversity.config.data.datasets[0].backgroundColor.push(this.color.getRandomColor());
+      this.chartUniversity.config.data.labels.push(element.name);
+    });
+    this.chartUniversity.update();
+  }
+
   ngAfterViewInit() {
+
     const ctx: HTMLCanvasElement = document.getElementById(
       'myChart'
     ) as HTMLCanvasElement;
     const ctx1: HTMLCanvasElement = document.getElementById(
       'myChart1'
     ) as HTMLCanvasElement;
-    const chartUniversity = new Chart(ctx, {
-      // The type of chart we want to create
-      type: 'pie',
 
-      // The data for our dataset
+
+    this.chartUniversity = new Chart(ctx, {
+      type: 'pie',
       data: {
         datasets: [
           {
-            data: [33,	96,	43,	24,	96,
-              40,	100, 68,	79,	70,
-              68,	64,	88,	87,	61,
-              92,	19,	19,	10,	86,
-              51,	92,	17,	38,	6,
-              9,	4,	24	],
-            backgroundColor: [
-              'rgba(255, 99, 132, 1)',
-              'rgba(54, 162, 235, 1)',
-              'rgba(255, 206, 86, 1)',
-              'rgba(75, 192, 192, 1)',
-              'rgba(153, 102, 255, 1)',
-              'rgba(255, 99, 132, 1)',
-              'rgba(54, 162, 235, 1)',
-              'rgba(255, 206, 86, 1)',
-              'rgba(75, 192, 192, 1)',
-              'rgba(153, 102, 255, 1)',
-              'rgba(255, 99, 132, 1)',
-              'rgba(54, 162, 235, 1)',
-              'rgba(255, 206, 86, 1)',
-              'rgba(75, 192, 192, 1)',
-              'rgba(153, 102, 255, 1)',
-              'rgba(255, 99, 132, 1)',
-              'rgba(54, 162, 235, 1)',
-              'rgba(255, 206, 86, 1)',
-              'rgba(75, 192, 192, 1)',
-              'rgba(153, 102, 255, 1)',
-              'rgba(255, 99, 132, 1)',
-              'rgba(54, 162, 235, 1)',
-              'rgba(255, 206, 86, 1)',
-              'rgba(75, 192, 192, 1)',
-              'rgba(54, 162, 235, 1)',
-              'rgba(255, 206, 86, 1)',
-              'rgba(75, 192, 192, 1)',
-              'rgba(153, 102, 255, 1)'
-            ],
+            backgroundColor: [],
             label: 'Dataset 1'
           }
         ],
-        labels: [
-          'Akademia Muzyczna we Wrocławiu',
-              'Akademia Sztuk Pięknych we Wrocławiu',
-              'Akademia Lądowych we Wrocławiu',
-              'AWF - Akademia Wychowania Fizycznego we Wrocławiu',
-              'Dolnośląska Szkoła Wyższa we Wrocławiu',
-              'Ewangelikalna Wyższa Szkoła Teologiczna we Wrocławiu',
-              'Instytut Konfucjusza w Uniwersytecie Wrocławskim',
-              'Metropolitalne Wyższe Seminarium Duchowne we Wrocławiu',
-              'Międzynarodowa Wyższa Szkoła Logistyki i Transportu we Wrocławiu',
-              'AST - Akademia Sztuk Teatralnych - filia Wrocławiu',
-              'Papieski Wydział Teologiczny we Wrocławiu',
-              'Politechnika Wrocławska',
-              'Uniwersytet SWPS Wrocław',
-              'Szkoła Wyższa Rzemiosł Artystycznych i Zarządzania we Wrocławiu',
-              'Uniwersytet Ekonomiczny we Wrocławiu',
-              'Uniwersytet Medyczny we Wrocławiu',
-              'Uniwersytet Przyrodniczy we Wrocławiu',
-              'Uniwersytet Wrocławski',
-              'Wyższa Szkoła Bankowa we Wrocławiu',
-              'Wyższa Szkoła Filologiczna we Wrocławiu',
-              'Wyższa Szkoła Handlowa we Wrocławiu',
-              'Wyższa Szkoła Humanistyczna we Wrocławiu',
-              'Wyższa Szkoła Informatyki i Zarządzania Copernicus we Wrocławiu',
-              'Wyższa Szkoła Prawa',
-              'Wyższa Szkoła Zarządzania „Edukacja”',
-              'Wyższa Szkoła Zarządzania i Coachingu we Wrocławiu',
-              'Wrocławska Wyższa Szkoła Informatyki Stosowanej „Horyzont”',
-              'Inna'
-        ]
       },
       options: {
         legend: {
@@ -241,18 +202,14 @@ export class MainModalComponent implements AfterViewInit {
         }
       }
     });
-    //////////////////
 
-    const chartGender = new Chart(ctx1, {
-      // The type of chart we want to create
+    this.chartGender = new Chart(ctx1, {
       type: 'pie',
-
-      // The data for our dataset
       data: {
         datasets: [
           {
-            data: [12, 19],
-            backgroundColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)'],
+            backgroundColor: ['rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)'],
             label: 'Dataset 1'
           }
         ],

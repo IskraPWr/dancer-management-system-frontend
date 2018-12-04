@@ -1,7 +1,8 @@
 import { Title } from '@angular/platform-browser';
 import { PathService } from './../../service';
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, ViewChild, AfterViewInit } from '@angular/core';
 import * as Chart from 'chart.js';
+import { ServerService } from './../../../server/server.service';
 
 import {MatDialog, MatDialogRef} from '@angular/material';
 import {MatPaginator, MatTableDataSource} from '@angular/material';
@@ -20,28 +21,22 @@ export interface PeriodicElement {
   index: string;
 }
 
-const ELEMENT_DATA: PeriodicElement[] = [
-  {
-    name: 'Grzegorz',
-    surname: 'Kikut',
-    email: 'grzegorzkikut1@gmail.com',
-    phone: '515951120',
-    university: 'Politechnika Wrocławska',
-    department: 'W12',
-    year: '3',
-    index: '227574'
-  }
-];
-
 @Component({
   templateUrl: './archives.component.html'
 })
-export class ArchivesComponent implements OnInit {
+export class ArchivesComponent {
 
-  constructor (private Service: PathService, private titleService: Title, public dialog: MatDialog  ) {
+  constructor (private Service: PathService, private titleService: Title, public dialog: MatDialog, private server: ServerService, ) {
     this.Service.updateFlag('Admin');
     this.titleService.setTitle('Archiwum');
+    this.server.getArchives().subscribe((data) => {
+      this.ELEMENT_DATA = Object.values({...data});
+      this.initiateTable();
+    }, error => console.log(error));
   }
+
+  ELEMENT_DATA;
+  dataSource;
 
   displayedColumns: string[] = [
     'select',
@@ -54,21 +49,22 @@ export class ArchivesComponent implements OnInit {
     'year',
     'index'
   ];
-  dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
+
   selection = new SelectionModel<PeriodicElement>(true, []);
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
+  initiateTable() {
+    this.dataSource = new MatTableDataSource<PeriodicElement>(this.ELEMENT_DATA);
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
+
   openDialog(): void {
       this.dialog.open(ArchivesModalComponent, {
         width: '50%'
     });
-  }
-
-  ngOnInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
   }
 
   applyFilter(filterValue: string) {
@@ -100,7 +96,18 @@ export class ArchivesComponent implements OnInit {
 export class ArchivesModalComponent implements AfterViewInit {
 
   constructor(
-    public dialogRef: MatDialogRef<ArchivesModalComponent>) {}
+    public dialogRef: MatDialogRef<ArchivesModalComponent>, private server: ServerService) {
+      this.server.getStatArchivesGender().subscribe((data) => {
+        const value = Object.values({...data});
+        this.setGender(value);
+      }, error => console.log(error));
+    }
+    chartGender;
+    setGender(value) {
+      this.chartGender.config.data.datasets[0].data[0] = value[1].value;
+      this.chartGender.config.data.datasets[0].data[1] = value[0].value;
+      this.chartGender.update();
+    }
 
   onNoClick(): void {
     this.dialogRef.close();
@@ -108,8 +115,7 @@ export class ArchivesModalComponent implements AfterViewInit {
 
   ngAfterViewInit () {
     const ctx: HTMLCanvasElement =  document.getElementById('myChart') as HTMLCanvasElement;
-    console.log(ctx);
-    const chartGender = new Chart(ctx, {
+    this.chartGender = new Chart(ctx, {
       // The type of chart we want to create
       type: 'pie',
 
@@ -137,6 +143,5 @@ export class ArchivesModalComponent implements AfterViewInit {
       }
     });
   }
-
 }
 
