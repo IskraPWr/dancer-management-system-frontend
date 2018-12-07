@@ -51,6 +51,13 @@ export class PresenceComponent {
         this.ELEMENT_DATA = Object.values({ ...data });
         this.weeks.push(this.ELEMENT_DATA[0]['week']);
         this.ELEMENT_DATA = this.ELEMENT_DATA[0]['data'];
+        for ( const object of this.ELEMENT_DATA ) {
+          const array = [];
+            object.notes.forEach(element => {
+            array.push({name: element});
+          });
+          object.notes = array;
+        }
         this.initiateTable();
       },
       error => console.log(error)
@@ -112,19 +119,18 @@ export class PresenceComponent {
     return numSelected === numRows;
   }
 
-  /** Selects all rows if they are not all selected; otherwise clear selection. */
   masterToggle() {
     this.isAllSelected()
       ? this.selection.clear()
       : this.dataSource.data.forEach(row => this.selection.select(row));
   }
 
-  add(event: MatChipInputEvent): void {
+  add(event: MatChipInputEvent, element): void {
     const input = event.input;
     const value = event.value;
 
     if ((value || '').trim()) {
-      this.notes.push({ name: value.trim() });
+      element.notes.push({ name: value.trim() });
     }
 
     if (input) {
@@ -132,11 +138,11 @@ export class PresenceComponent {
     }
   }
 
-  remove(note: Note): void {
-    const index = this.notes.indexOf(note);
+  remove(note: Note, element): void {
+    const index = element.notes.indexOf(note);
 
     if (index >= 0) {
-      this.notes.splice(index, 1);
+      element.notes.splice(index, 1);
     }
   }
 }

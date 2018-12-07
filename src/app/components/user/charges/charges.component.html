@@ -7,54 +7,52 @@
       <h1>Opłaty</h1>
       <form class="btmspace-50" method="POST">
         <p id="payment-rate">Zadeklarowana ilość bloków w semestrze * - </p>
-        <div *ngIf="value; then thenBlock; else elseBlock" ></div>
-        <ng-template #thenBlock>
-          <i>{{value}}</i>
+        <div *ngIf="edit; then quantityBlock; else stateBlock"></div>
+        <ng-template #stateBlock>
+          <i>{{numberOfBlocks}}</i>
         </ng-template>
-          <ng-template #elseBlock>
-            <select class="d-inline" name="rate">
-              <option value="1">1 blok</option>
-              <option value="2">2 bloki</option>
-              <option value="3">3 bloki</option>
-              <option value="4">4 bloki</option>
-              <option value="5">5 bloków</option>
-              <option value="6">6 bloków</option>
-              <option value="99">BO</option>
+        <ng-template #quantityBlock>
+          <select class="d-inline" name="rate">
+            <option value="1">1 blok</option>
+            <option value="2">2 bloki</option>
+            <option value="3">3 bloki</option>
+            <option value="4">4 bloki</option>
+            <option value="5">5 bloków</option>
+            <option value="6">6 bloków</option>
+            <option value="99">BO</option>
 
-            </select>
-          </ng-template>
-          <a id="payment-rate-btn" class="btn btn-def">Edytuj</a>
+          </select>
+        </ng-template>
+        <a id="payment-rate-btn" class="btn btn-def" (click)= change()>{{button}}</a>
 
-          <p id="back-payment-rate">* - Na postawie tabeli na stronie
-            <a href="http://www.sktt.pwr.edu.pl/sktt/pages/skladki-czlonkowskie">składki członkowskie.</a>
-          </p>
+        <p id="back-payment-rate">* - Na postawie tabeli na stronie
+          <a href="http://www.sktt.pwr.edu.pl/sktt/pages/skladki-czlonkowskie">składki członkowskie.</a>
+        </p>
       </form>
 
-      <h1 class="center">Potwierdzenie wpłaty</h1>
+      <h1 class="center">Status wpłat</h1>
 
-      <form id="payment-confirmation" ENCTYPE='multipart/form-data' method="POST">
-        <table class="info table charges-table">
-          <tbody>
-            <tr>
-              <th>I rata</th>
-              <th>II rata</th>
-              <th>III rata</th>
+      <table class="info table charges-table center">
+        <tbody>
+          <tr>
+            <th>I rata</th>
+            <th>II rata</th>
+            <th>III rata</th>
 
-            </tr>
-            <tr>
-              <td>
-                <a href="#"></a>
-              </td>
-              <td>
-                <a href="#"></a>
-              </td>
-              <td>
-                <a href="#"></a>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </form>
+          </tr>
+          <tr>
+            <td>
+              <b>{{status[0]}}</b>
+            </td>
+            <td>
+              <b>{{status[1]}}</b>
+            </td>
+            <td>
+             <b>{{status[2]}}</b>
+            </td>
+          </tr>
+        </tbody>
+      </table>
 
     </div>
 

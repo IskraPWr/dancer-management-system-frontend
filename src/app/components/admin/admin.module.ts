@@ -1,3 +1,5 @@
+import { TransactionListComponent } from './documents/transactionList/transactionList.component';
+import { ChargesListComponent } from './documents/chargesList/chargesList.component';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
@@ -42,7 +44,9 @@ const adminRoutes: Routes = [
     ArchivesModalComponent,
     DocumentsModalComponent,
     MainModalComponent,
-    PresenceModalComponent
+    PresenceModalComponent,
+    ChargesListComponent,
+    TransactionListComponent
   ],
   entryComponents: [
     ArchivesModalComponent,

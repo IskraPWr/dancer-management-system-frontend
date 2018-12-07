@@ -99,8 +99,8 @@
                     <td mat-cell *matCellDef="let element">
                         <mat-form-field class="example-chip-list">
                             <mat-chip-list #chipList>
-                              <mat-chip *ngFor="let note of notes" [selectable]="selectable"
-                                       [removable]="removable" (removed)="remove(note)">
+                              <mat-chip *ngFor="let note of element.notes" [selectable]="selectable"
+                                       [removable]="removable" (removed)="remove(note, element)">
                                 {{note.name}}
                                 <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
                               </mat-chip>
@@ -108,7 +108,7 @@
                                      [matChipInputFor]="chipList"
                                      [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
                                      [matChipInputAddOnBlur]="addOnBlur"
-                                     (matChipInputTokenEnd)="add($event)">
+                                     (matChipInputTokenEnd)="add($event, element)">
                             </mat-chip-list>
                           </mat-form-field>
                     </td>

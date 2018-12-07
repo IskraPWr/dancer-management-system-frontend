@@ -19,50 +19,13 @@ import { MatChipInputEvent } from '@angular/material';
 
 import * as $ from 'jquery';
 
-export interface PeriodicElement {
-  name: string;
-  surname: string;
-  amount: number;
-  payment1: string;
-  payment2: string;
-  payment3: string;
-  entryFee: string;
-  sum: number;
-}
-
-export interface PeriodicElementList {
-  id: number;
-  id_sys: number;
-  name: string;
-  product_name: string;
-  price: string;
-  quantiti: number;
-  value: string;
-}
-
-export interface Note {
-  name: string;
-}
-
 @Component({
   templateUrl: './documents.component.html'
 })
 export class DocumentsComponent {
   formModel: FormGroup;
   valid = new Valid();
-  visible = true;
-  selectable = true;
-  removable = true;
-  addOnBlur = true;
-  readonly separatorKeysCodes: number[] = [ENTER, COMMA];
-  notes: Note[] = [];
-  ELEMENT_DATA;
-  dataSource;
-  LIST_DATA;
-  dataSourceList;
-
   constructor(
-    private server: ServerService,
     private Service: PathService,
     private titleService: Title,
     public dialog: MatDialog,
@@ -81,114 +44,12 @@ export class DocumentsComponent {
         ]
       ]
     });
-
-    this.server.getCharges().subscribe(
-      data => {
-        this.ELEMENT_DATA = Object.values({ ...data });
-        this.ELEMENT_DATA = Object.values({...data});
-        this.initiateTable();
-      },
-      error => console.log(error)
-    );
-
-    this.server.getList().subscribe(
-      data => {
-        this.LIST_DATA = Object.values({ ...data });
-        this.LIST_DATA = Object.values({...data});
-        this.initiateTableList();
-      },
-      error => console.log(error)
-    );
   }
-
-  displayedColumns: string[] = [
-    'select',
-    'name',
-    'surname',
-    'amount',
-    'entryFee',
-    'payment1',
-    'payment2',
-    'payment3',
-    'sum',
-    'stat',
-    'note'
-  ];
-
-  selection = new SelectionModel<PeriodicElement>(true, []);
-
-  displayedColumnsList: string[] = [
-    'select',
-    'id_sys',
-    'name',
-    'product_name',
-    'price',
-    'quantiti',
-    'value'
-  ];
-
-  selectionList = new SelectionModel<PeriodicElementList>(true, []);
-
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
-
-  initiateTable() {
-    this.dataSource = new MatTableDataSource<PeriodicElement>(this.ELEMENT_DATA);
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-  }
-
-  initiateTableList() {
-    this.dataSourceList = new MatTableDataSource<PeriodicElementList>(this.LIST_DATA);
-  }
-
   openDialog(nr?): void {
     this.dialog.open(DocumentsModalComponent, {
       width: '50%',
       data : {id : nr ? nr.id : null},
     });
-  }
-
-  add(event: MatChipInputEvent): void {
-    const input = event.input;
-    const value = event.value;
-
-    if ((value || '').trim()) {
-      this.notes.push({ name: value.trim() });
-    }
-
-    if (input) {
-      input.value = '';
-    }
-  }
-
-  remove(note: Note): void {
-    const index = this.notes.indexOf(note);
-
-    if (index >= 0) {
-      this.notes.splice(index, 1);
-    }
-  }
-
-  applyFilter(filterValue: string) {
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
-  }
-
-  isAllSelected() {
-    const numSelected = this.selection.selected.length;
-    const numRows = this.dataSource.data.length;
-    return numSelected === numRows;
-  }
-
-  /** Selects all rows if they are not all selected; otherwise clear selection. */
-  masterToggle() {
-    this.isAllSelected()
-      ? this.selection.clear()
-      : this.dataSource.data.forEach(row => this.selection.select(row));
   }
 
   onSubmit($event) {
@@ -219,7 +80,7 @@ export class DocumentsModalComponent implements AfterViewInit {
    private server: ServerService) {
 
     if (this.data.id !== null) {
-      this.server.getPresenceById(this.data.id).subscribe((dat) => {
+      this.server.getStatPresenceAllById(this.data.id).subscribe((dat) => {
         const value = Object.values({...dat});
         this.setModalPresence(value);
       }, error => console.log(error));

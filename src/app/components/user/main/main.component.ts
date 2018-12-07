@@ -66,7 +66,7 @@ chart;
         responsive: true,
         title: {
           display: true,
-          text: 'Ilość wizyt na zajęciach'
+          text: 'Suma ilości wiyt na zajęciach SKTT Iskra'
           }
       }
     });

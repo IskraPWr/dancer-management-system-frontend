@@ -65,20 +65,9 @@ export class ServerService {
     return this.http.get('http://localhost:3000/statistics/presence/all/' + id);
   }
 
-  getStatPresenceMonthById(id) {
+  getStatPresenceById(id) {
     return this.http.get(
-      'http://localhost:3000/statistics/presence/month/' + id
-    );
-  }
-
-  getStatPresenceSemestrById(id) {
-    return this.http.get(
-      'http://localhost:3000/statistics/presence/semestr/' + id
-    );
-  }
-  getStatPresenceWeekById(id) {
-    return this.http.get(
-      'http://localhost:3000/statistics/presence/week/' + id
+      'http://localhost:3000/statistics/presence/' + id
     );
   }
 }

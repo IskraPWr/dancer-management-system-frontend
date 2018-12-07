@@ -1,0 +1,105 @@
+<mat-form-field>
+  <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Szukaj">
+</mat-form-field>
+
+<button id="table-button" mat-icon-button [matMenuTriggerFor]="menu">
+  <mat-icon>list</mat-icon>
+</button>
+<mat-menu #menu="matMenu">
+  <button mat-menu-item>
+    <mat-icon>archive</mat-icon>
+    <span>Przenieś zaznaczone do archiwum</span>
+  </button>
+  <button mat-menu-item>
+    <mat-icon>notes</mat-icon>
+    <span>Dodaj notatkę do zaznaczonych</span>
+  </button>
+</mat-menu>
+
+<div class="mat-elevation-z8 btmspace-50">
+  <table mat-table [dataSource]="dataSource" matSort>
+
+    <ng-container matColumnDef="select">
+      <th mat-header-cell *matHeaderCellDef>
+        <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()"
+          [indeterminate]="selection.hasValue() && !isAllSelected()">
+        </mat-checkbox>
+      </th>
+      <td mat-cell *matCellDef="let row">
+        <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"
+          [checked]="selection.isSelected(row)">
+        </mat-checkbox>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Imię </th>
+      <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="surname">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Nazwisko </th>
+      <td mat-cell *matCellDef="let element"> {{element.surname}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="amount">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Deklarowane </th>
+      <td mat-cell *matCellDef="let element"> {{element.amount}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="entryFee">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Wpisowe </th>
+      <td mat-cell *matCellDef="let element"> {{element.entryFee}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="payment1">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Wpłata I </th>
+      <td mat-cell *matCellDef="let element"> {{element.payment1}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="payment2">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Wpłata II </th>
+      <td mat-cell *matCellDef="let element"> {{element.payment2}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="payment3">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Wpłata III </th>
+      <td mat-cell *matCellDef="let element"> {{element.payment3}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="sum">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Suma </th>
+      <td mat-cell *matCellDef="let element"> {{element.sum}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="stat">
+      <th mat-header-cell *matHeaderCellDef> Statystyki </th>
+      <td mat-cell *matCellDef="let element">
+        <button mat-icon-button>
+          <mat-icon aria-label="Presence canvas" mat-raised-button (click)="openDialog(element)">info</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="note">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Notatki </th>
+      <td mat-cell *matCellDef="let element">
+        <mat-form-field class="example-chip-list">
+          <mat-chip-list #chipList>
+            <mat-chip *ngFor="let note of element.notes" [selectable]="selectable" [removable]="removable" (removed)="remove(note, element)">
+              {{note.name}}
+              <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+            </mat-chip>
+            <input placeholder="Nowa notatka..." [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+              [matChipInputAddOnBlur]="addOnBlur" (matChipInputTokenEnd)="add($event, element)">
+          </mat-chip-list>
+        </mat-form-field>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+</div>
