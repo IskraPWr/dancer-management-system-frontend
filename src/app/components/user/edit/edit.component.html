@@ -54,7 +54,7 @@
             <div class="form-group row">
               <label class="col-sm-5 col-form-label" for="university">Nazwa uczelni</label>
               <div class="col-sm-7">
-                <select class="form-control select" id="university" formControlName="university" (focusout)="checkFormInput($event)"
+                <select class="form-control select" id="university" formControlName="university" (focusout)="checkFormInput($event)" [(ngModel)]="user.university"
               (change)="checkFormInput($event)">
               <option>Akademia Muzyczna we Wrocławiu</option>
               <option>Akademia Sztuk Pięknych we Wrocławiu</option>

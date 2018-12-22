@@ -32,7 +32,7 @@ export class EditComponent {
   name: string;
   valid = new Valid();
 
-  user: User = {
+  user = {
     name : '',
     surname: '',
     email: '',
@@ -54,8 +54,8 @@ export class EditComponent {
     this.Service.updateFlag('Konto');
     this.titleService.setTitle('Edytuj konto');
 
-    this.server.getUserById().subscribe((data) => {
-      this.user = Object.values({...data})[0];
+    this.server.getUserById(1).subscribe((data) => {
+      this.user = data[0];
     }, error => console.log(error));
 
     this.formModel = fb.group({
@@ -154,7 +154,8 @@ export class EditComponent {
 
     const formName = $($event.path).filter('form')[0].id;
     if (this[formName].valid) {
-
+      const data = JSON.stringify(this[formName].value);
+        this.server.postUser(5, data).subscribe();
     } else {
       this.valid.checkForm($event);
     }

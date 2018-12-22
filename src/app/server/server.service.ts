@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { identity } from 'rxjs';
 
 @Injectable()
 export class ServerService {
   constructor(private http: HttpClient) {}
 
-  getUserById() {
-    return this.http.get('http://localhost:3000/users/21');
+  getUserById(id) {
+    return this.http.get('http://localhost:3000/users/' + id);
   }
 
   getPresenceById(id) {
@@ -36,6 +37,15 @@ export class ServerService {
   getArchives() {
     return this.http.get('http://localhost:3000/archives');
   }
+
+  getSemesters() {
+    return this.http.get('http://localhost:3000/semesters/');
+  }
+
+  getGroups() {
+    return this.http.get('http://localhost:3000/groups/');
+  }
+
 
   // Stats all
 
@@ -69,5 +79,11 @@ export class ServerService {
     return this.http.get(
       'http://localhost:3000/statistics/presence/' + id
     );
+  }
+
+  // post
+
+  postUser(id, data) {
+    return this.http.post('http://localhost:3000/users/' + id, data);
   }
 }

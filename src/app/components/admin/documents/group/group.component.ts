@@ -1,11 +1,14 @@
+import { DocumentsModalComponent } from './../documents.component';
 import { Title } from '@angular/platform-browser';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Component, ViewChild, AfterViewInit, Inject } from '@angular/core';
+import { Component, ViewChild, ViewEncapsulation, AfterViewInit, Inject } from '@angular/core';
 import * as Chart from 'chart.js';
 import { Valid } from '../../../validators/validators';
-import {MAT_DIALOG_DATA} from '@angular/material';
+import {MAT_DIALOG_DATA, MatCalendarHeader, MatDatepicker, MatDatepickerInput,
+   matDatepickerAnimations, MatDatepickerToggle} from '@angular/material';
 
 import { ServerService } from './../../../../server/server.service';
+import { PathService } from './../../../service';
 import {RandomColor} from '../../../items/colorGenerator/colorGenerator';
 
 import { MatDialog, MatDialogRef } from '@angular/material';
@@ -14,51 +17,61 @@ import { MatSort } from '@angular/material';
 import { SelectionModel } from '@angular/cdk/collections';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material';
+import {FormControl} from '@angular/forms';
+import {TooltipPosition} from '@angular/material';
+
+
+
 
 export interface Note {
   name: string;
 }
 
 export interface PeriodicElement {
-  id: number;
-  id_transaction: number;
   name: string;
-  email: string;
-  product: string;
-  date: string;
-  price: string;
-  quantity: number;
-  sum: string;
+  start: Date;
+  end: Date;
+  click: Array<boolean>;
 }
 
-export interface Semesters {
-  value: string;
-  viewValue: string;
-}
 
 @Component({
-  selector: 'app-transaction-list',
- templateUrl: './transactionList.component.html',
+  selector: 'app-group-list',
+ templateUrl: './group.component.html',
+ encapsulation: ViewEncapsulation.None,
 })
-export class TransactionListComponent {
+export class GroupComponent {
+   date = new FormControl(new Date());
+   serializedDate = new FormControl((new Date()).toISOString());
+
+   positionOptions: TooltipPosition[] = ['below', 'above', 'left', 'right'];
+   position = new FormControl(this.positionOptions[3]);
+   position2 = new FormControl(this.positionOptions[0]);
+
     visible = true;
+    click = [true, true, true, true, true];
     selectable = true;
     removable = true;
     addOnBlur = true;
-    readonly separatorKeysCodes: number[] = [ENTER, COMMA];
     ELEMENT_DATA;
     dataSource;
     selection = new SelectionModel<PeriodicElement>(true, []);
-    semesters: Semesters[] = [];
+
 
     constructor(
       private server: ServerService,
       public dialog: MatDialog,
     ) {
 
-      this.server.getList().subscribe(
+      this.server.getGroups().subscribe(
         data => {
           this.ELEMENT_DATA = Object.values({ ...data });
+          for (let i = 0; i <  Object.values(this.ELEMENT_DATA).length; i++ ) {
+            this.ELEMENT_DATA[i].click = [];
+            for (let j = 0; j < 6; j++) {
+              this.ELEMENT_DATA[i].click.push(false);
+            }
+          }
           this.initiateTable();
         },
         error => console.log(error)
@@ -69,14 +82,10 @@ export class TransactionListComponent {
     @ViewChild(MatSort) sort: MatSort;
 
     displayedColumns: string[] = [
-      'id_transaction',
+      'select',
       'name',
-      'email',
-      'product',
-      'date',
-      'price',
-      'quantity',
-      'sum'
+      'start',
+      'end'
     ];
 
     initiateTable() {
@@ -85,13 +94,6 @@ export class TransactionListComponent {
       this.dataSource.sort = this.sort;
     }
 
-    applyFilter(filterValue: string) {
-      this.dataSource.filter = filterValue.trim().toLowerCase();
-
-      if (this.dataSource.paginator) {
-        this.paginator.firstPage();
-      }
-    }
 
     isAllSelected() {
       const numSelected = this.selection.selected.length;
@@ -99,9 +101,27 @@ export class TransactionListComponent {
       return numSelected === numRows;
     }
 
+
+    /** Selects all rows if they are not all selected; otherwise clear selection. */
     masterToggle() {
       this.isAllSelected()
         ? this.selection.clear()
         : this.dataSource.data.forEach(row => this.selection.select(row));
     }
+
+    applyFilter(filterValue: string) {
+
+      this.dataSource.filter = filterValue.trim().toLowerCase();
+
+      if (this.dataSource.paginator) {
+        this.paginator.firstPage();
+      }
+    }
+
+    myFilter = (d: Date): boolean => {
+      const day = d.getDay();
+      // Prevent Saturday and Sunday from being selected.
+      return day !== 0 && day !== 6;
+    }
+
 }

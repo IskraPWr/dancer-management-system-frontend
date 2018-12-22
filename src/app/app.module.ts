@@ -1,3 +1,4 @@
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ServerService } from './server/server.service';
 import { environment } from './../environments/environment.prod';
 import { BrowserModule, Title } from '@angular/platform-browser';
@@ -52,7 +53,8 @@ const routes: Routes = [
     NgxCaptchaModule,
     OAuthModule.forRoot(),
     AngularFireModule.initializeApp(environment.firebaseConfig),
-    AngularFireAuthModule
+    AngularFireAuthModule,
+    BrowserAnimationsModule
 
   ],
   providers: [Title, {provide: LocationStrategy, useClass: HashLocationStrategy}, PathService, ServerService],

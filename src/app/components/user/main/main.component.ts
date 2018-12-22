@@ -10,7 +10,19 @@ import { ServerService } from './../../../server/server.service';
 })
 export class MainComponent implements AfterViewInit {
 
-user = {};
+  user = {
+    name : '',
+    surname: '',
+    email: '',
+    phone: '',
+    university: '',
+    department: '',
+    year: '',
+    index: '',
+    key1: '',
+    key2: '',
+  };
+
 color = new RandomColor;
 chart;
 
@@ -18,11 +30,11 @@ chart;
     this.Service.updateFlag('Konto');
     this.titleService.setTitle('Dane');
 
-    this.server.getUserById().subscribe((data) => {
-      this.user = Object.values({...data})[0];
+    this.server.getUserById(1).subscribe((data) => {
+      this.user = data[0];
     }, error => console.log(error));
 
-    this.server.getStatPresenceAllById(21).subscribe((data) => {
+    this.server.getStatPresenceAllById(1).subscribe((data) => {
       const value = Object.values({...data});
       this.setPresence(value);
     }, error => console.log(error));

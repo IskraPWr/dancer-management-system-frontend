@@ -1,6 +1,6 @@
 import { Title } from '@angular/platform-browser';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Component, ViewChild, AfterViewInit, Inject } from '@angular/core';
+import { Component, AfterViewInit, Inject } from '@angular/core';
 import * as Chart from 'chart.js';
 import { Valid } from '../../validators/validators';
 import {MAT_DIALOG_DATA} from '@angular/material';
@@ -10,11 +10,6 @@ import { PathService } from './../../service';
 import {RandomColor} from '../../items/colorGenerator/colorGenerator';
 
 import { MatDialog, MatDialogRef } from '@angular/material';
-import { MatPaginator, MatTableDataSource } from '@angular/material';
-import { MatSort } from '@angular/material';
-import { SelectionModel } from '@angular/cdk/collections';
-import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { MatChipInputEvent } from '@angular/material';
 
 
 import * as $ from 'jquery';
@@ -23,27 +18,15 @@ import * as $ from 'jquery';
   templateUrl: './documents.component.html'
 })
 export class DocumentsComponent {
-  formModel: FormGroup;
-  valid = new Valid();
+
   constructor(
     private Service: PathService,
     private titleService: Title,
-    public dialog: MatDialog,
-    fb: FormBuilder
+    public dialog: MatDialog
   ) {
     this.Service.updateFlag('Admin');
     this.titleService.setTitle('Dokumenty');
 
-    this.formModel = fb.group({
-      file: [
-        '',
-        [
-          Validators.required,
-          this.valid.fileTypeValidator,
-          this.valid.fileSizeValidator
-        ]
-      ]
-    });
   }
   openDialog(nr?): void {
     this.dialog.open(DocumentsModalComponent, {
@@ -52,22 +35,6 @@ export class DocumentsComponent {
     });
   }
 
-  onSubmit($event) {
-    // dostarcz event i konkretny form
-    if (this.formModel.valid) {
-    } else {
-      this.valid.checkForm($event);
-    }
-  }
-
-  fileEvent($event: Event) {
-    const file = (<HTMLInputElement>$event.target).files[0];
-
-    if (file) {
-      $('.custom-file-label').text(file.name);
-    }
-    this.valid.checkInputs($event.target, this.formModel.controls.file.errors);
-  }
 }
 
 @Component({

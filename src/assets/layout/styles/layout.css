@@ -1940,9 +1940,6 @@ hr.my-4 {
   border-color: #474747
 }
 
-table th:first-child {
-  width: 35%;
-}
 
 .header-spec {
   width: fit-content;
@@ -2061,7 +2058,11 @@ table{
 
 
 .mat-form-field-type-mat-input:not(#user-filter){
-  width: 90%!important;
+  width: 90%;
+}
+
+div.list-search .mat-form-field-type-mat-input {
+  width: 100%!important;
 }
 
 .mat-form-field-type-mat-select,
@@ -2069,9 +2070,10 @@ table{
   display: block!important;
 }
 
-td, th{
+.mat-table th, .mat-table td {
   padding: 0 5px!important;
 }
+
 
 h2 {
   font-size: 18px;
@@ -2102,6 +2104,10 @@ h2 {
 outline: none;
 }
 
+.start-table th, .start-table td{
+  padding: .35rem;
+}
+
 .start-table th{
   background-color: rgb(55, 55, 55);
     position: relative;
@@ -2121,3 +2127,21 @@ td > button {
   background: transparent;
   border: none;
 }
+
+.nobutton {
+  background: none;
+  border: none;
+  text-align: left;
+}
+
+.nobutton:hover {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #EA5616;
+}
+
+.mat-sort-header-container{
+  text-align: center;
+}
+

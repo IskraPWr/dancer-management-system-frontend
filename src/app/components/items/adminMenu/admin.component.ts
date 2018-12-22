@@ -14,6 +14,7 @@ export class AdminMenuComponent implements AfterViewInit {
   @ViewChild('presence', {read: ElementRef}) presence: ElementRef;
   @ViewChild('documents', {read: ElementRef}) documents: ElementRef;
   @ViewChild('archives', {read: ElementRef}) archives: ElementRef;
+  @ViewChild('edit', {read: ElementRef}) edit: ElementRef;
 
   constructor(private route: ActivatedRoute) {
     this.view = this.route.snapshot.routeConfig.path;
@@ -27,7 +28,10 @@ export class AdminMenuComponent implements AfterViewInit {
       case 'admin/obecnosc' :
       this.presence.nativeElement.classList.add('active2');
       break;
-      case 'admin/dokumenty' :
+      case 'admin/ustawienia' :
+      this.edit.nativeElement.classList.add('active2');
+      break;
+      case 'admin/platnosci' :
       this.documents.nativeElement.classList.add('active2');
       break;
       case 'admin/archiwum' :

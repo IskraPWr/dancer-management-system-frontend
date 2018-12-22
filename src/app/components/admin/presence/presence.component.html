@@ -9,7 +9,7 @@
 
           <mat-form-field>
               <mat-select placeholder="Wybierz tydzień">
-                  <mat-option *ngFor="let week of weeks" [value]="week.value">
+                  <mat-option *ngFor="let week of weeks" [value]="week.value" (click)="initiateTable(week.value.split('-')[1])" >
                   {{week.viewValue}}
                 </mat-option>
               </mat-select>

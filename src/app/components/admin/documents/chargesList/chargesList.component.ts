@@ -24,12 +24,17 @@ export interface Note {
 export interface PeriodicElement {
   name: string;
   surname: string;
-  amount: number;
+  declaration: number;
+  entryFee: string;
   payment1: string;
   payment2: string;
   payment3: string;
-  entryFee: string;
   sum: number;
+}
+
+export interface Semesters {
+  value: string;
+  viewValue: string;
 }
 
 @Component({
@@ -45,6 +50,7 @@ export class ChargesListComponent {
     ELEMENT_DATA;
     dataSource;
     selection = new SelectionModel<PeriodicElement>(true, []);
+    semesters: Semesters[] = [];
 
     constructor(
       private server: ServerService,
@@ -74,7 +80,7 @@ export class ChargesListComponent {
       'select',
       'name',
       'surname',
-      'amount',
+      'declaration',
       'entryFee',
       'payment1',
       'payment2',

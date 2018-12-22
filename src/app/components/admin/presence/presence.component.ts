@@ -44,21 +44,27 @@ export class PresenceComponent {
     private titleService: Title,
     public dialog: MatDialog
   ) {
+
     this.Service.updateFlag('Admin');
     this.titleService.setTitle('Obecność');
     this.server.getPresence().subscribe(
       data => {
-        this.ELEMENT_DATA = Object.values({ ...data });
-        this.weeks.push(this.ELEMENT_DATA[0]['week']);
-        this.ELEMENT_DATA = this.ELEMENT_DATA[0]['data'];
-        for ( const object of this.ELEMENT_DATA ) {
-          const array = [];
-            object.notes.forEach(element => {
-            array.push({name: element});
-          });
-          object.notes = array;
+        let arrayData = [];
+        arrayData = Object.values({ ...data });
+        for (const week of arrayData) {
+          this.weeks.push(week['week']);
+          this.ELEMENT_DATA.push(week['data']);
         }
-        this.initiateTable();
+        for (const weeks of this.ELEMENT_DATA) {
+          for ( const week of weeks ) {
+            const array = [];
+              week.notes.forEach(element => {
+              array.push({name: element});
+            });
+            week.notes = array;
+          }
+        }
+        this.initiateTable(0);
       },
       error => console.log(error)
     );
@@ -77,6 +83,7 @@ export class PresenceComponent {
     'sun',
     'note'
   ];
+
   selection = new SelectionModel<PeriodicElement>(true, []);
   weeks: Week[] = [];
   visible = true;
@@ -86,7 +93,7 @@ export class PresenceComponent {
   dataSource;
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
   notes: Note[] = [];
-  ELEMENT_DATA;
+  ELEMENT_DATA = [];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -97,13 +104,14 @@ export class PresenceComponent {
     });
   }
 
-  initiateTable() {
+  initiateTable(nr) {
     this.dataSource = new MatTableDataSource<PeriodicElement>(
-      this.ELEMENT_DATA
+      this.ELEMENT_DATA[nr]
     );
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
+
 
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
