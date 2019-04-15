@@ -1,7 +1,7 @@
 <h2>Lista płatności</h2>
 
 <mat-form-field>
-    <mat-select placeholder="Wybierz semestr">
+    <mat-select placeholder="Wybierz semestr" [(value)]="selected">
       <mat-option *ngFor="let semester of semesters" [value]="semester.value" (click)="initiateTable(semester.value.split('-')[1])">
         {{semester.viewValue}}
       </mat-option>
@@ -61,5 +61,5 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
 
-  <mat-paginator>[pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
 </div>

@@ -1,0 +1,69 @@
+<mat-dialog-content>
+  <h1 class="text-center">Ustaw nowy semestr</h1>
+  <form id="user-filter" class="example-form">
+    <mat-form-field  class="example-full-width">
+      <input matInput placeholder="Nazwa semestru"  [(ngModel)]="name.value" name="name" #name="ngModel" required>
+      <mat-error *ngIf="name.hasError('required')">
+        Podanie nazwy jest <strong>konieczne!</strong>
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field class="example-full-width">
+      <input matInput [matDatepicker]="picker0"  placeholder="Wybierz datę rozpoczęcia semestru" [(ngModel)]="start.value" name="start" #start="ngModel" required>
+      <mat-datepicker-toggle matSuffix [for]="picker0"></mat-datepicker-toggle>
+      <mat-datepicker #picker0></mat-datepicker>
+      <mat-error  *ngIf="start.hasError('required')">
+        Podanie daty jest <strong>konieczne!</strong>
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field class="example-full-width">
+      <input matInput [matDatepicker]="picker1"  placeholder="Wybierz datę pierwszej raty" [min]="start.value" [(ngModel)]="date_1.value" name="date_1" #date_1="ngModel" required [disabled]="!start.valid">
+      <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+      <mat-datepicker #picker1></mat-datepicker>
+      <mat-error  *ngIf="date_1.hasError('required')">
+        Podanie daty jest <strong>konieczne!</strong>
+      </mat-error>
+      <mat-error *ngIf="date_1.hasError('matDatepickerMin')">
+        Minimalna data to <strong>{{date_1.control.errors['matDatepickerMin']['min'].toLocaleDateString()}}</strong>
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field class="example-full-width">
+      <input matInput [matDatepicker]="picker2"  placeholder="Wybierz datę drugiej raty" [min]="date_1.value"  [(ngModel)]="date_2.value" name="date_2" #date_2="ngModel" required [disabled]="!date_1.valid">
+      <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+      <mat-datepicker #picker2></mat-datepicker>
+      <mat-error  *ngIf="date_2.hasError('required')">
+        Podanie daty jest <strong>konieczne!</strong>
+      </mat-error>
+      <mat-error *ngIf="date_2.hasError('matDatepickerMin')">
+        Minimalna data to <strong>{{date_2.control.errors['matDatepickerMin']['min'].toLocaleDateString()}}</strong>
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field class="example-full-width">
+      <input matInput [matDatepicker]="picker3"  placeholder="Wybierz datę trzeciej raty" [min]="date_2.value"   [(ngModel)]="date_3.value" name="date_3" #date_3="ngModel" required [disabled]="!date_2.valid">
+      <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+      <mat-datepicker #picker3></mat-datepicker>
+      <mat-error  *ngIf="date_3.hasError('required')">
+        Podanie daty jest <strong>konieczne!</strong>
+      </mat-error>
+      <mat-error *ngIf="date_3.hasError('matDatepickerMin')">
+        Minimalna data to <strong>{{date_3.control.errors['matDatepickerMin']['min'].toLocaleDateString()}}</strong>
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field class="example-full-width">
+      <input matInput [matDatepicker]="picker4"  placeholder="Wybierz datę zakończenia semestru" [min]="date_3.value" [(ngModel)]="end.value" name="end" #end="ngModel" required [disabled]="!date_3.valid">
+      <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
+      <mat-datepicker #picker4></mat-datepicker>
+      <mat-error  *ngIf="end.hasError('required')">
+        Podanie daty jest <strong>konieczne!</strong>
+      </mat-error>
+      <mat-error *ngIf="end.hasError('matDatepickerMin')">
+        Minimalna data to <strong>{{end.control.errors['matDatepickerMin']['min'].toLocaleDateString()}}</strong>
+      </mat-error>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <div class="text-center topspace-15 one">
+    <button class="btn btn-danger mr-2" data-choice="true" type="button" (click)="close()">Anuluj</button>
+    <button class="btn btn-success ml-2" data-choice="true" type="button" (click)="sendMessage()">Wyślij</button>
+  </div>
+</mat-dialog-actions>

@@ -2061,7 +2061,7 @@ table{
   width: 90%;
 }
 
-div.list-search .mat-form-field-type-mat-input {
+div.list-search .mat-form-field-type-mat-input, form mat-form-field{
   width: 100%!important;
 }
 
@@ -2143,5 +2143,20 @@ td > button {
 
 .mat-sort-header-container{
   text-align: center;
+}
+
+.spinner-box {
+  position: absolute;
+  top: 50%;
+  left:50%;
+  transform: translate(-50%,-50%);
+}
+
+.spinner {
+
+}
+
+.small-font{
+  font-size: 70%;
 }
 

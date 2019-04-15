@@ -1,0 +1,95 @@
+<h2>Administratorzy strony</h2>
+
+<mat-form-field>
+  <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Szukaj">
+</mat-form-field>
+
+<button id="table-button" mat-icon-button [matMenuTriggerFor]="menu">
+  <mat-icon>list</mat-icon>
+</button>
+<mat-menu #menu="matMenu">
+  <button mat-menu-item>
+    <mat-icon>add</mat-icon>
+    <span>Dodaj nowego administratora</span>
+  </button>
+  <button mat-menu-item>
+    <mat-icon>delete_forever</mat-icon>
+    <span>Usuń zaznaczonych administratorów</span>
+  </button>
+</mat-menu>
+
+<div class="mat-elevation-z8 btmspace-50">
+  <table mat-table [dataSource]="dataSource" matSort>
+
+    <ng-container matColumnDef="select">
+      <th mat-header-cell *matHeaderCellDef>
+        <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()"
+          [indeterminate]="selection.hasValue() && !isAllSelected()">
+        </mat-checkbox>
+      </th>
+      <td mat-cell *matCellDef="let row">
+        <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)">
+        </mat-checkbox>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Imię</th>
+      <td mat-cell *matCellDef="let element">{{element.name}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="surname">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Nazwisko </th>
+      <td mat-cell *matCellDef="let element">{{element.surname}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="mail">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Mail </th>
+      <td mat-cell *matCellDef="let element">
+        <div *ngIf="!element.click[2],  else edit4" (click)="element.click[2] = !element.click[2]">
+          <button mat-raised-button #tooltip="matTooltip" matTooltip="Kliknij aby edytować" [matTooltipPosition]="position.value"
+            aria-label="Button to change date or name" class="nobutton">
+            {{element.mail}}
+          </button>
+        </div>
+        <ng-template #edit4>
+          <mat-form-field class="example-full-width">
+            <input matInput matTooltip="Kliknij enter by zapisać" [matTooltipPosition]="position2.value" placeholder="Wpisz mail" [value]="element.mail">
+          </mat-form-field>
+        </ng-template>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="login">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Login </th>
+      <td mat-cell *matCellDef="let element">
+        <div *ngIf="!element.click[0],  else edit2" (click)="element.click[0] = !element.click[0]">
+          <button mat-raised-button #tooltip="matTooltip" matTooltip="Kliknij aby edytować" [matTooltipPosition]="position.value"
+            aria-label="Button to change date or name" class="nobutton">
+            {{element.login}}
+          </button>
+        </div>
+        <ng-template #edit2>
+          <mat-form-field class="example-full-width">
+            <input matInput matTooltip="Kliknij enter by zapisać" [matTooltipPosition]="position2.value" placeholder="Wpisz login" [value]="element.login">
+          </mat-form-field>
+        </ng-template>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="password">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Hasło </th>
+      <td mat-cell *matCellDef="let element">
+          <button mat-raised-button #tooltip="matTooltip" matTooltip="Kliknij aby edytować" [matTooltipPosition]="position.value"
+            aria-label="Button to change date or name" class="nobutton" (click)="openDialog()">
+            {{element.password}}
+          </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+</div>

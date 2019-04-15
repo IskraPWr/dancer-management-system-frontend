@@ -14,11 +14,11 @@
             <mat-icon>list</mat-icon>
           </button>
           <mat-menu #menu="matMenu">
-            <button mat-menu-item>
+            <button mat-menu-item (click)="unarchiveUsers()">
               <mat-icon>unarchive</mat-icon>
               <span>Przywróć zaznaczone</span>
             </button>
-            <button mat-menu-item>
+            <button mat-menu-item (click)="deleteUsers()">
               <mat-icon>delete</mat-icon>
               <span>Usuń zaznaczone</span>
             </button>

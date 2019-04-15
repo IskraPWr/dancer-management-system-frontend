@@ -1,5 +1,5 @@
 <mat-form-field>
-  <mat-select placeholder="Wybierz semestr">
+  <mat-select placeholder="Wybierz semestr" [(value)]="selected">
       <mat-option *ngFor="let semester of semesters" [value]="semester.value" (click)="initiateTable(semester.value.split('-')[1])" >
       {{semester.viewValue}}
     </mat-option>
@@ -14,11 +14,11 @@
   <mat-icon>list</mat-icon>
 </button>
 <mat-menu #menu="matMenu">
-  <button mat-menu-item>
+  <button mat-menu-item (click)="sendToArchive()">
     <mat-icon>archive</mat-icon>
     <span>Przenieś zaznaczone do archiwum</span>
   </button>
-  <button mat-menu-item>
+  <button mat-menu-item (click)="addNotes()">
     <mat-icon>notes</mat-icon>
     <span>Dodaj notatkę do zaznaczonych</span>
   </button>
@@ -51,7 +51,7 @@
     </ng-container>
 
     <ng-container matColumnDef="declaration">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Deklarowane </th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Dek. ilość bloków </th>
       <td mat-cell *matCellDef="let element"> {{element.declaration}} </td>
     </ng-container>
 

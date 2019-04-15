@@ -1,26 +1,12 @@
-import { DocumentsModalComponent } from './../documents.component';
-import { Title } from '@angular/platform-browser';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Component, ViewChild, ViewEncapsulation, AfterViewInit, Inject } from '@angular/core';
-import * as Chart from 'chart.js';
-import { Valid } from '../../../validators/validators';
-import {MAT_DIALOG_DATA, MatCalendarHeader, MatDatepicker, MatDatepickerInput,
-   matDatepickerAnimations, MatDatepickerToggle} from '@angular/material';
+import { SelectionModel } from '@angular/cdk/collections';
+import { AfterViewInit, Component, OnDestroy, ViewChild, ViewEncapsulation } from '@angular/core';
+import { FormControl, NgModel } from '@angular/forms';
+import { MatDialog, MatPaginator, MatSnackBar, MatSort, MatTableDataSource, TooltipPosition } from '@angular/material';
 
 import { ServerService } from './../../../../server/server.service';
-import { PathService } from './../../../service';
-import {RandomColor} from '../../../items/colorGenerator/colorGenerator';
-
-import { MatDialog, MatDialogRef } from '@angular/material';
-import { MatPaginator, MatTableDataSource } from '@angular/material';
-import { MatSort } from '@angular/material';
-import { SelectionModel } from '@angular/cdk/collections';
-import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { MatChipInputEvent } from '@angular/material';
-import {FormControl} from '@angular/forms';
-import {TooltipPosition} from '@angular/material';
-
-
+import { ConfirmationModalComponent } from './../../archives/confirmation-archives.component';
+import { NoteDataService } from './../../main/data.service';
+import { SemesterModalComponent } from './semester-modal.component';
 
 
 export interface Note {
@@ -28,6 +14,7 @@ export interface Note {
 }
 
 export interface PeriodicElement {
+  id_semester : number;
   name: string;
   start: Date;
   date_1: Date;
@@ -42,10 +29,18 @@ export interface PeriodicElement {
   selector: 'app-semester-list',
  templateUrl: './semesters.component.html',
  encapsulation: ViewEncapsulation.None,
+ styleUrls: ['./semesters.component.css']
 })
-export class SemestersComponent {
-   date = new FormControl(new Date());
-   serializedDate = new FormControl((new Date()).toISOString());
+export class SemestersComponent implements AfterViewInit, OnDestroy {
+  constructor(
+    private server: ServerService,
+    public dialog: MatDialog,
+    private snackBar: MatSnackBar,
+    private data: NoteDataService,
+  ) {
+  }
+
+
 
    positionOptions: TooltipPosition[] = ['below', 'above', 'left', 'right'];
    position = new FormControl(this.positionOptions[3]);
@@ -59,30 +54,20 @@ export class SemestersComponent {
     ELEMENT_DATA;
     dataSource;
     selection = new SelectionModel<PeriodicElement>(true, []);
+    semesters;
+
+    message = 'podane semestry z bazy? Razem z nimi zostaną usunięte wszystkie grupy przypisane do tych semestrów jak również wszystkie logi wejść każdej z grup co spowoduje utrate ważnych statystyk.';
 
 
-    constructor(
-      private server: ServerService,
-      public dialog: MatDialog,
-    ) {
-
-      this.server.getSemesters().subscribe(
-        data => {
-          this.ELEMENT_DATA = Object.values({ ...data });
-          for (let i = 0; i <  Object.values(this.ELEMENT_DATA).length; i++ ) {
-            this.ELEMENT_DATA[i].click = [];
-            for (let j = 0; j < 6; j++) {
-              this.ELEMENT_DATA[i].click.push(false);
-            }
-          }
-          this.initiateTable();
-        },
-        error => console.log(error)
-      );
-    }
 
     @ViewChild(MatPaginator) paginator: MatPaginator;
     @ViewChild(MatSort) sort: MatSort;
+    @ViewChild('name', {read: NgModel}) name: NgModel;
+    @ViewChild('start', {read: NgModel}) start: NgModel;
+    @ViewChild('date_1', {read: NgModel}) date_1: NgModel;
+    @ViewChild('date_2', {read: NgModel}) date_2: NgModel;
+    @ViewChild('date_3', {read: NgModel}) date_3: NgModel;
+    @ViewChild('end', {read: NgModel}) end: NgModel;
 
     displayedColumns: string[] = [
       'select',
@@ -94,10 +79,75 @@ export class SemestersComponent {
       'end'
     ];
 
+
+    ngAfterViewInit() {
+     this.semesters = this.server.getSemesters().subscribe(
+        data => {
+          this.ELEMENT_DATA = Object.values({ ...data });
+          for (let i = 0; i <  Object.values(this.ELEMENT_DATA).length; i++ ) {
+            this.ELEMENT_DATA[i].click = [];
+            this.ELEMENT_DATA[i].start = new Date(this.ELEMENT_DATA[i].start);
+            this.ELEMENT_DATA[i].date_1 = new Date(this.ELEMENT_DATA[i].date_1);
+            this.ELEMENT_DATA[i].date_2 = new Date(this.ELEMENT_DATA[i].date_2);
+            this.ELEMENT_DATA[i].date_3 = new Date(this.ELEMENT_DATA[i].date_3);
+            this.ELEMENT_DATA[i].end = new Date(this.ELEMENT_DATA[i].end);
+            for (let j = 0; j < 6; j++) {
+              this.ELEMENT_DATA[i].click.push(false);
+            }
+          }
+          this.initiateTable();
+        },
+        error => console.log(error)
+      );
+    }
+
+    ngOnDestroy (){
+      this.semesters.unsubscribe();
+    }
+
+    checkData(first, second){
+      return first < second ? false : true ;
+    }
+
+
     initiateTable() {
       this.dataSource = new MatTableDataSource<PeriodicElement>(this.ELEMENT_DATA);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
+    }
+
+    save(keyCode, el, element, name, nr){
+      if(keyCode === 13 && element.valid){
+
+        const data = {
+          id: el.idSemester,
+          name: name,
+          value: element.value,
+        };
+        let formBody = [];
+        for (const property in data) {
+          const encodedKey = encodeURIComponent(property);
+          const encodedValue = encodeURIComponent(data[property]);
+          formBody.push(encodedKey + "=" + encodedValue);
+        }
+        const message = formBody.join("&");
+
+        const server = this.server.updateDate(message).subscribe(() => {
+          if(name === 'name'){
+            this.openSnackBar('Zmiana nazwy', 'Sukces!');
+          }else {
+            this.openSnackBar('Zmiana daty', 'Sukces!');
+          }
+          el.click[nr] = false;
+          server.unsubscribe();
+        },  () =>  this.openSnackBar('Uwaga', 'Błąd!'));
+      }
+    }
+
+    openSnackBar(message: string, action: string) {
+      this.snackBar.open(message, action, {
+        duration: 2000,
+      });
     }
 
 
@@ -107,12 +157,79 @@ export class SemestersComponent {
       return numSelected === numRows;
     }
 
-
-    /** Selects all rows if they are not all selected; otherwise clear selection. */
     masterToggle() {
       this.isAllSelected()
         ? this.selection.clear()
         : this.dataSource.data.forEach(row => this.selection.select(row));
+    }
+
+    removeSemesters(){
+      if (this.selection.selected.length != 0) {
+
+
+        this.dialog.open(ConfirmationModalComponent, {
+          data : {thingToRemoved : this.message },
+        });
+
+        const dialog = this.dialog.afterAllClosed.subscribe(() => {
+
+          if(this.data.messageSource.getValue() != 'error404') {
+
+            let idArray: Array<any> = [];
+            this.selection.selected.forEach(semester => idArray.push(semester.id_semester));
+
+            let server = this.server.deleteSemesters(encodeURIComponent('id') + "=" + encodeURIComponent(idArray.toString())).subscribe(() => {
+              this.selection.clear();
+              this.ELEMENT_DATA = [];
+              this.ngAfterViewInit();
+
+              this.openSnackBar('Usunięcie użytkownika', 'Sukces!');
+              server.unsubscribe();
+              dialog.unsubscribe();
+            },
+            () => this.openSnackBar('Usunięcie użytkownika', 'Błąd!'));
+          } else {
+            dialog.unsubscribe();
+          }
+        }, error => console.log(error));
+      } else {
+        this.openSnackBar('Uwaga', 'Nie wybrano semestrów!');
+      }
+    }
+
+
+    addSemester(){
+        this.dialog.open(SemesterModalComponent, {
+          width: '50%'
+        });
+
+        const dialog = this.dialog.afterAllClosed.subscribe(() => {
+
+          if(this.data.messageSource.getValue() != 'error404') {
+
+            const data = JSON.parse(this.data.messageSource.getValue());
+
+            let formBody = [];
+            for (const property in data) {
+              const encodedKey = encodeURIComponent(property);
+              const encodedValue = encodeURIComponent(data[property]);
+              formBody.push(encodedKey + "=" + encodedValue);
+            }
+            const message = formBody.join("&");
+
+            const server = this.server.addSemester(message).subscribe(() => {
+              this.openSnackBar('Dodanie nowego semestru', 'Sukces!');
+              this.selection.clear();
+              this.ngAfterViewInit();
+              dialog.unsubscribe();
+              server.unsubscribe();
+            }, () =>{
+              this.openSnackBar('Dodanie nowego semestru', 'Błąd!');
+            });
+          } else {
+            dialog.unsubscribe();
+          }
+        }, error => console.log(error));
     }
 
     applyFilter(filterValue: string) {
@@ -122,12 +239,6 @@ export class SemestersComponent {
       if (this.dataSource.paginator) {
         this.paginator.firstPage();
       }
-    }
-
-    myFilter = (d: Date): boolean => {
-      const day = d.getDay();
-      // Prevent Saturday and Sunday from being selected.
-      return day !== 0 && day !== 6;
     }
 
 }

@@ -1,0 +1,140 @@
+<h2>Aktualne składki członkowskie</h2>
+
+<mat-form-field>
+    <mat-select placeholder="Wybierz typ użytkowników" [(value)]="selected">
+        <mat-option *ngFor="let userType of usersType" [value]="userType.value" (click)="initiateTable(userType.value)" >
+        {{userType.viewValue}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+<mat-form-field>
+  <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Szukaj">
+</mat-form-field>
+
+<button id="table-button" mat-icon-button [matMenuTriggerFor]="menu">
+  <mat-icon>list</mat-icon>
+</button>
+<mat-menu #menu="matMenu">
+    <button mat-menu-item (click)="addInstallment()">
+        <mat-icon>add</mat-icon>
+        <span>Dodaj nową stawkę</span>
+      </button>
+  <button mat-menu-item (click)="removeInstalment()">
+    <mat-icon>delete_forever</mat-icon>
+    <span>Usuń zaznaczone stawki</span>
+  </button>
+</mat-menu>
+
+<div class="mat-elevation-z8 btmspace-50">
+  <table class="semester" mat-table [dataSource]="dataSource" matSort>
+
+    <ng-container matColumnDef="select">
+      <th mat-header-cell *matHeaderCellDef>
+        <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()"
+          [indeterminate]="selection.hasValue() && !isAllSelected()">
+        </mat-checkbox>
+      </th>
+      <td mat-cell *matCellDef="let row">
+        <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)">
+        </mat-checkbox>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Nazwa</th>
+      <td mat-cell *matCellDef="let element">
+        <div *ngIf="!element.click[0],  else edit0" (click)="element.click[0] = !element.click[0]">
+          <button mat-raised-button #tooltip="matTooltip" matTooltip="Kliknij aby edytować" [matTooltipPosition]="position.value"
+             aria-label="Button to change name" class="nobutton">
+            {{element.name}}
+          </button>
+        </div>
+        <ng-template #edit0>
+          <mat-form-field class="example-full-width">
+            <input #tooltip="matTooltip" matTooltip="Kliknij enter by zapisać" [matTooltipPosition]="position2.value"
+              matInput placeholder="Nazwa opłaty" [(ngModel)]="element.name" #name="ngModel" (keypress)="save($event.keyCode, element, name, 'name', 0)" required>
+              <mat-error  *ngIf="name.hasError('required')">
+                Podanie nazwy jest <strong>konieczne!</strong>
+              </mat-error>
+            </mat-form-field>
+        </ng-template>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="installment_1">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Rata 1 </th>
+        <td mat-cell *matCellDef="let element">
+          <div *ngIf="!element.click[1],  else edit1" (click)="element.click[1] = !element.click[1]">
+            <button mat-raised-button #tooltip="matTooltip" matTooltip="Kliknij aby edytować" [matTooltipPosition]="position.value"
+               aria-label="Button to change day" class="nobutton">
+              {{element.installment_1}}
+            </button>
+          </div>
+          <ng-template #edit1>
+          <mat-form-field>
+            <input #tooltip="matTooltip" matTooltip="Kliknij enter by zapisać" [matTooltipPosition]="position2.value"
+            matInput placeholder="Rata I" [(ngModel)]="element.installment_1" type='number' #installment_1="ngModel" (keypress)="save($event.keyCode, element, installment_1, 'installment_1', 1)" required>
+            <mat-error  *ngIf="installment_1.hasError('required')">
+              Podanie raty jest <strong>konieczne!</strong>
+            </mat-error>
+          </mat-form-field>
+          </ng-template>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="installment_2">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Rata 2 </th>
+          <td mat-cell *matCellDef="let element">
+            <div *ngIf="!element.click[2],  else edit2" (click)="element.click[2] = !element.click[2]">
+              <button mat-raised-button #tooltip="matTooltip" matTooltip="Kliknij aby edytować" [matTooltipPosition]="position.value"
+                 aria-label="Button to change day" class="nobutton">
+                {{element.installment_2}}
+              </button>
+            </div>
+            <ng-template #edit2>
+                <mat-form-field>
+                    <input #tooltip="matTooltip" matTooltip="Kliknij enter by zapisać" [matTooltipPosition]="position2.value"
+                    matInput placeholder="Rata II" [(ngModel)]="element.installment_2" type='number' #installment_2="ngModel" (keypress)="save($event.keyCode, element, installment_2, 'installment_2', 2)" required>
+                    <mat-error  *ngIf="installment_2.hasError('required')">
+                      Podanie raty jest <strong>konieczne!</strong>
+                    </mat-error>
+                  </mat-form-field>
+            </ng-template>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="installment_3">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Rata 3 </th>
+            <td mat-cell *matCellDef="let element">
+              <div *ngIf="!element.click[3],  else edit1" (click)="element.click[3] = !element.click[3]">
+                <button mat-raised-button #tooltip="matTooltip" matTooltip="Kliknij aby edytować" [matTooltipPosition]="position.value"
+                   aria-label="Button to change day" class="nobutton">
+                  {{element.installment_3}}
+                </button>
+              </div>
+              <ng-template #edit1>
+                  <mat-form-field>
+                      <input #tooltip="matTooltip" matTooltip="Kliknij enter by zapisać" [matTooltipPosition]="position2.value"
+                      matInput placeholder="Rata III" [(ngModel)]="element.installment_3" type='number' #installment_3="ngModel" (keypress)="save($event.keyCode, element, installment_3, 'installment_3', 3)" required>
+                      <mat-error  *ngIf="installment_3.hasError('required')">
+                        Podanie raty jest <strong>konieczne!</strong>
+                      </mat-error>
+                    </mat-form-field>
+              </ng-template>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="sum">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Suma </th>
+              <td mat-cell *matCellDef="let element">
+                  {{element.installment_1 + element.installment_2 + element.installment_3}}
+              </td>
+            </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <mat-paginator [pageSizeOptions]="[10, 15, 20]" showFirstLastButtons></mat-paginator>
+</div>

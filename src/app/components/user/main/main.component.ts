@@ -1,6 +1,6 @@
 import { Title } from '@angular/platform-browser';
 import { PathService } from './../../service';
-import { Component, AfterViewInit } from '@angular/core';
+import { Component, AfterViewInit, OnDestroy } from '@angular/core';
 import * as Chart from 'chart.js';
 import {RandomColor} from '../../items/colorGenerator/colorGenerator';
 import { ServerService } from './../../../server/server.service';
@@ -8,7 +8,7 @@ import { ServerService } from './../../../server/server.service';
 @Component({
   templateUrl: './main.component.html'
 })
-export class MainComponent implements AfterViewInit {
+export class MainComponent implements AfterViewInit, OnDestroy {
 
   user = {
     name : '',
@@ -25,31 +25,36 @@ export class MainComponent implements AfterViewInit {
 
 color = new RandomColor;
 chart;
+userConnect;
+presenceConnect;
 
   constructor (private Service: PathService, private titleService: Title, private server: ServerService ) {
     this.Service.updateFlag('Konto');
     this.titleService.setTitle('Dane');
 
-    this.server.getUserById(1).subscribe((data) => {
-      this.user = data[0];
-    }, error => console.log(error));
-
-    this.server.getStatPresenceAllById(1).subscribe((data) => {
-      const value = Object.values({...data});
-      this.setPresence(value);
-    }, error => console.log(error));
   }
 
   setPresence (value) {
-    this.chart.config.data.datasets[0].data = Object.values(value[0]);
     // tslint:disable-next-line:forin
-    for (const ele in value[0]) {
+    for (let i = 0; i < Object.keys(value).length; i++) {
       this.chart.config.data.datasets[0].backgroundColor.push(this.color.getRandomColor());
+      this.chart.config.data.datasets[0].data.push(value[i].data);
+      this.chart.config.data.labels.push(value[i].day);
     }
     this.chart.update();
   }
 
   ngAfterViewInit() {
+
+    this.userConnect = this.server.getUserById(1).subscribe((data) => {
+      this.user = data[0];
+    }, error => console.log(error));
+
+    this.presenceConnect = this.server.getStatPresenceAllById(1).subscribe((data) => {
+      const value = Object.values({...data});
+      this.setPresence(value);
+    }, error => console.log(error));
+
     const ctx: HTMLCanvasElement = document.getElementById('myCharty') as HTMLCanvasElement;
     ctx.getContext('2d');
     this.chart = new Chart(ctx, {
@@ -63,16 +68,7 @@ chart;
           ],
           label: 'Ilość wizyt'
         }],
-        labels: [
-          'Podstawowa I',
-          'Podstawowa II',
-          'Podstawowa +',
-          'Średnio-zaawansowana - pon',
-          'Średnio-zaawansowana - śr',
-          'Zaawansowana - pon',
-          'Zaawansowana - śr',
-          'Nieprzyporządkowane'
-        ]
+        labels: []
       },
       options: {
         responsive: true,
@@ -82,6 +78,11 @@ chart;
           }
       }
     });
+  }
+
+  ngOnDestroy () {
+    this.presenceConnect.unsubscribe();
+    this.userConnect.unsubscribe();
   }
 }
 

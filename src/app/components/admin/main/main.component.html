@@ -16,11 +16,11 @@
             <mat-icon>list</mat-icon>
           </button>
           <mat-menu #menu="matMenu">
-            <button mat-menu-item>
+            <button mat-menu-item (click)="sendToArchive()">
               <mat-icon>archive</mat-icon>
               <span>Przenieś zaznaczone do archiwum</span>
             </button>
-            <button mat-menu-item>
+            <button mat-menu-item (click)="addNotes()">
               <mat-icon>notes</mat-icon>
               <span>Dodaj notatkę do zaznaczonych</span>
             </button>
@@ -83,7 +83,7 @@
             </ng-container>
 
             <ng-container matColumnDef="note">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header> Notatki </th>
+              <th mat-header-cell *matHeaderCellDef> Notatki </th>
               <td mat-cell *matCellDef="let element">
                 <mat-form-field class="example-chip-list">
                   <mat-chip-list #chipList>

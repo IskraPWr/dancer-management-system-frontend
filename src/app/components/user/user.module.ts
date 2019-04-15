@@ -1,3 +1,4 @@
+import { MatSelectModule } from '@angular/material/select';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
@@ -54,7 +55,8 @@ const userRoutes: Routes = [
     MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
-    MatSortModule
+    MatSortModule,
+    MatSelectModule
   ],
   providers: [LoginGuard]
 })

@@ -15,6 +15,8 @@ export class AdminMenuComponent implements AfterViewInit {
   @ViewChild('documents', {read: ElementRef}) documents: ElementRef;
   @ViewChild('archives', {read: ElementRef}) archives: ElementRef;
   @ViewChild('edit', {read: ElementRef}) edit: ElementRef;
+  @ViewChild('access', {read: ElementRef}) acces: ElementRef;
+  @ViewChild('members', {read: ElementRef}) members: ElementRef;
 
   constructor(private route: ActivatedRoute) {
     this.view = this.route.snapshot.routeConfig.path;
@@ -36,6 +38,12 @@ export class AdminMenuComponent implements AfterViewInit {
       break;
       case 'admin/archiwum' :
       this.archives.nativeElement.classList.add('active2');
+      break;
+      case 'admin/dostep' :
+      this.acces.nativeElement.classList.add('active2');
+      break;
+      case 'admin/grupy' :
+      this.members.nativeElement.classList.add('active2');
       break;
     }
 }

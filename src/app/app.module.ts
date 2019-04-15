@@ -1,3 +1,5 @@
+import { MAT_DATE_LOCALE } from '@angular/material/core';
+import { MatInputModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ServerService } from './server/server.service';
 import { environment } from './../environments/environment.prod';
@@ -40,7 +42,7 @@ const routes: Routes = [
     CreateAccountComponent,
     RemindPasswordComponent,
     LogComponent,
-    Path
+    Path,
   ],
   imports: [
     BrowserModule,
@@ -54,10 +56,11 @@ const routes: Routes = [
     OAuthModule.forRoot(),
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireAuthModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    MatInputModule
 
   ],
-  providers: [Title, {provide: LocationStrategy, useClass: HashLocationStrategy}, PathService, ServerService],
+  providers: [Title, {provide: LocationStrategy, useClass: HashLocationStrategy}, PathService, ServerService, {provide: MAT_DATE_LOCALE, useValue: 'pl'},],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

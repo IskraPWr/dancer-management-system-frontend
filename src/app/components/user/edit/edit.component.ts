@@ -1,7 +1,7 @@
 import { Title } from '@angular/platform-browser';
 import { PathService } from './../../service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Component } from '@angular/core';
+import { Component, AfterViewInit, OnDestroy } from '@angular/core';
 import { Valid } from '../../validators/validators';
 
 import { ServerService } from './../../../server/server.service';
@@ -24,13 +24,14 @@ interface User {
 @Component({
   templateUrl: './edit.component.html'
 })
-export class EditComponent {
+export class EditComponent implements AfterViewInit, OnDestroy {
   formModel: FormGroup;
   formModelLogin: FormGroup;
   formModelPassword: FormGroup;
   formModelKeys: FormGroup;
   name: string;
   valid = new Valid();
+  userConnect;
 
   user = {
     name : '',
@@ -53,10 +54,6 @@ export class EditComponent {
   ) {
     this.Service.updateFlag('Konto');
     this.titleService.setTitle('Edytuj konto');
-
-    this.server.getUserById(1).subscribe((data) => {
-      this.user = data[0];
-    }, error => console.log(error));
 
     this.formModel = fb.group({
       name: [
@@ -121,6 +118,16 @@ export class EditComponent {
         {validator: this.valid.equilValidator}
       )
     });
+  }
+
+  ngAfterViewInit () {
+    this.userConnect = this.server.getUserById(1).subscribe((data) => {
+      this.user = data[0];
+    }, error => console.log(error));
+  }
+
+  ngOnDestroy () {
+    this.userConnect.unsubscribe();
   }
 
   checkFormInput ($event) {

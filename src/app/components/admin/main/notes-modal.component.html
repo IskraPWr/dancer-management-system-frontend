@@ -1,0 +1,18 @@
+<mat-dialog-content>
+  <h1 class="text-center">Wpisz treść notatki</h1>
+  <form id="user-filter" class="example-form">
+      <mat-form-field class="example-full-width">
+        <input matInput placeholder="Notatka" [(ngModel)]="note" #no="ngModel" name = "note" required>
+        <mat-error *ngIf="no.invalid && (no.dirty || no.touched)">
+        Podanie notatki jest <strong>konieczne!</strong>
+      </mat-error>
+      </mat-form-field>
+    </form>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <div class="text-center topspace-15 one">
+        <button class="btn btn-danger mr-2" data-choice="true" type="button" (click)="close()">Anuluj</button>
+        <button class="btn btn-success ml-2" data-choice="true" type="button" (click)="showNote()">Wyślij</button>
+    </div>
+  </mat-dialog-actions>
+

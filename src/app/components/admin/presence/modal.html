@@ -1,28 +1,48 @@
-<ngb-carousel>
-  <ng-template ngbSlide>
-    <h1 class="text-center">Ogólny wykaz ilości osób na zajęciach</h1>
-    <div class="row">
-      <canvas id="chartWeek" class="col-12 col-xl-6 btmspace-30"></canvas><canvas id="chartMonth" class="col-12 col-xl-6 btmspace-30"></canvas>
-      <canvas id="chartSemester" class="col-12 col-xl-6 btmspace-30"></canvas><canvas id="chartAll" class="col-12 col-xl-6 btmspace-30"></canvas>
-    </div>
-  </ng-template>
-  <ng-template ngbSlide>
-    <h1 class="text-center">Zmiana ilości osób na zajęciach w grupach</h1>
-    <div class="row"><canvas id="chartGrP1" class="col-12 col-xl-4  btmspace-30"></canvas><canvas id="chartGrP2" class="col-12 col-xl-4  btmspace-30"></canvas>
-      <canvas id="chartGrSrP" class="col-12 col-xl-4  btmspace-30"></canvas><canvas id="chartGrSrS" class="col-12 col-xl-4 btmspace-30"></canvas>
-      <canvas id="chartGrZaP" class="col-12 col-xl-4 btmspace-30"></canvas><canvas id="chartGrZaS" class="col-12 col-xl-4  btmspace-30"></canvas>
-      <canvas id="chartGrPp" class="col-12 col-xl-4  btmspace-30"></canvas><canvas id="chartGrNz" class="col-12 col-xl-4  btmspace-30"></canvas></div>
-  </ng-template>
-  <ng-template ngbSlide>
-    <h1 class="text-center">Zmiana ilości osób na zajęciach w ciągu dni</h1>
-    <div class="row">
-      <canvas id="chartDayMon" class="col-12 col-xl-4  btmspace-30"></canvas><canvas id="chartDayTue" class="col-12 col-xl-4  btmspace-30"></canvas>
-      <canvas id="chartDayWed" class="col-12 col-xl-4  btmspace-30"></canvas><canvas id="chartDayThu" class="col-12 col-xl-4  btmspace-30"></canvas>
-      <canvas id="chartDayFri" class="col-12 col-xl-4  btmspace-30"></canvas><canvas id="chartDaySat" class="col-12 col-xl-4  btmspace-30"></canvas>
-      <canvas id="chartDaySun" class="col-12 col-xl-4  btmspace-30"></canvas></div>
-  </ng-template>
-  <ng-template ngbSlide>
-    <h1 class="text-center">Zmiana ilości osób na zajęciach w ciągu tygodni</h1>
-    <div class="row"><canvas id="chartWeekToWeek" class="col-12 btmspace-30"></canvas></div>
+<ngb-carousel (slide)="resizeCanvas()">
+    <ng-template ngbSlide>
+      <h1 class="text-center">Ogólny wykaz ilości osób na zajęciach</h1>
+      <div class="row">
+          <div [ngClass]="spinnerClass"><mat-progress-spinner class="spinner" [color]="color" [mode]="mode" [value]="val"></mat-progress-spinner></div>
+        <canvas id="chartWeek" class="col-12 col-xl-6 btmspace-30"></canvas><canvas id="chartMonth" class="col-12 col-xl-6 btmspace-30"></canvas>
+        <canvas id="chartSemester" class="col-12 col-xl-6 btmspace-30"></canvas><canvas id="chartAll" class="col-12 col-xl-6 btmspace-30"></canvas>
+      </div>
+    </ng-template>
+    <ng-template ngbSlide>
+      <h1 class="text-center">Zmiana ilości osób na zajęciach w grupach</h1>
+      <mat-form-field>
+        <mat-select placeholder="Wybierz semestr" [(value)]="selected">
+          <mat-option *ngFor="let semester of semesters" [value]="semester.value" (click)="prepareField(semester.value)">
+            {{semester.viewValue}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div class="row" (change)="resizeCanvas()">
+          <div [ngClass]="spinnerClass"><mat-progress-spinner class="spinner" [color]="color" [mode]="mode" [value]="val"></mat-progress-spinner></div>
+        <canvas *ngFor="let group of groups" [id]="group.id" [class]="gridClass"></canvas>
+      </div>
+    </ng-template>
+    <ng-template ngbSlide>
+      <h1 class="text-center">Zmiana ilości osób na zajęciach w ciągu dni</h1>
+      <mat-form-field>
+        <mat-select placeholder="Wybierz semestr" [(value)]="selected">
+          <mat-option *ngFor="let semester of semesters" [value]="semester.value" (click)="prepareField(semester.value)">
+            {{semester.viewValue}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div class="row">
+          <div [ngClass]="spinnerClass"><mat-progress-spinner class="spinner" [color]="color" [mode]="mode" [value]="val"></mat-progress-spinner></div>
+        <canvas id="chartDayMon" class="col-12 col-xl-4  btmspace-30"></canvas><canvas id="chartDayTue" class="col-12 col-xl-4  btmspace-30"></canvas>
+        <canvas id="chartDayWed" class="col-12 col-xl-4  btmspace-30"></canvas><canvas id="chartDayThu" class="col-12 col-xl-4  btmspace-30"></canvas>
+        <canvas id="chartDayFri" class="col-12 col-xl-4  btmspace-30"></canvas><canvas id="chartDaySat" class="col-12 col-xl-4  btmspace-30"></canvas>
+        <canvas id="chartDaySun" class="col-12 col-xl-4  btmspace-30"></canvas>
+      </div>
+    </ng-template>
+    <ng-template ngbSlide>
+      <h1 class="text-center">Zmiana ilości osób na zajęciach w ciągu tygodni</h1>
+      <div class="row">
+          <div [ngClass]="spinnerClass"><mat-progress-spinner class="spinner" [color]="color" [mode]="mode" [value]="val"></mat-progress-spinner></div>
+        <canvas id="chartWeekToWeek" class="col-12 btmspace-30"></canvas>
+      </div>
   </ng-template>
 </ngb-carousel>

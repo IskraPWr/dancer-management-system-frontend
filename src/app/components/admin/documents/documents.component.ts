@@ -1,18 +1,12 @@
+import { AfterViewInit, Component, Inject, OnDestroy } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material';
 import { Title } from '@angular/platform-browser';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Component, AfterViewInit, Inject } from '@angular/core';
 import * as Chart from 'chart.js';
-import { Valid } from '../../validators/validators';
-import {MAT_DIALOG_DATA} from '@angular/material';
 
+import { RandomColor } from '../../items/colorGenerator/colorGenerator';
 import { ServerService } from './../../../server/server.service';
 import { PathService } from './../../service';
-import {RandomColor} from '../../items/colorGenerator/colorGenerator';
 
-import { MatDialog, MatDialogRef } from '@angular/material';
-
-
-import * as $ from 'jquery';
 
 @Component({
   templateUrl: './documents.component.html'
@@ -42,68 +36,90 @@ export class DocumentsComponent {
   template:
     '<mat-dialog-content><canvas id="myChart"></canvas></mat-dialog-content>'
 })
-export class DocumentsModalComponent implements AfterViewInit {
+export class DocumentsModalComponent implements AfterViewInit, OnDestroy {
   constructor(public dialogRef: MatDialogRef<DocumentsModalComponent>, @Inject(MAT_DIALOG_DATA) public data: any,
    private server: ServerService) {
-
     if (this.data.id !== null) {
-      this.server.getStatPresenceAllById(this.data.id).subscribe((dat) => {
+     this.presence = this.server.getStatPresencGroupByIdAndIdSemester(this.data.id, this.data.id_semester).subscribe((dat) => {
         const value = Object.values({...dat});
         this.setModalPresence(value);
       }, error => console.log(error));
     } else {
-      this.server.getStatCharges().subscribe((dat) => {
+      this.charges = this.server.getStatCharges().subscribe((dat) => {
         const value = Object.values({...dat});
         this.setModal(value);
       }, error => console.log(error));
     }
    }
-
+   presence;
+   charges;
    color = new RandomColor;
    chart;
    ctx: HTMLCanvasElement;
 
+   backgroundColorA = [
+    'rgba(255, 99, 132, 0.5)',
+    'rgba(54, 162, 235, 0.5)',
+    'rgba(255, 206, 86, 0.5)',
+    'rgba(75, 192, 192, 0.5)',
+    'rgba(153, 102, 255, 0.5)',
+    'rgba(255, 159, 64, 0.5)',
+    'rgba(31, 190, 15, 0.5)',
+    'rgb(77, 166, 255, 0.5)'
+  ];
+
+  borderColor = [
+    'rgba(255,99,132,1)',
+    'rgba(54, 162, 235, 1)',
+    'rgba(255, 206, 86, 1)',
+    'rgba(75, 192, 192, 1)',
+    'rgba(153, 102, 255, 1)',
+    'rgba(255, 159, 64, 1)',
+    'rgba(31, 190, 15, 1)',
+    'rgb(77, 166, 255, 1)'
+  ];
+
+   ngOnDestroy () {
+    this.data.id !== null ? this.presence.unsubscribe() : this.charges.unsubscribe();
+   }
+
   setModalPresence(value) {
     this.chart = new Chart(this.ctx, {
-      type: 'doughnut',
-
-      data: {
-        datasets: [{
-          data: [],
-          backgroundColor: [
-          ],
-          label: 'Ilość wizyt'
-        }],
-        labels: [
-          'Podstawowa I',
-          'Podstawowa II',
-          'Podstawowa +',
-          'Średnio-zaawansowana - pon',
-          'Średnio-zaawansowana - śr',
-          'Zaawansowana - pon',
-          'Zaawansowana - śr',
-          'Nieprzyporządkowane'
-        ]
-      },
-      options: {
-        legend: {
-          display: true,
+        type: 'pie',
+        data: {
+          labels: [],
+          datasets: [
+            {
+              label: 'Ilość wizyt',
+              data: [],
+              backgroundColor: [],
+              borderColor: [],
+              borderWidth: 1
+            },
+          ]
         },
-        responsive: true,
-        title: {
-          display: true,
-          text: 'Ilość wizyt na zajęciach w tym semestrze'
-          }
-      }
+        options: {
+          title: {
+            display: true,
+            text: 'Ilość wizyt na poszczególnych grupach w wybranym semestrze'
+          },
+          tooltips: {
+            mode: 'index',
+            intersect: false
+          },
+          responsive: true,
+        }
+      });
+
+    let i = 0;
+    value.forEach(element => {
+      this.chart.config.data.datasets[0].backgroundColor.push(this.backgroundColorA[i]);
+      this.chart.config.data.datasets[0].borderColor.push(this.borderColor[i]);
+      this.chart.config.data.datasets[0].data.push(element.data);
+      this.chart.config.data.labels.push(element.name);
+      i++;
     });
-
-    this.chart.config.data.datasets[0].data = Object.values(value[0]);
-    // tslint:disable-next-line:forin
-    for (const ele in value[0]) {
-      this.chart.config.data.datasets[0].backgroundColor.push(this.color.getRandomColor());
-    }
     this.chart.update();
-
   }
 
    setModal (value) {
@@ -118,15 +134,7 @@ export class DocumentsModalComponent implements AfterViewInit {
             label: 'Dataset 1'
           }
         ],
-        labels: [
-          '1 blok',
-          '2 bloki',
-          '3 bloki',
-          '4 bloki',
-          '5 bloków',
-          '6 bloków',
-          'BO'
-        ]
+        labels: []
       },
       options: {
         responsive: true,
@@ -137,11 +145,11 @@ export class DocumentsModalComponent implements AfterViewInit {
       }
     });
 
-    this.chart.config.data.datasets[0].data = Object.values(value[0]);
-    // tslint:disable-next-line:forin
-    for (const ele in value[0]) {
+    value.forEach(element => {
+      this.chart.config.data.datasets[0].data.push(element.value);
       this.chart.config.data.datasets[0].backgroundColor.push(this.color.getRandomColor());
-    }
+      this.chart.config.data.labels.push(element.name);
+    });
     this.chart.update();
   }
   onNoClick(): void {

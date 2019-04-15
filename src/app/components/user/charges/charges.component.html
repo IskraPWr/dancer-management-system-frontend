@@ -30,25 +30,29 @@
         </p>
       </form>
 
-      <h1 class="center">Status wpłat</h1>
+      <h1>Status wpłat</h1>
 
-      <table class="info table charges-table center">
+      <table class="info table">
         <tbody>
           <tr>
-            <th>I rata</th>
-            <th>II rata</th>
-            <th>III rata</th>
+            <th>Wpisowe <br>  <p class="small-font">(jeśli w obecnym semestrze)</p></th>
+            <th>I rata <br> {{data.semester.date_1}}</th>
+            <th>II rata <br> {{data.semester.date_2}}</th>
+            <th>III rata <br> {{data.semester.date_3}}</th>
 
           </tr>
           <tr>
             <td>
-              <b>{{status[0]}}</b>
+              <b>{{data.data.entryFee}}</b>
             </td>
             <td>
-              <b>{{status[1]}}</b>
+              <b>{{data.data.charges1}}</b>
             </td>
             <td>
-             <b>{{status[2]}}</b>
+              <b>{{data.data.charges2}}</b>
+            </td>
+            <td>
+             <b>{{data.data.charges3}}</b>
             </td>
           </tr>
         </tbody>

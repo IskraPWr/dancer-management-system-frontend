@@ -19,7 +19,7 @@ import * as $ from 'jquery';
   selector: 'app-load-list',
   templateUrl: './loadData.component.html'
 })
-export class LoadDataComponent {
+export class LoadDataComponent  {
   formModel: FormGroup;
   valid = new Valid();
   constructor(
@@ -42,6 +42,7 @@ export class LoadDataComponent {
       ]
     });
   }
+
 
   onSubmit($event) {
     // dostarcz event i konkretny form

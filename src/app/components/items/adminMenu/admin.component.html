@@ -10,6 +10,9 @@
               <a #presence [routerLink]="['/admin/obecnosc']">Baza obecności</a>
           </li>
           <li>
+            <a #members [routerLink]="['/admin/grupy']">Baza grup</a>
+        </li>
+          <li>
               <a #documents [routerLink]="['/admin/platnosci']" >Baza płatności</a>
               <ul>
                 <li>
@@ -19,6 +22,9 @@
           </li>
           <li>
               <a  #archives  [routerLink]="['/admin/archiwum']" >Baza archiwum</a>
+          </li>
+          <li>
+              <a  #access [routerLink]="['/admin/dostep']" >Baza dostępu</a>
           </li>
       </ul>
   </nav>

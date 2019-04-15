@@ -1,15 +1,11 @@
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { MatDialog, MatDialogRef, MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { Title } from '@angular/platform-browser';
-import { PathService } from './../../service';
-import { Component, ViewChild, AfterViewInit } from '@angular/core';
-import { ServerService } from './../../../server/server.service';
-
-import { MatPaginator, MatTableDataSource } from '@angular/material';
-import { MatSort } from '@angular/material';
-import { MatDialog, MatDialogRef } from '@angular/material';
+import * as Chart from 'chart.js';
 
 import { RandomColor } from '../../items/colorGenerator/colorGenerator';
-
-import * as Chart from 'chart.js';
+import { ServerService } from './../../../server/server.service';
+import { PathService } from './../../service';
 
 export interface PeriodicElement {
   week: string;
@@ -20,6 +16,11 @@ export interface PeriodicElement {
   fri: string;
   sat: string;
   sun: string;
+}
+
+export interface Semester {
+  value: string;
+  viewValue: string;
 }
 
 @Component({
@@ -51,7 +52,7 @@ export class PresenceComponent {
     this.Service.updateFlag('Konto');
     this.titleService.setTitle('Obecność');
 
-    this.server.getPresenceById(21).subscribe(
+    this.server.getPresenceById(1).subscribe(
       data => {
         this.ELEMENT_DATA = Object.values({ ...data });
         this.setPresence();
@@ -83,90 +84,90 @@ export class PresenceComponent {
   }
 }
 
+
 @Component({
   selector: 'app-modal',
-  template:
-    '<mat-dialog-content><div class="row justify-content-center"><canvas class="col-6" id="myChart">\
-  </canvas></div><div class="row"><canvas class="col-6" \
-  id="myChart1"></canvas><canvas class="col-6" id="myChart2"></canvas></div></mat-dialog-content>'
+  templateUrl: './presence-modal.component.html'
 })
-export class PresenceModalComponent implements AfterViewInit {
+export class PresenceModalComponent implements AfterViewInit, OnInit {
   constructor(
     public dialogRef: MatDialogRef<PresenceModalComponent>,
     private server: ServerService
-  ) {
-    this.server.getStatPresenceById(21).subscribe(
+  ) {}
+
+  random = new RandomColor();
+  colors = this.random.getRandomColor(10);
+  semesters: Semester[] = [];
+
+  ctx = [];
+  chart = [];
+  name = ['myChart', 'myChart1', 'myChart2'];
+  value;
+  selected;
+
+
+  ngOnInit () {
+    this.server.getStatPresenceById(1).subscribe(
       data => {
-        const value = Object.values({ ...data });
-        this.setPresence(value[0]);
+        this.value = Object.values({ ...data });
+        this.setPresenceStatic();
+        this.setPresenceDynamic('0');
       },
       error => console.log(error)
     );
   }
 
-  labels = [
-    'Podstawowa I',
-    'Podstawowa II',
-    'Podstawowa +',
-    'Średnio-zaawansowana - pon',
-    'Średnio-zaawansowana - śr',
-    'Zaawansowana - pon',
-    'Zaawansowana - śr',
-    'Nieprzyporządkowane'
-  ];
+  setPresenceStatic() {
 
-  random = new RandomColor();
-  colors = this.random.getRandomColor(7);
-  ctx: HTMLCanvasElement;
-  ctx1: HTMLCanvasElement;
-  ctx2: HTMLCanvasElement;
-
-  arrayCtx = ['ctx', 'ctx1', 'ctx2'];
-
-  setPresence(value) {
     let i = 0;
-    const array = [];
-    // tslint:disable-next-line:curly
-    // tslint:disable-next-line:forin
-    for (const term in value) {
-      array[i] = new Chart(this[this.arrayCtx[i]], {
-        type: 'doughnut',
-        data: {
-          datasets: [
-            {
-              data: [],
-              backgroundColor: [],
-              label: 'Ilość wizyt'
-            }
-          ],
-          labels: []
-        },
-        options: {
-          responsive: true,
-          title: {
-            display: true,
-            text: ''
-          }
-        }
-      });
-      array[i].config.data.datasets[0].data = Object.values(value[term]);
-      array[i].config.data.datasets[0].backgroundColor = this.colors;
-      array[i].config.data.labels = this.labels;
-      i === 0
-        ? ((array[i].config.options.legend.display = true),
-          (array[i].config.options.title.text =
-            'Ilość wizyt na zajęciach w tym miesiacu'))
-        : (array[i].config.options.legend.display = false);
-      if (i > 0) {
-        i === 1
-          ? (array[i].config.options.title.text =
-              'Ilość wizyt na zajęciach w tym miesiącu')
-          : (array[i].config.options.title.text =
-              'Suma ilości wizyt na zajęciach SKTT Iskra');
-      }
-      array[i].update();
+    for (const group of this.value[0].data) {
+      this.chart[0].config.data.datasets[0].data.push(group.data);
+      this.chart[0].config.data.labels.push(group.name);
+      this.chart[0].config.data.datasets[0].backgroundColor.push(this.colors[i]);
       i++;
     }
+
+    let j = 0;
+    for (const semester of this.value[1].data) {
+      this.semesters.push({
+        value: j.toString(),
+        viewValue: semester.name,
+      });
+      j++;
+    }
+    this.selected = this.semesters[0].value;
+
+    let k = 0;
+    for (const days of this.value[2].data) {
+      this.chart[2].config.data.datasets[0].data.push(days.data);
+      this.chart[2].config.data.labels.push(days.day);
+      this.chart[2].config.data.datasets[0].backgroundColor.push(this.colors[k]);
+      k++;
+    }
+    this.chart[0].config.options.title.text = 'Ilość wizyt w poszczególnych grupach w ostatnim miesiącu';
+    this.chart[1].config.options.title.text = 'Ilość wizyt w poszczególnych grupach w wybranym semestrze';
+    this.chart[2].config.options.title.text = 'Suma ilości wiyt na zajęciach SKTT Iskra';
+
+    this.chart[0].update();
+    this.chart[1].update();
+    this.chart[2].update();
+
+  }
+
+  setPresenceDynamic(nr) {
+    const index = parseInt(nr, 10);
+    let j = 0;
+    this.chart[1].config.data.datasets[0].data = [];
+    this.chart[1].config.data.labels = [];
+    this.chart[1].config.data.datasets[0].backgroundColor = [];
+    for (const group of this.value[1].data[index].data) {
+      this.chart[1].config.data.datasets[0].data.push(group.data);
+      this.chart[1].config.data.labels.push(group.name);
+      this.chart[1].config.data.datasets[0].backgroundColor.push(this.colors[j]);
+      j++;
+    }
+
+    this.chart[1].update();
   }
 
   onNoClick(): void {
@@ -174,11 +175,30 @@ export class PresenceModalComponent implements AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.ctx = document.getElementById('myChart') as HTMLCanvasElement;
-    this.ctx.getContext('2d');
-    this.ctx1 = document.getElementById('myChart1') as HTMLCanvasElement;
-    this.ctx1.getContext('2d');
-    this.ctx2 = document.getElementById('myChart2') as HTMLCanvasElement;
-    this.ctx2.getContext('2d');
+
+    for (let i = 0; i < 3; i++) {
+      this.ctx[i] = document.getElementById(this.name[i]) as HTMLCanvasElement;
+      this.ctx[i].getContext('2d');
+
+      this.chart[i] = new Chart(this.ctx[i], {
+        type: 'doughnut',
+        data: {
+          datasets: [{
+            data: [],
+            backgroundColor: [
+            ],
+            label: 'Ilość wizyt'
+          }],
+          labels: []
+        },
+        options: {
+          responsive: true,
+          title: {
+            display: true,
+            text: ''
+            }
+        }
+      });
+    }
   }
 }

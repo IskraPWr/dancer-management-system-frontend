@@ -1,0 +1,141 @@
+<div class="wrapper row3">
+  <main class="hoc container clear">
+      <!-- main body -->
+
+      <div class="content three_quarter first money overflow">
+
+          <h1 class="header-spec">Lista osób w grupach</h1>
+          <button class="btn btn-def fl_right btn-shadow-no " mat-raised-button (click)="openDialog()" [disabled]="!isLoadedGroup">Statystyki</button>
+
+          <mat-form-field>
+              <mat-select placeholder="Co wyświetlić?" value="Listę aktywnych osób" (selectionChange)="checkFlag()">
+                  <mat-option  value = "Listę aktywnych osób" >
+                      Listę aktywnych osób
+                    </mat-option>
+                  <mat-option  value="Osoby zapisane do danych grup">
+                  Osoby zapisane do danych grup
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <ng-template [ngIf]="group">
+          <mat-form-field>
+              <mat-select placeholder="Wybierz semestr">
+                  <mat-option *ngFor="let semester of semesters" [value]="semester.value" (click)="getGroups(semester.value)">
+                  {{semester.viewValue}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-select placeholder="Wybierz grupę">
+                  <mat-option *ngFor="let group of groups" [value]="group.value" (click)="getUsersInGroup(group.value)" >
+                  {{group.viewValue}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </ng-template>
+
+            <mat-form-field >
+                <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Szukaj">
+              </mat-form-field>
+
+              <button id="table-button" mat-icon-button [matMenuTriggerFor]="menu">
+                  <mat-icon>list</mat-icon>
+                </button>
+                <mat-menu #menu="matMenu">
+                  <button mat-menu-item (click)="sendToArchive()">
+                    <mat-icon>archive</mat-icon>
+                    <span>Przenieś zaznaczone do archiwum</span>
+                  </button>
+                  <button mat-menu-item (click)="addNotes()">
+                    <mat-icon>notes</mat-icon>
+                    <span>Dodaj notatkę do zaznaczonych</span>
+                  </button>
+                  <button mat-menu-item [disabled]="isLoadedGroup" (click)="addToGroup()">
+                      <mat-icon>add</mat-icon>
+                      <span>Dodaj zaznaczone do grupy</span>
+                    </button>
+                  <button mat-menu-item [disabled]="!isLoadedGroup" (click)="removeFromGroup()">
+                    <mat-icon>delete</mat-icon>
+                    <span>Usuń zaznaczone z grupy</span>
+                  </button>
+                </mat-menu>
+
+            <div class="mat-elevation-z8">
+              <table mat-table [dataSource]="dataSource" matSort>
+
+                <ng-container matColumnDef="select">
+                     <th mat-header-cell *matHeaderCellDef>
+                       <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()"
+                         [indeterminate]="selection.hasValue() && !isAllSelected()">
+                      </mat-checkbox>
+                    </th>
+                    <td mat-cell *matCellDef="let row">
+                      <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"
+                         [checked]="selection.isSelected(row)">
+                      </mat-checkbox>
+                     </td>
+                   </ng-container>
+
+                <ng-container matColumnDef="name">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header> Imię </th>
+                  <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="surname">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header> Nazwisko </th>
+                  <td mat-cell *matCellDef="let element"> {{element.surname}} </td>
+                </ng-container>
+
+                <ng-container [matColumnDef]="column" *ngFor="let column of activeColumns; let i = index">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header> {{activeColumnsName[i]}} </th>
+                  <td mat-cell *matCellDef="let element"> {{element[column]}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="groupAttribution">
+                    <th mat-header-cell *matHeaderCellDef> Przypisania </th>
+                    <td mat-cell *matCellDef="let element">
+                            <button *ngIf="element.length" mat-raised-button mat-icon-button color="primary"
+                                [matBadge]="element.length" matBadgePosition="after" matBadgeColor="accent"
+                                [ngbPopover]="element.assignments" triggers="click" placement="right" popoverTitle="Przypisany do grup:">
+                                <mat-icon aria-label="Presence canvas" mat-raised-button >info</mat-icon>
+                            </button>
+                    </td>
+                  </ng-container>
+
+                <ng-container matColumnDef="note">
+                    <th mat-header-cell *matHeaderCellDef > Notatki </th>
+                    <td mat-cell *matCellDef="let element">
+                        <mat-form-field class="example-chip-list">
+                            <mat-chip-list #chipList>
+                              <mat-chip *ngFor="let note of element.notes" [selectable]="selectable"
+                                       [removable]="removable" (removed)="remove(note, element)">
+                                {{note.name}}
+                                <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                              </mat-chip>
+                              <input placeholder="Nowa notatka..."
+                                     [matChipInputFor]="chipList"
+                                     [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                     [matChipInputAddOnBlur]="addOnBlur"
+                                     (matChipInputTokenEnd)="add($event, element)">
+                            </mat-chip-list>
+                          </mat-form-field>
+                    </td>
+                  </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="allColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: allColumns;"></tr>
+              </table>
+
+              <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+            </div>
+
+      </div>
+
+       <app-menu></app-menu>
+
+      <!-- / main body -->
+      <div class="clear"></div>
+  </main>
+</div>

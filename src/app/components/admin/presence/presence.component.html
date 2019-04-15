@@ -8,12 +8,13 @@
           <button class="btn btn-def fl_right btn-shadow-no " mat-raised-button (click)="openDialog()">Statystyki</button>
 
           <mat-form-field>
-              <mat-select placeholder="Wybierz tydzień">
+              <mat-select placeholder="Wybierz tydzień" [(value)]="firstWeek">
                   <mat-option *ngFor="let week of weeks" [value]="week.value" (click)="initiateTable(week.value.split('-')[1])" >
                   {{week.viewValue}}
                 </mat-option>
               </mat-select>
             </mat-form-field>
+
 
             <mat-form-field >
                 <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Szukaj">
@@ -23,11 +24,11 @@
                   <mat-icon>list</mat-icon>
                 </button>
                 <mat-menu #menu="matMenu">
-                  <button mat-menu-item>
+                  <button mat-menu-item (click)="sendToArchive()">
                     <mat-icon>archive</mat-icon>
                     <span>Przenieś zaznaczone do archiwum</span>
                   </button>
-                  <button mat-menu-item>
+                  <button mat-menu-item (click)="addNotes()">
                     <mat-icon>notes</mat-icon>
                     <span>Dodaj notatkę do zaznaczonych</span>
                   </button>
@@ -61,37 +62,93 @@
 
                 <ng-container matColumnDef="mon">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Poniedziałek </th>
-                    <td mat-cell *matCellDef="let element"> {{element.mon}} </td>
+                    <td mat-cell *matCellDef="let element">
+                      <ng-template [ngIf]="element.mon.length">
+                        <button mat-raised-button mat-icon-button color="primary"
+                        [matBadge]="element.mon.length" matBadgePosition="after" matBadgeColor="accent"
+                        [ngbPopover]="element.mon" triggers="click" placement="right" popoverTitle="Obecny na zajęciach:">
+                        <mat-icon aria-label="Presence canvas" mat-raised-button >group</mat-icon>
+                      </button>
+                      </ng-template>
+                    </td>
                   </ng-container>
 
                 <ng-container matColumnDef="tue">
                   <th mat-header-cell *matHeaderCellDef mat-sort-header> Wtorek </th>
-                  <td mat-cell *matCellDef="let element"> {{element.tue}} </td>
+                  <td mat-cell *matCellDef="let element">
+                      <ng-template [ngIf]="element.tue.length">
+                          <button mat-raised-button mat-icon-button color="primary"
+                          [matBadge]="element.tue.length" matBadgePosition="after" matBadgeColor="accent"
+                          [ngbPopover]="element.tue" triggers="click" placement="right" popoverTitle="Obecny na zajęciach:">
+                          <mat-icon aria-label="Presence canvas" mat-raised-button >group</mat-icon>
+                        </button>
+                        </ng-template>
+                  </td>
                 </ng-container>
 
                 <ng-container matColumnDef="wed">
                   <th mat-header-cell *matHeaderCellDef mat-sort-header> Środa </th>
-                  <td mat-cell *matCellDef="let element"> {{element.wed}} </td>
+                  <td mat-cell *matCellDef="let element">
+                      <ng-template [ngIf]="element.wed.length">
+                          <button mat-raised-button mat-icon-button color="primary"
+                          [matBadge]="element.wed.length" matBadgePosition="after" matBadgeColor="accent"
+                          [ngbPopover]="element.wed" triggers="click" placement="right" popoverTitle="Obecny na zajęciach:">
+                          <mat-icon aria-label="Presence canvas" mat-raised-button >group</mat-icon>
+                        </button>
+                        </ng-template>
+                  </td>
                 </ng-container>
 
                 <ng-container matColumnDef="thu">
                   <th mat-header-cell *matHeaderCellDef mat-sort-header> Czwartek </th>
-                  <td mat-cell *matCellDef="let element"> {{element.thu}} </td>
+                  <td mat-cell *matCellDef="let element">
+                      <ng-template [ngIf]="element.thu.length">
+                          <button mat-raised-button mat-icon-button color="primary"
+                          [matBadge]="element.thu.length" matBadgePosition="after" matBadgeColor="accent"
+                          [ngbPopover]="element.thu" triggers="click" placement="right" popoverTitle="Obecny na zajęciach:">
+                          <mat-icon aria-label="Presence canvas" mat-raised-button >group</mat-icon>
+                        </button>
+                        </ng-template>
+                  </td>
                 </ng-container>
 
                 <ng-container matColumnDef="fri">
                   <th mat-header-cell *matHeaderCellDef mat-sort-header> Piątek </th>
-                  <td mat-cell *matCellDef="let element"> {{element.fri}} </td>
+                  <td mat-cell *matCellDef="let element">
+                      <ng-template [ngIf]="element.fri.length">
+                          <button mat-raised-button mat-icon-button color="primary"
+                          [matBadge]="element.fri.length" matBadgePosition="after" matBadgeColor="accent"
+                          [ngbPopover]="element.fri" triggers="click" placement="right" popoverTitle="Obecny na zajęciach:">
+                          <mat-icon aria-label="Presence canvas" mat-raised-button >group</mat-icon>
+                        </button>
+                        </ng-template>
+                   </td>
                 </ng-container>
 
                 <ng-container matColumnDef="sat">
                   <th mat-header-cell *matHeaderCellDef mat-sort-header> Sobota </th>
-                  <td mat-cell *matCellDef="let element"> {{element.sat}} </td>
+                  <td mat-cell *matCellDef="let element">
+                      <ng-template [ngIf]="element.sat.length">
+                          <button mat-raised-button mat-icon-button color="primary"
+                          [matBadge]="element.sat.length" matBadgePosition="after" matBadgeColor="accent"
+                          [ngbPopover]="element.sat" triggers="click" placement="right" popoverTitle="Obecny na zajęciach:">
+                          <mat-icon aria-label="Presence canvas" mat-raised-button >group</mat-icon>
+                        </button>
+                        </ng-template>
+                    </td>
                 </ng-container>
 
                 <ng-container matColumnDef="sun">
                   <th mat-header-cell *matHeaderCellDef mat-sort-header> Niedziela </th>
-                  <td mat-cell *matCellDef="let element"> {{element.sun}} </td>
+                  <td mat-cell *matCellDef="let element">
+                      <ng-template [ngIf]="element.sun.length">
+                          <button mat-raised-button mat-icon-button color="primary"
+                          [matBadge]="element.sun.length" matBadgePosition="after" matBadgeColor="accent"
+                          [ngbPopover]="element.sun" triggers="click" placement="right" popoverTitle="Obecny na zajęciach:">
+                          <mat-icon aria-label="Presence canvas" mat-raised-button >group</mat-icon>
+                        </button>
+                        </ng-template>
+                  </td>
                 </ng-container>
 
                 <ng-container matColumnDef="note">
