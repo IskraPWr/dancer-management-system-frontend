@@ -1,0 +1,5 @@
+button[disabled].fl_right:hover {
+  color: #FFFFFF;
+  background-color: #EA5616;
+  border-color: #EA5616;
+}

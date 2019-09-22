@@ -1,0 +1,317 @@
+<div class="wrapper row3">
+  <main class="hoc container clear">
+    <!-- main body -->
+
+    <div class="content three_quarter first">
+
+      <h1>Edytuj dane</h1>
+
+      <form class="btmspace-80 checking" (ngSubmit)="onSubmit('user')" [formGroup]="userFormModel" novalidate>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group row">
+              <label class="col-sm-5 col-form-label" for="name">Imię
+                <span>*</span>
+              </label>
+              <div class="col-sm-7">
+                <mat-form-field class="example-full-width">
+                  <input matInput placeholder="Podaj imię" id="name" formControlName="name" required>
+                  <mat-error *ngIf="userFormModel.
+                    hasError('required', ['name'])">
+                    <p>Podanie imienia jest <strong>konieczne!</strong></p>
+                  </mat-error>
+                  <mat-error *ngIf="userFormModel.hasError('pattern', ['name'])">
+                    <p>Podany tekst zawiera <strong>nieodpowiednie</strong> znaki!</p>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-5 col-form-label" for="surname">Nazwisko
+                <span>*</span>
+              </label>
+              <div class="col-sm-7">
+                <mat-form-field class="example-full-width">
+                  <input matInput placeholder="Podaj nazwisko" id="surname" formControlName="surname"  required>
+                  <mat-error *ngIf="userFormModel.hasError('required', ['surname'])">
+                    <p>Podanie nazwiska jest <strong>konieczne!</strong></p>
+                  </mat-error>
+                  <mat-error *ngIf="userFormModel.hasError('pattern', ['surname'])">
+                    <p>Podany tekst zawiera <strong>nieodpowiednie</strong> znaki!</p>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-5 col-form-label" for="email">E-mail
+                <span>*</span>
+              </label>
+              <div class="col-sm-7">
+                <mat-form-field class="example-full-width">
+                  <input matInput placeholder="Podaj email" id="email" formControlName="email" required>
+                  <mat-error *ngIf="userFormModel.hasError('required', ['email'])">
+                    <p>Podanie maila jest <strong>konieczne!</strong></p>
+                  </mat-error>
+                  <mat-error *ngIf="userFormModel.hasError('email',['email'])">
+                    <p>Podanie prawidłowego maila jest <strong>konieczne!</strong></p>
+                  </mat-error>
+                  <mat-error *ngIf="userFormModel.hasError('emailExist', ['email'])">
+                    <p>Podany mail jest już <strong>zajęty!</strong></p>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-5 col-form-label" for="phone">Telefon
+                <span>*</span>
+              </label>
+              <div class="col-sm-7">
+                <mat-form-field class="example-full-width">
+                  <input matInput placeholder="Podaj telefon" id="phone" formControlName="phone"  required >
+                  <mat-error *ngIf="userFormModel.hasError('required', ['phone'])">
+                    <p>Podanie telefonu jest <strong>konieczne!</strong></p>
+                  </mat-error>
+                  <mat-error *ngIf="userFormModel.hasError('pattern', ['phone'])">
+                    <p>Podany tekst nie jest prawidłowym numerem telefonu!</p>
+                  </mat-error>
+                  <mat-error *ngIf="userFormModel.hasError('phoneExist', ['phone'])">
+                    <p>Podany numer telefonu jest już <strong>zajęty!</strong></p>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group row">
+              <label class="col-sm-5 col-form-label" for="university">Nazwa uczelni</label>
+              <div class="col-sm-7">
+                <mat-form-field>
+                  <mat-select placeholder="Nazwa uczelni" id="university" formControlName="university">
+                    <mat-option *ngFor="let university of universities; index as i" [value]="i">
+                      {{university}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <div class="invalid-feedback">
+                </div>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-5 col-form-label" for="department">Wydział</label>
+              <div class="col-sm-7">
+                <mat-form-field class="example-full-width">
+                  <input matInput placeholder="Podaj wydział" id="department" formControlName="department">
+                  <mat-error *ngIf="userFormModel.hasError('pattern', ['department'])">
+                    <p>Podany tekst nie jest prawidłową nazwą wydziału!</p>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-5 col-form-label" for="year">Rok studiów</label>
+              <div class="col-sm-7">
+                <mat-form-field class="example-full-width">
+                  <input matInput placeholder="Podaj rok studiów" id="year" formControlName="year" >
+                  <mat-error *ngIf="userFormModel.hasError('pattern', ['year'])">
+                    <p>Podany tekst musi być liczbą!</p>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-5 col-form-label" for="index">Numer indeksu</label>
+              <div class="col-sm-7">
+                <mat-form-field class="example-full-width">
+                  <input matInput placeholder="Podaj numer indeksu" id="index" formControlName="index">
+                  <mat-error *ngIf="userFormModel.hasError('pattern', ['index'])">
+                    <p>Podany tekst musi być liczbą!</p>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+            <input type="submit" class="btn btn-def fl_right" value="Prześlij">
+          </div>
+        </div>
+      </form>
+      <form class="btmspace-80" (ngSubmit)="onSubmit('keys')" [formGroup]="keysFormModel" novalidate>
+        <h1>Zmień klucze</h1>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group row">
+              <label class="col-sm-5 col-form-label" for="key1">Klucz 1</label>
+              <div class="col-sm-7">
+                <mat-form-field class="example-full-width">
+                  <input matInput placeholder="Podaj klucz nr. 1" id="key1"  formControlName="key1">
+                  <mat-error *ngIf="keysFormModel.hasError('keyExist', ['key1'])">
+                    <p>Podany numer klucza jest już <strong>zajęty!</strong></p>
+                  </mat-error>
+                  <mat-error *ngIf="keysFormModel.hasError('minlength', ['key1'])">
+                    <p>Podany numer klucza musi zawierać minimum <strong>3</strong> znaki!</p>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group row">
+              <label class="col-sm-5 col-form-label" for="key2">Klucz 2</label>
+              <div class="col-sm-7">
+                <mat-form-field class="example-full-width">
+                  <input matInput placeholder="Podaj klucz nr. 2" id="key2" formControlName="key2" >
+                  <mat-error *ngIf="keysFormModel.hasError('keyExist', ['key2'])">
+                    <p>Podany numer klucza jest już <strong>zajęty!</strong></p>
+                  </mat-error>
+                  <mat-error *ngIf="keysFormModel.hasError('minlength', ['key2'])">
+                    <p>Podany numer klucza musi zawierać minimum <strong>3</strong> znaki!</p>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+            <input type="submit" class="btn btn-def fl_right" value="Prześlij">
+          </div>
+        </div>
+      </form>
+      <div class="row">
+        <form class="btmspace-80 col-md-6" (ngSubmit)="onSubmit('login')" [formGroup]="loginFormModel" novalidate>
+          <h1>Zmień login</h1>
+          <div class="form-group row">
+            <label class="col-sm-5 col-form-label" for="ologin">Stary login
+              <span>*</span>
+            </label>
+            <div class="col-sm-7">
+              <mat-form-field>
+                <input matInput placeholder="Podaj stary login" id="ologin"  formControlName="ologin" required>
+                <mat-error *ngIf="loginFormModel.hasError('required', ['ologin'])">
+                  <p>Podanie loginu jest <strong>konieczne!</strong></p>
+                </mat-error>
+                <mat-error *ngIf="loginFormModel.hasError('minlength', ['ologin'])">
+                  <p> Podany login musi zawierać minimum <strong>3</strong> znaki!</p>
+                </mat-error>
+                <mat-error *ngIf="loginFormModel.hasError('maxlength', ['ologin'])">
+                  <p>Podany login musi zawierać maksimum <strong>20</strong> znaków!</p>
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <div id="loginsGroup" formGroupName="loginsGroup">
+            <div class="form-group row">
+              <label class="col-sm-5 col-form-label" for="login1">Nowy login
+                <span>*</span>
+              </label>
+              <div class="col-sm-7">
+                <mat-form-field>
+                  <input matInput placeholder="Podaj login" id="login1" formControlName="login1" required>
+                  <mat-error *ngIf="loginFormModel.hasError('required' , ['loginsGroup', 'login1'])">
+                    <p>Podanie loginu jest <strong>konieczne!</strong></p>
+                  </mat-error>
+                  <mat-error *ngIf="loginFormModel.hasError('minlength', ['loginsGroup', 'login1'])">
+                    <p> Podany login musi zawierać minimum <strong>3</strong> znaki!</p>
+                  </mat-error>
+                  <mat-error *ngIf="loginFormModel.hasError('maxlength', ['loginsGroup', 'login1'])">
+                    <p>Podany login musi zawierać maksimum <strong>20</strong> znaków!</p>
+                  </mat-error>
+                  <mat-error *ngIf="loginFormModel.hasError('loginExist', ['loginsGroup', 'login1'])">
+                    <p>Podany login jest już <strong>zajęty!</strong></p>
+                  </mat-error>
+                  <mat-hint
+                    *ngIf="loginFormModel.hasError('equal', ['loginsGroup']) && loginFormModel.controls['loginsGroup'].controls['login2'].dirty">
+                    <p>Podane loginy muszą być <strong>identyczne!</strong></p>
+                  </mat-hint>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-5 col-form-label" for="login2">Powtórz login
+                <span>*</span>
+              </label>
+              <div class="col-sm-7">
+                <mat-form-field>
+                  <input matInput placeholder="Powtórz login" id="login2" formControlName="login2" required>
+                  <mat-error *ngIf="loginFormModel.hasError('required', ['login2'])">
+                    <p>Podanie loginu jest <strong>konieczne!</strong></p>
+                  </mat-error>
+                  <mat-hint
+                    *ngIf="loginFormModel.hasError('equal', ['loginsGroup']) && loginFormModel.controls['loginsGroup'].controls['login2'].dirty">
+                    <p>Podane loginy muszą być <strong>identyczne!</strong></p>
+                  </mat-hint>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+          <input type="submit" class="btn  btn-def fl_right" value="Prześlij">
+        </form>
+
+        <form class="btmspace-80 col-md-6" (ngSubmit)="onSubmit('password')" [formGroup]="passFormModel" novalidate>
+          <h1>Zmień hasło</h1>
+          <div class="form-group row">
+            <label class="col-sm-5 col-form-label" for="opass">Stare hasło
+              <span>*</span>
+            </label>
+            <div class="col-sm-7">
+              <mat-form-field>
+                <input matInput type="password" placeholder="Podaj stare hasło" id="opass" formControlName="opass" required>
+                <mat-error *ngIf="passFormModel.hasError('required', ['opass'])">
+                  <p>Podanie hasła jest <strong>konieczne!</strong></p>
+                </mat-error>
+                <mat-error *ngIf="passFormModel.hasError('minlength', ['opass'])">
+                  <p>Podane hasło musi zawierać minimum <strong>8</strong> znaków!</p>
+                </mat-error>
+                <mat-error *ngIf="passFormModel.hasError('maxlength', ['opass'])">
+                  <p>Podane hasło musi zawierać maksimum <strong>20</strong> znaków!</p>
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <div id="passwordsGroup" formGroupName="passwordsGroup">
+            <div class="form-group row">
+              <label class="col-sm-5 col-form-label" for="pass1">Nowe hasło
+                <span>*</span>
+              </label>
+              <div class="col-sm-7">
+                <mat-form-field>
+                  <input matInput type="password" placeholder="Podaj nowe hasło" id="pass1" formControlName="pass1" required>
+                  <mat-error *ngIf="passFormModel.hasError('required', ['passwordsGroup','pass1'])">
+                    <p>Podanie hasła jest <strong>konieczne!</strong></p>
+                  </mat-error>
+                  <mat-error *ngIf="passFormModel.hasError('minlength', ['passwordsGroup','pass1'])">
+                    <p>Podane hasło musi zawierać minimum <strong>8</strong> znaków!</p>
+                  </mat-error>
+                  <mat-error *ngIf="passFormModel.hasError('maxlength', ['passwordsGroup','pass1'])">
+                    <p>Podane hasło musi zawierać maksimum <strong>20</strong> znaków!</p>
+                  </mat-error>
+                  <mat-hint
+                    *ngIf="passFormModel.hasError('equal', ['passwordsGroup']) && passFormModel.controls['passwordsGroup'].controls['pass2'].dirty">
+                    <p>Podane hasła muszą być <strong>identyczne!</strong></p>
+                  </mat-hint>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-5 col-form-label" for="pass2">Powtórz hasło
+                <span>*</span>
+              </label>
+              <div class="col-sm-7">
+                <mat-form-field>
+                  <input matInput type="password" placeholder="Powtórz nowe hasło" id="pass2" formControlName="pass2" required>
+                  <mat-error *ngIf="passFormModel.hasError('required', ['passwordsGroup','pass2'])">
+                    <p>Podanie hasła jest <strong>konieczne!</strong></p>
+                  </mat-error>
+                  <mat-hint
+                    *ngIf="passFormModel.hasError('equal', ['passwordsGroup']) && passFormModel.controls['passwordsGroup'].controls['pass2'].dirty">
+                    <p>Podane hasła muszą być <strong>identyczne!</strong></p>
+                  </mat-hint>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+          <input type="submit" class="btn btn-def fl_right" value="Prześlij">
+        </form>
+      </div>
+    </div>
+
+    <app-menu></app-menu>
+
+    <!-- / main body -->
+    <div class="clear"></div>
+  </main>
+</div>

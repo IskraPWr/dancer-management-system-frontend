@@ -24,11 +24,12 @@
             ],
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "node_modules/hamburgers/dist/hamburgers.css",
               "src/assets/layout/styles/layout.css",
               "src/styles.css"
             ],
             "scripts": [
-              "node_modules/jquery/dist/jquery.min.js",
+              "node_modules/jquery/jquery.min.js",
               "node_modules/bootstrap/dist/js/bootstrap.js",
               "node_modules/chart.js/dist/Chart.js",
               "node_modules/popper.js/dist/popper.js"

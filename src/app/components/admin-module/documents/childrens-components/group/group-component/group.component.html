@@ -1,0 +1,135 @@
+<h2>Grupy</h2>
+
+<mat-form-field>
+    <mat-select placeholder="Wybierz semestr" value="0" (selectionChange)="setSemester($event)">
+        <mat-option *ngFor="let semester of semesters" [value]="semester.value" >
+        {{semester.viewValue}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field>
+    <input matInput #search (keyup)="applyFilter($event.target.value)" placeholder="Szukaj">
+  </mat-form-field>
+
+  <button id="table-button" mat-icon-button [matMenuTriggerFor]="menu">
+    <mat-icon>list</mat-icon>
+  </button>
+  <mat-menu #menu="matMenu">
+      <button mat-menu-item (click)="addGroup()">
+          <mat-icon>add</mat-icon>
+          <span>Dodaj nową grupę</span>
+        </button>
+    <button mat-menu-item (click)="removeGroups()">
+      <mat-icon>delete_forever</mat-icon>
+      <span>Usuń zaznaczone grupy</span>
+  </button>
+</mat-menu>
+
+<div class="mat-elevation-z8 btmspace-50">
+  <table class="semester" mat-table [dataSource]="groups" matSort>
+
+    <ng-container matColumnDef="select">
+      <th mat-header-cell *matHeaderCellDef>
+        <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()"
+          [indeterminate]="selection.hasValue() && !isAllSelected()">
+        </mat-checkbox>
+      </th>
+      <td mat-cell *matCellDef="let row">
+        <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)">
+        </mat-checkbox>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Nazwa</th>
+      <td mat-cell *matCellDef="let group">
+        <div *ngIf="!group.isActiveInput[0],  else edit0" (click)="group.isActiveInput[0] = !group.isActiveInput[0]">
+          <button mat-raised-button #tooltip="matTooltip" matTooltip="Kliknij aby edytować" matTooltipPosition="right"
+             aria-label="Button to change name" class="nobutton">
+            {{group.name}}
+          </button>
+        </div>
+        <ng-template #edit0>
+          <mat-form-field class="example-full-width">
+            <input #tooltip="matTooltip" matTooltip="Kliknij enter by zapisać" matTooltipPosition="below"
+              matInput placeholder="Nazwa semestru" [(ngModel)]="group.name" #name="ngModel" (keypress)="save(name, 'name', group,  0, $event.keyCode)" (blur)="save(name, 'name', group,  0)" required>
+              <mat-error  *ngIf="name.hasError('required')">
+                Podanie nazwy jest <strong>konieczne!</strong>
+              </mat-error>
+            </mat-form-field>
+        </ng-template>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="day">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Dzień </th>
+        <td mat-cell *matCellDef="let group">
+          <div *ngIf="!group.isActiveInput[1],  else edit1" (click)="group.isActiveInput[1] = !group.isActiveInput[1]">
+            <button mat-raised-button #tooltip="matTooltip" matTooltip="Kliknij aby edytować" matTooltipPosition="right"
+               aria-label="Button to change day" class="nobutton">
+              {{getDay(group.day)}}
+            </button>
+          </div>
+          <ng-template #edit1>
+            <mat-form-field>
+              <mat-select placeholder="Dzień tygodnia" #tooltip="matTooltip" matTooltip="Kliknij znak '~' by zapisać" matTooltipPosition="below" [(ngModel)]="group.day" #day="ngModel" (keypress)="save(day, 'day', group, 1, $event.keyCode)" required>
+                  <mat-option *ngFor="let day of days; index as i" [value]="day.value">
+                  {{day.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+          </ng-template>
+        </td>
+      </ng-container>
+
+    <ng-container matColumnDef="start">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Rozpoczęcie grupy  </th>
+      <td mat-cell *matCellDef="let group">
+          <div *ngIf="!group.isActiveInput[2],  else edit1" (click)="group.isActiveInput[2] = !group.isActiveInput[2]">
+          <button mat-raised-button #tooltip="matTooltip" matTooltip="Kliknij aby edytować" matTooltipPosition="right"
+             aria-label="Button to change time" class="nobutton">
+            {{group.start}}
+          </button>
+        </div>
+        <ng-template #edit1>
+          <mat-form-field class="example-full-width">
+            <input matInput type="time" matTooltip="Kliknij enter by zapisać" matTooltipPosition="below" placeholder="Wybierz godzinę" [(ngModel)]="group.start" #start="ngModel" (keypress)="save(start, 'start', group, 2, $event.keyCode)" (blur)="save(start, 'start', group, 2)" required>
+            <mat-error  *ngIf="start.hasError('required')">
+              Podanie godziny jest <strong>konieczne!</strong>
+            </mat-error>
+          </mat-form-field>
+        </ng-template>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="end">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Zakończenie grupy </th>
+      <td mat-cell *matCellDef="let group">
+          <div *ngIf="!group.isActiveInput[3],  else edit3" (click)="group.isActiveInput[3] = !group.isActiveInput[3]">
+          <button mat-raised-button #tooltip="matTooltip" matTooltip="Kliknij aby edytować" matTooltipPosition="right"
+             aria-label="Button to change time" class="nobutton" [ngClass]="{'red': checkTime(group.start,  group.end)}">
+            {{group.end}}
+          </button>
+        </div>
+        <ng-template #edit3>
+            <mat-form-field class="example-full-width">
+                <input matInput type="time" appMinTime  [startTime]='group.start'   matTooltip="Kliknij enter by zapisać" matTooltipPosition="below" placeholder="Wybierz godzinę" [(ngModel)]="group.end" #end="ngModel" (keypress)="save(end, 'end', group, 3, $event.keyCode)" (blur)="save(end, 'end', group, 3)" required>
+                <mat-error  *ngIf="end.hasError('required')">
+                  Podanie godziny jest <strong>konieczne!</strong>
+                </mat-error>
+                <mat-error *ngIf="end.hasError('minTime')">
+                  Minimalna godzina to <strong>{{end.errors['minTimeValue']}}</strong>
+                </mat-error>
+              </mat-form-field>
+        </ng-template>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+</div>

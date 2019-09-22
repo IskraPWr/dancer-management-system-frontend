@@ -1,0 +1,14 @@
+<mat-dialog-content>
+  <h1 class="text-center"><b>Gratulację!</b></h1>
+  <div [ngSwitch]="data ? data.isRemindPassView : null">
+      <p class="text-center" *ngSwitchCase="true"><b>Twoje nowe hasło dostepu zostało wysłane na Twoja skrzynkę pocztową, użyj tego hasła by się zalogować.</b></p>
+      <p class="text-center" *ngSwitchDefault><b>Udało Ci się poprawnie założyć konto, po zamknieciu tego okna zostaniesz przeniesiony do
+          strony logowania. <br> Bardzo się cieszymy że do nas dołączyłeś(aś)! 😍</b></p>
+  </div>
+  <p class="float-right">Zespół SKTT Iskra PWr</p>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <div class="text-center topspace-15 one">
+    <button class="btn btn-success ml-2 float-right" data-choice="true" type="button" (click)="close()">Przejdź</button>
+  </div>
+</mat-dialog-actions>

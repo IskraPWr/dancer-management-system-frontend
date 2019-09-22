@@ -1,0 +1,65 @@
+<div class="wrapper row3">
+  <main class="hoc container clear">
+    <!-- main body -->
+
+    <div class="content three_quarter first money overflow">
+
+      <h1>Opłaty</h1>
+      <form class="btmspace-50">
+        <p id="payment-rate">Zadeklarowana ilość bloków w semestrze * - </p>
+        <div *ngIf="isChangeActive; then quantityBlock; else stateBlock"></div>
+        <ng-template #stateBlock>
+          <i>{{blocks ? blocks[optionSelected] : null}}</i>
+        </ng-template>
+        <ng-template #quantityBlock>
+          <mat-select placeholder="Ilość bloków" [(value)]="optionSelected">
+            <mat-option *ngFor="let block of blocks; index as i" [value]='i'>
+              {{block}}
+            </mat-option>
+          </mat-select>
+        </ng-template>
+        <a id="payment-rate-btn" class="btn btn-def" (click)="change()">{{isChangeActive ? "Zmień" : "Edytuj"}}</a>
+
+        <p id="back-payment-rate">* - Na postawie tabeli na stronie
+          <a href="http://www.sktt.pwr.edu.pl/sktt/pages/skladki-czlonkowskie">składki członkowskie.</a>
+        </p>
+      </form>
+
+      <h1>Status wpłat</h1>
+
+      <table class="info table">
+        <tbody>
+          <tr>
+            <th>Wpisowe <br>
+              <p class="small-font">(jeśli w obecnym semestrze)</p>
+            </th>
+            <th>I rata <br> {{semester?.date_1 | date:'dd/MM/yyyy' }}</th>
+            <th>II rata <br> {{semester?.date_2 | date:'dd/MM/yyyy' }}</th>
+            <th>III rata <br> {{semester?.date_3 | date:'dd/MM/yyyy' }}</th>
+
+          </tr>
+          <tr>
+            <td>
+              <b>{{charges?.entryFee}}</b>
+            </td>
+            <td>
+              <b>{{charges?.charges_1}}</b>
+            </td>
+            <td>
+              <b>{{charges?.charges_2}}</b>
+            </td>
+            <td>
+              <b>{{charges?.charges_3}}</b>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+
+    <app-menu></app-menu>
+
+    <!-- / main body -->
+    <div class="clear"></div>
+  </main>
+</div>

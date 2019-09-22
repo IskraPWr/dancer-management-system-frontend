@@ -1,0 +1,11 @@
+<mat-dialog-content>
+  <h1 class="text-center">Potwierdzenie usunięcia</h1>
+  <p>Czy napewno chcesz usunąć {{textToShow}} Ta operacja jest nieodwracalna.</p>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <div class="text-center topspace-15 one">
+        <button class="btn btn-danger mr-2" data-choice="true" type="button" (click)="close()">Anuluj</button>
+        <button class="btn btn-success ml-2" data-choice="true" type="button" (click)="confirmation()">Usuń</button>
+    </div>
+  </mat-dialog-actions>
+

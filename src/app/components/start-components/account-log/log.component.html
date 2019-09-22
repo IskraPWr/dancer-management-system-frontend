@@ -1,0 +1,15 @@
+<div *ngIf="!tokenService.token?.id; then out else in"></div>
+<ng-template #in>
+  <a  href="#"  (click)="logout()">
+    <i class="fa fa-sign-out"></i>
+    <p class="loga">Wyloguj</p>
+  </a>
+</ng-template>
+
+
+<ng-template #out>
+  <a href="#" (click)="login()">
+    <i class="fa fa-lg fa-sign-in"></i>
+    <p class="loga">Zaloguj</p>
+  </a>
+</ng-template>

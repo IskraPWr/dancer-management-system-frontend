@@ -1,0 +1,52 @@
+<mat-dialog-content>
+    <h1 class="text-center">Ustaw nową grupę</h1>
+    <form id="user-filter" class="example-form" [formGroup]="formModel">
+      <mat-form-field  class="example-full-width">
+        <input matInput placeholder="Nazwa grupy"  formControlName="name"  >
+        <mat-error *ngIf="formModel.hasError('required', ['name'])">
+          Podanie nazwy jest <strong>konieczne!</strong>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field  class="example-full-width">
+        <mat-select placeholder="Semestr"  formControlName="semester"    >
+          <mat-option *ngFor="let semester of semesters" [value]="semester.value">
+          {{semester.viewValue}}
+        </mat-option>
+      </mat-select>
+        <mat-error *ngIf="formModel.hasError('required', ['semester'])">
+          Wybranie semestru jest <strong>konieczne!</strong>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-select placeholder="Dzień tygodnia"  formControlName="day"   >
+            <mat-option *ngFor="let day of days; index as i" [value]="day.value">
+            {{day.name}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="formModel.hasError('required', ['day'])">
+          Wybranie dnia jest <strong>konieczne!</strong>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <input matInput type="time" placeholder="Wybierz godzinę startu grupy" (input)="onStartValueChange()" formControlName="start">
+        <mat-error  *ngIf="formModel.hasError('required', ['start'])">
+          Podanie godziny jest <strong>konieczne!</strong>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <input matInput type="time" placeholder="Wybierz godzinę końca grupy"  formControlName="end"  >
+        <mat-error  *ngIf="formModel.hasError('required', ['end'])">
+          Podanie godziny jest <strong>konieczne!</strong>
+        </mat-error>
+        <mat-error *ngIf="formModel.hasError('minTime', ['end'])">
+          Minimalna godzina to <strong>{{formModel.controls['end'].errors['minTimeValue']}}</strong>
+        </mat-error>
+      </mat-form-field>
+    </form>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <div class="text-center topspace-15 one">
+      <button class="btn btn-danger mr-2" data-choice="true" type="button" (click)="close()">Anuluj</button>
+      <button class="btn btn-success ml-2" data-choice="true" type="button" (click)="sendMessage()">Wyślij</button>
+    </div>
+  </mat-dialog-actions>

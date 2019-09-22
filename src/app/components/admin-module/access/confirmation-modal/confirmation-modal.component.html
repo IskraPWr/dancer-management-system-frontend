@@ -1,0 +1,17 @@
+<mat-dialog-content>
+  <h1 class="text-center">Weryfikacja dostępu</h1>
+  <p class="text-center">W celu zechowania bezpieczeństwa, dane logowania i adres mailowy może zmienić tylko przypisany do niego administrator podając swoje hasło dostepu.</p>
+  <mat-form-field  class="example-full-width">
+    <input matInput placeholder="Podaj haslo dostępu" (keypress)="$event.keyCode === 13 ? confirmation() : null" [(ngModel)]="password.value" name="password" #password="ngModel" required type="password">
+    <mat-error *ngIf="password.hasError('required')">
+      Podanie hasła jest <strong>konieczne!</strong>
+    </mat-error>
+  </mat-form-field>
+
+</mat-dialog-content>
+  <mat-dialog-actions>
+    <div class="text-center topspace-15 one">
+        <button class="btn btn-danger mr-3" data-choice="true" type="button" (click)="close()">Anuluj</button>
+        <button class="btn btn-success" data-choice="true" type="button" (click)="confirmation()">Zmień</button>
+    </div>
+  </mat-dialog-actions>

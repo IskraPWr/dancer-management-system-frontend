@@ -1,0 +1,80 @@
+<ngb-carousel>
+  <ng-template ngbSlide>
+    <h1 class="text-center">Ogólny wykaz ilości osób na zajęciach</h1>
+    <div>
+      <div *ngIf="!chartsData" class="spinner"  >
+        <mat-progress-spinner color="primary" mode="indeterminate"></mat-progress-spinner>
+      </div>
+      <div class="row" *ngIf="chartsData">
+        <div class="col-12 col-xl-6 btmspace-30">
+          <app-canvas [data]='chartsData?.general.week'><canvas id="week"></canvas></app-canvas>
+        </div>
+        <div class="col-12 col-xl-6 btmspace-30">
+          <app-canvas [data]='chartsData?.general.month'><canvas id="month"></canvas></app-canvas>
+        </div>
+        <div class="col-12 col-xl-6 btmspace-30">
+          <app-canvas [data]='chartsData?.general.semester'><canvas id="semester"></canvas></app-canvas>
+        </div>
+        <div class="col-12 col-xl-6 btmspace-30">
+          <app-canvas [data]='chartsData?.general.all'><canvas id="all"></canvas></app-canvas>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template ngbSlide>
+    <h1 class="text-center">Zmiana ilości osób na zajęciach w grupach</h1>
+    <mat-form-field>
+      <mat-select placeholder="Wybierz semestr" [(value)]="selectedSemester">
+        <mat-option *ngFor="let semester of semesters" [value]="semester.value">
+          {{semester.viewValue}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <div class="row group-view">
+      <div *ngFor="let group of chartsData?.groups[selectedSemester].data; index as i" class="col-12 col-xl-6 btmspace-30">
+        <app-canvas [data]='chartsData?.groups[selectedSemester].data[i]'><canvas></canvas></app-canvas>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template ngbSlide>
+    <h1 class="text-center">Zmiana ilości osób na zajęciach w ciągu dni</h1>
+    <mat-form-field>
+      <mat-select placeholder="Wybierz semestr" [(value)]="selectedSemester">
+        <mat-option *ngFor="let semester of semesters" [value]="semester.value">
+          {{semester.viewValue}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <div class="row">
+      <div class="col-12 col-xl-4 btmspace-30">
+        <app-canvas [data]='chartsData?.days[selectedSemester].data[0]'><canvas id="chartDayMon"></canvas></app-canvas>
+      </div>
+      <div class="col-12 col-xl-4 btmspace-30">
+        <app-canvas [data]='chartsData?.days[selectedSemester].data[1]'><canvas id="chartDayTue"></canvas></app-canvas>
+      </div>
+      <div class="col-12 col-xl-4 btmspace-30">
+        <app-canvas [data]='chartsData?.days[selectedSemester].data[2]'><canvas id="chartDayWed"></canvas></app-canvas>
+      </div>
+      <div class="col-12 col-xl-4 btmspace-30">
+        <app-canvas [data]='chartsData?.days[selectedSemester].data[3]'><canvas id="chartDayThu"></canvas></app-canvas>
+      </div>
+      <div class="col-12 col-xl-4 btmspace-30">
+        <app-canvas [data]='chartsData?.days[selectedSemester].data[4]'><canvas id="chartDayFri"></canvas></app-canvas>
+      </div>
+      <div class="col-12 col-xl-4 btmspace-30">
+        <app-canvas [data]='chartsData?.days[selectedSemester].data[5]'><canvas id="chartDaySat"></canvas></app-canvas>
+      </div>
+      <div class="col-12 col-xl-4 btmspace-30">
+        <app-canvas [data]='chartsData?.days[selectedSemester].data[6]'><canvas id="chartDaySun"></canvas></app-canvas>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template ngbSlide>
+    <h1 class="text-center">Zmiana ilości osób na zajęciach w ciągu tygodni</h1>
+    <div class="row">
+      <div class="col-12 btmspace-30">
+        <app-canvas [data]='chartsData?.weekToWeek'><canvas id="chartWeekToWeek"></canvas></app-canvas>
+      </div>
+    </div>
+  </ng-template>
+</ngb-carousel>

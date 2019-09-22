@@ -1,0 +1,38 @@
+<mat-dialog-content>
+  <h1 class="text-center">Dodaj nowego administratora</h1>
+  <form id="user-filter" class="example-form" [formGroup]="formModel">
+    <mat-form-field  class="example-full-width">
+      <input matInput placeholder="Imię"  formControlName="name">
+      <mat-error *ngIf="formModel.hasError('required', ['name'])">
+        Podanie imienia jest <strong>konieczne!</strong>
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field  class="example-full-width">
+      <input matInput placeholder="Nazwisko"  formControlName="surname">
+      <mat-error *ngIf="formModel.hasError('required', ['surname'])">
+        Podanie nazwiska jest <strong>konieczne!</strong>
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field  class="example-full-width">
+      <input matInput placeholder="Login"  formControlName="login">
+      <mat-error *ngIf="formModel.hasError('required', ['login'])">
+        Podanie loginu jest <strong>konieczne!</strong>
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field  class="example-full-width">
+      <input matInput placeholder="Email"  formControlName="email">
+      <mat-error *ngIf="formModel.hasError('required', ['email'])">
+        Podanie maila jest <strong>konieczne!</strong>
+      </mat-error>
+      <mat-error *ngIf="formModel.hasError('email', ['email'])">
+        Podanie prawidłowego maila jest <strong>konieczne!</strong>
+      </mat-error>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <div class="text-center topspace-15 one">
+    <button class="btn btn-danger mr-2" data-choice="true" type="button" (click)="close()">Anuluj</button>
+    <button class="btn btn-success ml-2" data-choice="true" type="button" (click)="sendMessage()">Wyślij</button>
+  </div>
+</mat-dialog-actions>

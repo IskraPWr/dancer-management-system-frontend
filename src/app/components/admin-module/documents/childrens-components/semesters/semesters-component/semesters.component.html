@@ -1,0 +1,231 @@
+<h2>Semestry</h2>
+
+<mat-form-field>
+  <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Szukaj">
+</mat-form-field>
+
+<button id="table-button" mat-icon-button [matMenuTriggerFor]="menu">
+  <mat-icon>list</mat-icon>
+</button>
+<mat-menu #menu="matMenu">
+  <button mat-menu-item (click)="addSemester()">
+    <mat-icon>add</mat-icon>
+    <span>Dodaj nowy semestr</span>
+  </button>
+  <button mat-menu-item (click)="removeSemesters()">
+    <mat-icon>delete_forever</mat-icon>
+    <span>Usuń zaznaczone semestry</span>
+  </button>
+</mat-menu>
+
+<div class="mat-elevation-z8 btmspace-50">
+  <table class="semester" mat-table [dataSource]="semesters" matSort>
+
+    <ng-container matColumnDef="select">
+      <th mat-header-cell *matHeaderCellDef>
+        <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()"
+          [indeterminate]="selection.hasValue() && !isAllSelected()">
+        </mat-checkbox>
+      </th>
+      <td mat-cell *matCellDef="let row">
+        <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"
+          [checked]="selection.isSelected(row)">
+        </mat-checkbox>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Nazwa</th>
+      <td mat-cell *matCellDef="let semester">
+        <div *ngIf="!semester.isActiveInput[0],  else edit0"
+          (click)="semester.isActiveInput[0] = !semester.isActiveInput[0]">
+          <button mat-raised-button #tooltip="matTooltip" matTooltip="Kliknij aby edytować" matTooltipPosition="right"
+            aria-label="Button to change name" class="nobutton">
+            {{semester.name}}
+          </button>
+        </div>
+        <ng-template #edit0>
+          <mat-form-field class="example-full-width">
+            <input #tooltip="matTooltip" matTooltip="Kliknij enter by zapisać" matTooltipPosition="below" matInput
+              placeholder="Nazwa semestru" [(ngModel)]="semester.name" #name="ngModel"
+              (keyup.enter)="save(name, 'name', semester, 0)"
+              (blur)="save(name, 'name', semester, 0)" required>
+            <mat-error *ngIf="name.hasError('required')">
+              Podanie nazwy jest <strong>konieczne!</strong>
+            </mat-error>
+          </mat-form-field>
+        </ng-template>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="start">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Początek semestru </th>
+      <td mat-cell *matCellDef="let semester">
+        <div *ngIf="!semester.isActiveInput[1],  else edit1"
+          (click)="semester.isActiveInput[1] = !semester.isActiveInput[1]">
+          <button mat-raised-button #tooltip="matTooltip" matTooltip="Kliknij aby edytować" matTooltipPosition="right"
+            aria-label="Button to change date or name" class="nobutton">
+            {{semester.start | date:'dd.MM.yyyy'}}
+          </button>
+        </div>
+        <ng-template #edit1>
+          <mat-form-field class="example-full-width">
+            <input matInput matTooltip="Kliknij enter by zapisać" matTooltipPosition="below"  [max]="semester.date_1" [matDatepicker]="picker0"
+              placeholder="Wybierz datę" #start="ngModel" [(ngModel)]="semester.start"
+              (keyup.enter)="save(start, 'start', semester, 1)"
+              (blur)="save(start, 'start', semester, 1)" required>
+            <mat-datepicker-toggle matSuffix [for]="picker0"></mat-datepicker-toggle>
+            <mat-datepicker #picker0></mat-datepicker>
+            <mat-error *ngIf="start.hasError('required')">
+              Podanie daty jest <strong>konieczne!</strong>
+            </mat-error>
+            <mat-error *ngIf="start.hasError('matDatepickerMax')">
+              Maksymalna data to
+              <strong>{{start.control.errors['matDatepickerMax']['max'].toLocaleDateString()}}</strong>
+            </mat-error>
+          </mat-form-field>
+        </ng-template>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="date_1">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Wpłata I </th>
+      <td mat-cell *matCellDef="let semester">
+        <div *ngIf="!semester.isActiveInput[2],  else edit2"
+          (click)="semester.isActiveInput[2] = !semester.isActiveInput[2]"
+          [ngClass]="{'red': checkDate(semester.start,  semester.date_1)}">
+          <button mat-raised-button #tooltip="matTooltip" matTooltip="Kliknij aby edytować" matTooltipPosition="right"
+            aria-label="Button to change date or name" class="nobutton">
+            {{semester.date_1 | date:'dd.MM.yyyy'}}
+          </button>
+        </div>
+        <ng-template #edit2>
+          <mat-form-field class="example-full-width">
+            <input matInput matTooltip="Kliknij enter by zapisać" matTooltipPosition="below" [matDatepicker]="picker1"
+              placeholder="Wybierz datę" #date_1="ngModel" [min]="semester.start" [max]="semester.date_2" [(ngModel)]="semester.date_1"
+              (keyup.enter)="save(date_1, 'date_1', semester, 2)"
+              (blur)="save(date_1, 'date_1', semester, 2)" required>
+            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+            <mat-datepicker #picker1></mat-datepicker>
+            <mat-error *ngIf="date_1.hasError('required')">
+              Podanie daty jest <strong>konieczne!</strong>
+            </mat-error>
+            <mat-error *ngIf="date_1.hasError('matDatepickerMin')">
+              Minimalna data to
+              <strong>{{date_1.control.errors['matDatepickerMin']['min'].toLocaleDateString()}}</strong>
+            </mat-error>
+            <mat-error *ngIf="date_1.hasError('matDatepickerMax')">
+              Maksymalna data to
+              <strong>{{date_1.control.errors['matDatepickerMax']['max'].toLocaleDateString()}}</strong>
+            </mat-error>
+          </mat-form-field>
+        </ng-template>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="date_2">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Wpłata II </th>
+      <td mat-cell *matCellDef="let semester">
+        <div *ngIf="!semester.isActiveInput[3],  else edit3"
+          (click)="semester.isActiveInput[3] = !semester.isActiveInput[3]"
+          [ngClass]="{'red': checkDate(semester.date_1, semester.date_2)}">
+          <button mat-raised-button #tooltip="matTooltip" matTooltip="Kliknij aby edytować" matTooltipPosition="right"
+            aria-label="Button to change date or name" class="nobutton">
+            {{semester.date_2 | date:'dd.MM.yyyy'}}
+          </button>
+        </div>
+        <ng-template #edit3>
+          <mat-form-field class="example-full-width">
+            <input matInput matTooltip="Kliknij enter by zapisać" matTooltipPosition="below" [matDatepicker]="picker2"
+              placeholder="Wybierz datę" #date_2="ngModel" [min]="semester.date_1"  [max]="semester.date_3" [(ngModel)]="semester.date_2"
+              (keyup.enter)="save( date_2, 'date_2', semester, 3)"
+              (blur)="save(date_2, 'date_2', semester, 3)" required>
+            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+            <mat-datepicker #picker2></mat-datepicker>
+            <mat-error *ngIf="date_2.hasError('required')">
+              Podanie daty jest <strong>konieczne!</strong>
+            </mat-error>
+            <mat-error *ngIf="date_2.hasError('matDatepickerMin')">
+              Minimalna data to
+              <strong>{{date_2.control.errors['matDatepickerMin']['min'].toLocaleDateString()}}</strong>
+            </mat-error>
+            <mat-error *ngIf="date_2.hasError('matDatepickerMax')">
+              Maksymalna data to
+              <strong>{{date_2.control.errors['matDatepickerMax']['max'].toLocaleDateString()}}</strong>
+            </mat-error>
+          </mat-form-field>
+        </ng-template>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="date_3">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Wpłata III </th>
+      <td mat-cell *matCellDef="let semester">
+        <div *ngIf="!semester.isActiveInput[4],  else edit4"
+          (click)="semester.isActiveInput[4] = !semester.isActiveInput[4]"
+          [ngClass]="{'red': checkDate(semester.date_2, semester.date_3)}">
+          <button mat-raised-button #tooltip="matTooltip" matTooltip="Kliknij aby edytować" matTooltipPosition="right"
+            aria-label="Button to change date or name" class="nobutton">
+            {{semester.date_3 | date:'dd.MM.yyyy'}}
+          </button>
+        </div>
+        <ng-template #edit4>
+          <mat-form-field class="example-full-width">
+            <input matInput matTooltip="Kliknij enter by zapisać" matTooltipPosition="below" [matDatepicker]="picker3"
+              placeholder="Wybierz datę" #date_3="ngModel" [min]="semester.date_2" [max]="semester.end" [(ngModel)]="semester.date_3"
+              (keyup.enter)="save(date_3, 'date_3', semester, 4)"
+              (blur)="save(date_3, 'date_3', semester, 4)" required>
+            <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+            <mat-datepicker #picker3></mat-datepicker>
+            <mat-error *ngIf="date_3.hasError('required')">
+              Podanie daty jest <strong>konieczne!</strong>
+            </mat-error>
+            <mat-error *ngIf="date_3.hasError('matDatepickerMin')">
+              Minimalna data to
+              <strong>{{date_3.control.errors['matDatepickerMin']['min'].toLocaleDateString()}}</strong>
+            </mat-error>
+            <mat-error *ngIf="date_3.hasError('matDatepickerMax')">
+              Maksymalna data to
+              <strong>{{date_3.control.errors['matDatepickerMax']['max'].toLocaleDateString()}}</strong>
+            </mat-error>
+          </mat-form-field>
+        </ng-template>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="end">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Koniec semestru </th>
+      <td mat-cell *matCellDef="let semester">
+        <div *ngIf="!semester.isActiveInput[5],  else edit5"
+          (click)="semester.isActiveInput[5] = !semester.isActiveInput[5]"
+          [ngClass]="{'red': checkDate(semester.date_3, semester.end)}">
+          <button mat-raised-button #tooltip="matTooltip" matTooltip="Kliknij aby edytować" matTooltipPosition="right"
+            aria-label="Button to change date or name" class="nobutton">
+            {{semester.end | date:'dd.MM.yyyy'}}
+          </button>
+        </div>
+        <ng-template #edit5>
+          <mat-form-field class="example-full-width">
+            <input matInput matTooltip="Kliknij enter by zapisać" matTooltipPosition="below" [matDatepicker]="picker4"
+              placeholder="Wybierz datę" #end="ngModel" [min]="semester.date_3" [(ngModel)]="semester.end"
+              (keyup.enter)="save(end, 'end', semester, 5)"
+              (blur)="save(end, 'end', semester, 5)" required>
+            <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
+            <mat-datepicker #picker4></mat-datepicker>
+            <mat-error *ngIf="end.hasError('required')">
+              Podanie daty jest <strong>konieczne!</strong>
+            </mat-error>
+            <mat-error *ngIf="end.hasError('matDatepickerMin')">
+              Minimalna data to <strong>{{end.control.errors['matDatepickerMin']['min'].toLocaleDateString()}}</strong>
+            </mat-error>
+          </mat-form-field>
+        </ng-template>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+</div>

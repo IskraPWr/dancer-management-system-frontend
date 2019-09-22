@@ -1,0 +1,104 @@
+<h2>Administratorzy strony</h2>
+
+<mat-form-field>
+  <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Szukaj">
+</mat-form-field>
+
+<button id="table-button" mat-icon-button [matMenuTriggerFor]="menu">
+  <mat-icon>list</mat-icon>
+</button>
+<mat-menu #menu="matMenu">
+  <button mat-menu-item (click)="addAdmin()">
+    <mat-icon>add</mat-icon>
+    <span>Dodaj nowego administratora</span>
+  </button>
+  <button mat-menu-item (click)="deleteAdmin()">
+    <mat-icon>delete_forever</mat-icon>
+    <span>Usuń zaznaczonych administratorów</span>
+  </button>
+</mat-menu>
+
+<div class="mat-elevation-z8 btmspace-50">
+  <table mat-table [dataSource]="admins" matSort>
+
+    <ng-container matColumnDef="select">
+      <th mat-header-cell *matHeaderCellDef>
+        <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()"
+          [indeterminate]="selection.hasValue() && !isAllSelected()">
+        </mat-checkbox>
+      </th>
+      <td mat-cell *matCellDef="let row">
+        <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)">
+        </mat-checkbox>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Imię</th>
+      <td mat-cell *matCellDef="let admin">{{admin.name}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="surname">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Nazwisko </th>
+      <td mat-cell *matCellDef="let admin">{{admin.surname}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="mail">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
+      <td mat-cell *matCellDef="let admin">
+        <div *ngIf="!admin.isActiveInput[0],  else edit1" (click)="admin.isActiveInput[0] = !admin.isActiveInput[0]">
+          <button mat-raised-button #tooltip="matTooltip" matTooltip="Kliknij aby edytować" matTooltipPosition="right"
+            aria-label="Button to change mail" class="nobutton">
+            {{admin.email}}
+          </button>
+        </div>
+        <ng-template #edit1>
+            <mat-form-field class="example-full-width">
+              <input matInput matTooltip="Kliknij enter by zapisać" matTooltipPosition="below" placeholder="Wpisz mail" name="email" #email="ngModel" [(ngModel)]="admin.email" (keyup.enter)="save(email, 'email', admin, 0)" (blur)="save(email, 'email', admin, 0)"  required email>
+              <mat-error  *ngIf="email.hasError('required')">
+                  Podanie maila jest <strong>konieczne!</strong>
+                </mat-error>
+                <mat-error  *ngIf="email.hasError('email')">
+                    Podanie poprawnego maila jest <strong>konieczne!</strong>
+                  </mat-error>
+            </mat-form-field>
+          </ng-template>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="login">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Login </th>
+      <td mat-cell *matCellDef="let admin">
+        <div *ngIf="!admin.isActiveInput[1],  else edit2" (click)="admin.isActiveInput[1] = !admin.isActiveInput[1]">
+          <button mat-raised-button #tooltip="matTooltip" matTooltip="Kliknij aby edytować" matTooltipPosition="right"
+            aria-label="Button to change date or name" class="nobutton">
+            {{admin.login}}
+          </button>
+        </div>
+        <ng-template #edit2>
+            <mat-form-field class="example-full-width">
+                <input matInput matTooltip="Kliknij enter by zapisać" matTooltipPosition="below" placeholder="Wpisz login" [(ngModel)]="admin.login" name="login" #login="ngModel" (keyup.enter)="save(login, 'login', admin, 1)" (blur)="save(login, 'login', admin, 1)" required>
+                <mat-error  *ngIf="login.hasError('required')">
+                    Podanie loginu jest <strong>konieczne!</strong>
+                  </mat-error>
+              </mat-form-field>
+        </ng-template>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="password">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Hasło </th>
+      <td mat-cell *matCellDef="let admin">
+          <button mat-raised-button #tooltip="matTooltip" matTooltip="Kliknij aby edytować" matTooltipPosition="right"
+            aria-label="Button to change date or name" class="nobutton" (click)="generatePass(admin.id, 'site-admin')">
+            {{admin.password}}
+          </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+</div>

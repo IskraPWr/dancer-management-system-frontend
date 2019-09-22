@@ -1,0 +1,80 @@
+<mat-dialog-content>
+  <h1 class="text-center">Ustaw nową stawkę</h1>
+  <form id="user-filter" class="example-form" [formGroup]="formModel">
+    <mat-form-field class="example-full-width">
+      <input matInput placeholder="Nazwa stawki" formControlName='name'>
+      <mat-error *ngIf="formModel.hasError('required', ['name'])">
+        Podanie nazwy jest <strong>konieczne!</strong>
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select placeholder="Typ wprowadzanej składki"  formControlName='type'>
+        <mat-option *ngFor="let name of nameOfPeopleType; index as i" [value]='i'>
+          {{name}}
+        </mat-option>
+        <mat-option value="-1">
+          Wprowadź wszystkie
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="formModel.hasError('required', ['type'])">
+        Wybranie typu grupy jest <strong>konieczne!</strong>
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Rata I {{setName(0)}}"  type='number' formControlName='installment_1'>
+      <mat-error *ngIf="formModel.hasError('required', ['installment_1'])">
+        Podanie raty jest <strong>konieczne!</strong>
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Rata II {{setName(0)}}"  type='number' formControlName='installment_2'>
+      <mat-error *ngIf="formModel.hasError('required', ['installment_2'])">
+        Podanie raty jest <strong>konieczne!</strong>
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Rata III {{setName(0)}}"  type='number' formControlName='installment_3'>
+      <mat-error *ngIf="formModel.hasError('required', ['installment_3'])">
+        Podanie raty jest <strong>konieczne!</strong>
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput placeholder="Suma {{setName(0)}}" type='number' name="suma1" disabled [value]="formModel.controls['installment_1'] ? formModel.controls['installment_1'].value + formModel.controls['installment_2'].value + formModel.controls['installment_3'].value : 0">
+    </mat-form-field>
+  </form>
+
+  <form>
+    <div *ngIf="formModel.controls['type'].value === '-1'">
+      <mat-form-field >
+        <input matInput placeholder="Rata I {{setName(1)}}" [(ngModel)]="installment_1a.value" type='number' name="installment_1a"
+          #installment_1a="ngModel" required>
+        <mat-error *ngIf="installment_1a.hasError('required')">
+          Podanie raty jest <strong>konieczne!</strong>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field >
+        <input matInput placeholder="Rata II {{setName(1)}}" [(ngModel)]="installment_2a.value" type='number' name="installment_2a"
+          #installment_2a="ngModel" required>
+        <mat-error *ngIf="installment_2a.hasError('required')">
+          Podanie raty jest <strong>konieczne!</strong>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field >
+        <input matInput placeholder="Rata III {{setName(1)}}" [(ngModel)]="installment_3a.value" type='number' name="installment_3a"
+          #installment_3a="ngModel" required>
+        <mat-error *ngIf="installment_3a.hasError('required')">
+          Podanie raty jest <strong>konieczne!</strong>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field >
+          <input matInput placeholder="Suma {{setName(1)}}" type='number' name="suma2" disabled [value]='installment_1a ? installment_1a.value + installment_2a.value + installment_3a.value : 0'>
+        </mat-form-field>
+    </div>
+     </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <div class="text-center topspace-15 one">
+    <button class="btn btn-danger mr-2" data-choice="true" type="button" (click)="close()">Anuluj</button>
+    <button class="btn btn-success ml-2" data-choice="true" type="button" (click)="sendMessage()">Wyślij</button>
+  </div>
+</mat-dialog-actions>

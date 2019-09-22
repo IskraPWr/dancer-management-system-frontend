@@ -1,0 +1,8 @@
+.spinner {
+  margin: 100px auto;
+  width: 100%;
+  text-align: center;
+  width: fit-content;
+}
+
+.group-view {min-height: 100px;}

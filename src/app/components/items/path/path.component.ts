@@ -1,18 +1,22 @@
-import { PathService } from './../../service';
-import { Component } from '@angular/core';
-
+import { PathService } from '../path-service';
+import { Component, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
 
 
 @Component({
   selector: 'app-path',
   templateUrl: './path.component.html'
 })
-export class PathComponent {
-  text;
+export class PathComponent implements OnDestroy {
+  constructor (private pathService: PathService) {
+    const pathChanger = this.pathService.getCurrentPath();
+    this.pathServiceSubscription  = pathChanger.subscribe((viewName: string) => this.viewName = viewName);
+  }
+  pathServiceSubscription: Subscription;
+  viewName: string;
 
-  constructor (private Service: PathService) {
-    const mySubscrption = this.Service.getFlagData();
-    mySubscrption.forEach(next => this.text = next);
+  ngOnDestroy(): void{
+    this.pathServiceSubscription.unsubscribe();
   }
 }
 

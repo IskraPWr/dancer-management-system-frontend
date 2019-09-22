@@ -1,0 +1,28 @@
+.hamburger {
+  display: none;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 50;
+  padding: 5px 5px;
+}
+
+.hamburger.inactive {
+  display: none;
+}
+
+.hamburger-inner, .hamburger-inner::before, .hamburger-inner::after {
+  background-color: #EA5616;
+  width: 25px;
+  height: 2.5px;
+}
+
+.hamburger-box {
+  width: 30px;
+}
+
+@media (max-width: 750px) {
+  .hamburger {
+    display: inline-block;
+  }
+}

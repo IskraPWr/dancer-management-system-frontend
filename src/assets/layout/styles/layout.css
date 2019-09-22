@@ -1425,11 +1425,6 @@ textarea:focus,
     float: none;
     margin: 0 0 10px 0;
   }
-  .fl_left,
-  .fl_right {
-    display: block;
-    float: none;
-  }
   .group .group>*:last-child,
   .clear .clear>*:last-child,
   .clear .group>*:last-child,
@@ -1464,25 +1459,6 @@ textarea:focus,
   }
   #footer {
     padding-bottom: 30px;
-  }
-  /* Not needed, just looks better. Compensates for the grid elements bottom margin when stacked */
-  #box_btn {
-    display: block !important;
-    color: #EA5616;
-  }
-  #box {
-    display: none;
-    position: fixed;
-    width: 250px;
-    height: 100%;
-    overflow-y: auto;
-    float: left;
-    top: 0;
-    background-color: #ffffff;
-    left: 0;
-    opacity: 1;
-    z-index: 5;
-    padding: 50px 10px 0 30px;
   }
 }
 
@@ -1779,18 +1755,6 @@ a[title="Konto"] {
   margin-top: 10px;
 }
 
-input[type="text"],
-input[type="email"],
-input[type="password"] {
-  border: 1px solid #A8A7A6;
-}
-
-input[type="text"]:focus,
-input[type="email"]:focus,
-input[type="password"]:focus {
-  border: 1px solid #EA5616;
-}
-
 .form-edit label {
   margin: 0;
 }
@@ -2027,22 +1991,6 @@ a.button.googleTie:before {
   padding-left: 10px;
 }
 
-.ng-valid.ng-dirty,
-.ng-valid.ng-dirty + label,
-.ng-valid.ng-touched,
-.ng-valid.ng-touched + label{
-  border-color: #28a745 !important;
-}
-
-.ng-invalid.ng-dirty,
-.ng-invalid.ng-dirty + label,
-.ng-invalid.ng-touched,
-.ng-invalid.ng-touched + label,
-div.ng-invalid.ng-touched input.ng-valid.ng-touched,
-.user-invalid + label.custom-file-label{
-  border-color: #dc3545 !important;
-}
-
 
 .ng-invalid.ng-touched .invalid-feedback{
   color: #dc3545;
@@ -2058,7 +2006,7 @@ table{
 
 
 .mat-form-field-type-mat-input:not(#user-filter){
-  width: 90%;
+  width: calc(100% - 60px);
 }
 
 div.list-search .mat-form-field-type-mat-input, form mat-form-field{

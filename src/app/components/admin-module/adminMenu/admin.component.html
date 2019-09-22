@@ -1,0 +1,47 @@
+<div class="sidebar one_quarter">
+
+  <h6>Informacje</h6>
+  <nav class="sdb_holder">
+      <ul>
+          <li>
+              <a  #data [routerLink]="['/admin']">Baza osób</a>
+          </li>
+          <li>
+              <a #presence [routerLink]="['/admin/obecnosc']">Baza obecności</a>
+          </li>
+          <li>
+            <a #members [routerLink]="['/admin/grupy']">Baza grup</a>
+        </li>
+          <li>
+              <a #documents [routerLink]="['/admin/platnosci']" >Baza płatności</a>
+              <ul>
+                <li>
+                    <a #edit  [routerLink]="['/admin/ustawienia']" >Ustawienia</a>
+                </li>
+            </ul>
+          </li>
+          <li>
+              <a  #archives  [routerLink]="['/admin/archiwum']" >Baza archiwum</a>
+          </li>
+          <li>
+              <a  #access [routerLink]="['/admin/dostep']" >Baza dostępu</a>
+          </li>
+      </ul>
+  </nav>
+  <div class="sdb_holder">
+      <article>
+          <h6>Uwagi</h6>
+          <p>System Iskra 2.0 opiera się na weryfikacji opłat i obecności tancerzy za pomocą Konta Tancerza.</p>
+          <ul>
+              <li>
+                  <a href="#">Instrukcja obsługi konta</a>
+              </li>
+          </ul>
+          <p>Jeśli napotkasz problem z funkcjonowaniem systemu, zgłoś nam to na adres:
+              <a href="mailto:sktt@pwr.edu.pl">sktt@pwr.edu.pl</a>
+          </p>
+      </article>
+  </div>
+
+</div>
+

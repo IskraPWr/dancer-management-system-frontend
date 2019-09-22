@@ -1,0 +1,15 @@
+<h2>Załaduj dane</h2>
+<form id="formModel" class="checking btmspace-50" ENCTYPE='multipart/form-data' [formGroup]="formModel"
+  (ngSubmit)="onSubmit($event)" novalidate>
+  <div class="custom-file btmspace-30">
+    <input id="file" type="file" class="custom-file-input" #fileInput id="file" [uploader]="uploader" ng2FileSelect formControlName="file">
+    <label class="custom-file-label" for="validatedCustomFile">{{formModel.controls['file'].value ? formModel.controls['file'].value  : 'Wybierz plik...'}}</label>
+  </div>
+  <div *ngIf="formModel.hasError('type', ['file'])">
+    <p class="red">Oczekiwany typ danych to <b>{{formModel.controls['file'].errors['expectedType']}}</b> </p>
+  </div>
+  <div *ngIf="formModel.hasError('size', ['file'])">
+    <p class="red">Maksymalny rozmiar pliku to <b>{{formModel.controls['file'].errors['maxSize']}}</b> </p>
+  </div>
+  <input type="submit" class="btn btn-def fl_right" value="Prześlij">
+</form>

@@ -1,0 +1,212 @@
+<div class="wrapper row3">
+  <main class="hoc container clear">
+    <!-- main body -->
+
+    <div class="content">
+
+      <h1>Dane tancerza</h1>
+      <form id="formModel" class="checking create-form" ENCTYPE='multipart/form-data' [formGroup]="formModel"
+        (ngSubmit)="onSubmit()" novalidate>
+        <div class="form-row">
+          <div class="form-group col-md-5">
+            <mat-form-field class="example-full-width">
+              <input matInput placeholder="Podaj imię" formControlName="name" required>
+              <mat-error *ngIf="formModel.
+                hasError('required', ['name'])">
+                <p>Podanie imienia jest <strong>konieczne!</strong></p>
+              </mat-error>
+              <mat-error *ngIf="formModel.hasError('pattern', ['name'])">
+                <p>Podany tekst zawiera <strong>nieodpowiednie</strong> znaki!</p>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="form-group col-md-5">
+            <mat-form-field class="example-full-width">
+              <input matInput placeholder="Podaj nazwisko" formControlName="surname" required>
+              <mat-error *ngIf="formModel.hasError('required', ['surname'])">
+                <p>Podanie nazwiska jest <strong>konieczne!</strong></p>
+              </mat-error>
+              <mat-error *ngIf="formModel.hasError('pattern', ['surname'])">
+                <p>Podany tekst zawiera <strong>nieodpowiednie</strong> znaki!</p>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="form-group col-md-2">
+            <mat-form-field>
+              <mat-select placeholder="Podaj płeć" formControlName="gender">
+                <mat-option [value]="0">
+                  Kobieta
+                </mat-option>
+                <mat-option [value]="1">
+                  Mężczyzna
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="formModel.hasError('required', ['gender'])">
+                <p>Podany płci jest <strong>konieczne!</strong></p>
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-4">
+            <mat-form-field>
+              <input matInput placeholder="Podaj login" formControlName="login" required>
+              <mat-error *ngIf="formModel.hasError('required', ['login'])">
+                <p>Podanie loginu jest <strong>konieczne!</strong></p>
+              </mat-error>
+              <mat-error *ngIf="formModel.hasError('minlength', ['login'])">
+                <p> Podany login musi zawierać minimum <strong>3</strong> znaki!</p>
+              </mat-error>
+              <mat-error *ngIf="formModel.hasError('maxlength', ['login'])">
+                <p>Podany login musi zawierać maksimum <strong>20</strong> znaków!</p>
+              </mat-error>
+              <mat-error *ngIf="formModel.hasError('loginExist', ['login'])">
+                <p>Podany login jest już <strong>zajęty!</strong></p>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div formGroupName="passwordsGroup" class="col-md-8 formGroup" id="passwordsGroup">
+            <div class="row mx0">
+              <div class="form-group col-md-6 pxr">
+                <mat-form-field>
+                  <input matInput type="password" placeholder="Podaj hasło" formControlName="pass1" required>
+                  <mat-error *ngIf="formModel.hasError('required', ['passwordsGroup','pass1'])">
+                    <p>Podanie hasła jest <strong>konieczne!</strong></p>
+                  </mat-error>
+                  <mat-error *ngIf="formModel.hasError('minlength', ['passwordsGroup','pass1'])">
+                    <p>Podane hasło musi zawierać minimum <strong>8</strong> znaków!</p>
+                  </mat-error>
+                  <mat-error *ngIf="formModel.hasError('maxlength', ['passwordsGroup','pass1'])">
+                    <p>Podane hasło musi zawierać maksimum <strong>20</strong> znaków!</p>
+                  </mat-error>
+                  <mat-hint *ngIf="formModel.hasError('equal', ['passwordsGroup']) && formModel.controls['passwordsGroup'].controls['pass2'].dirty">
+                    <p>Podane hasła muszą być <strong>identyczne!</strong></p>
+                  </mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="form-group col-md-6 pxl">
+                <mat-form-field>
+                  <input matInput type="password" placeholder="Powtórz hasło" formControlName="pass2" required>
+                  <mat-error *ngIf="formModel.hasError('required', ['passwordsGroup','pass2'])">
+                    <p>Podanie hasła jest <strong>konieczne!</strong></p>
+                  </mat-error>
+                  <mat-hint *ngIf="formModel.hasError('equal', ['passwordsGroup']) && formModel.controls['passwordsGroup'].controls['pass2'].dirty">
+                    <p>Podane hasła muszą być <strong>identyczne!</strong></p>
+                  </mat-hint>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <mat-form-field>
+              <input matInput placeholder="Podaj email" formControlName="email" required>
+              <mat-error *ngIf="formModel.hasError('required', ['email'])">
+                <p>Podanie maila jest <strong>konieczne!</strong></p>
+              </mat-error>
+              <mat-error *ngIf="formModel.hasError('email',['email'])">
+                <p>Podanie prawidłowego maila jest <strong>konieczne!</strong></p>
+              </mat-error>
+              <mat-error *ngIf="formModel.hasError('emailExist', ['email'])">
+                <p>Podany mail jest już <strong>zajęty!</strong></p>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="form-group col-md-6">
+            <mat-form-field>
+              <input matInput placeholder="Podaj telefon" formControlName="phone" required>
+              <mat-error *ngIf="formModel.hasError('required', ['phone'])">
+                <p>Podanie telefonu jest <strong>konieczne!</strong></p>
+              </mat-error>
+              <mat-error *ngIf="formModel.hasError('pattern', ['phone'])">
+                <p>Podany tekst nie jest prawidłowym numerem telefonu!</p>
+              </mat-error>
+              <mat-error *ngIf="formModel.hasError('phoneExist', ['phone'])">
+               <p>Podany numer telefonu jest już <strong>zajęty!</strong></p>
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-4">
+            <mat-form-field>
+              <mat-select placeholder="Nazwa uczelni" formControlName="university">
+                <mat-option *ngFor="let university of universities; index as i" [value]="i">
+                  {{university}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="form-group col-md-4">
+            <mat-form-field>
+              <input matInput placeholder="Podaj wydział" formControlName="department">
+              <mat-error *ngIf="formModel.hasError('pattern', ['department'])">
+                <p>Podany tekst nie jest prawidłową nazwą wydziału!</p>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="form-group col-md-2">
+            <mat-form-field>
+              <input matInput placeholder="Podaj rok studiów" formControlName="year">
+              <mat-error *ngIf="formModel.hasError('pattern', ['year'])">
+                <p>Podany tekst musi być liczbą!</p>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="form-group col-md-2">
+            <mat-form-field>
+              <input matInput placeholder="Podaj numer indeksu" formControlName="index">
+              <mat-error *ngIf="formModel.hasError('pattern', ['index'])">
+                <p>Podany tekst musi być liczbą!</p>
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <mat-form-field>
+              <input matInput placeholder="Podaj klucz 1**" formControlName="key1">
+              <mat-error *ngIf="formModel.hasError('keyExist', ['key1'])">
+                <p>Podany numer klucza jest już <strong>zajęty!</strong></p>
+              </mat-error>
+              <mat-error *ngIf="formModel.hasError('minlength', ['key1'])">
+                <p>Podany numer klucza musi zawierać minimum <strong>3</strong> znaki!</p>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="form-group col-md-6">
+            <mat-form-field>
+              <input matInput placeholder="Podaj klucz 2**" formControlName="key2">
+              <mat-error *ngIf="formModel.hasError('keyExist', ['key2'])">
+                <p>Podany numer klucza jest już <strong>zajęty!</strong></p>
+              </mat-error>
+              <mat-error *ngIf="formModel.hasError('minlength', ['key2'])">
+                <p>Podany numer klucza musi zawierać minimum <strong>3</strong> znaki!</p>
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="form-check">
+            <mat-checkbox formControlName="gridCheck">
+              <a href="#">Zgoda na przetwarzanie danych osobowych</a>
+            </mat-checkbox>
+            <div
+              *ngIf="formModel.hasError('required', ['gridCheck']) && formModel.controls['gridCheck'].dirty">
+              <p class="red"> Zaznacznenie zgody jest <strong>konieczne!</strong></p>
+          </div>
+          </div>
+        </div>
+        <p>** - Możliwość uzupełnienia na zajęciach</p>
+        <div class="btmspace-30">
+          <ngx-recaptcha2 #captchaElem [siteKey]="siteKey" size="normal" hl="pl" theme="light" type="image"
+            formControlName="recaptcha">
+          </ngx-recaptcha2>
+        </div>
+        <input type="submit" class="btn btn-def fl_right" value="Prześlij">
+      </form>
+    </div>
+    <div class="clear"></div>
+  </main>
+</div>
