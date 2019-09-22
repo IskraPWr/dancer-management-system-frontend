@@ -10,7 +10,7 @@ export class ServerService {
   constructor(private http: HttpClient) {}
 
   getUserById(id): Observable<IUser> {
-    return this.http.get('http://localhost:3000/users/' + id, {
+    return this.http.get('https://lit-chamber-10871.herokuapp.com/users/' + id, {
       headers: {
         'Content-Type': 'application/json;charset=UTF-8'
       }
@@ -18,7 +18,7 @@ export class ServerService {
   }
 
   getAdmins() {
-    return this.http.get('http://localhost:3000/admins/', {
+    return this.http.get('https://lit-chamber-10871.herokuapp.com/admins/', {
       headers: {
         'Content-Type': 'application/json;charset=UTF-8'
       }
@@ -26,7 +26,7 @@ export class ServerService {
   }
 
   getInstallment() {
-    return this.http.get('http://localhost:3000/installment', {
+    return this.http.get('https://lit-chamber-10871.herokuapp.com/installment', {
       headers: {
         'Content-Type': 'application/json;charset=UTF-8'
       }
@@ -34,7 +34,7 @@ export class ServerService {
   }
 
   getAuthorization() {
-    return this.http.get('http://localhost:3000/authorization/', {
+    return this.http.get('https://lit-chamber-10871.herokuapp.com/authorization/', {
       headers: {
         'Content-Type': 'application/json;charset=UTF-8'
       }
@@ -42,7 +42,7 @@ export class ServerService {
   }
 
   getPresenceById(id) {
-    return this.http.get('http://localhost:3000/presence/' + id, {
+    return this.http.get('https://lit-chamber-10871.herokuapp.com/presence/' + id, {
       headers: {
         'Content-Type': 'application/json;charset=UTF-8'
       }
@@ -50,7 +50,7 @@ export class ServerService {
   }
 
   getUsers() {
-    return this.http.get('http://localhost:3000/users', {
+    return this.http.get('https://lit-chamber-10871.herokuapp.com/users', {
       headers: {
         'Content-Type': 'application/json;charset=UTF-8'
       }
@@ -58,7 +58,7 @@ export class ServerService {
   }
 
   getUsersWithAssignments() {
-    return this.http.get('http://localhost:3000/assignments/', {
+    return this.http.get('https://lit-chamber-10871.herokuapp.com/assignments/', {
       headers: {
         'Content-Type': 'application/json;charset=UTF-8'
       }
@@ -66,7 +66,7 @@ export class ServerService {
   }
 
   checkPageAdminPassword(checkAdminDataPack: ICheckAdmin) {
-    return this.http.post('http://localhost:3000/admins/check/', checkAdminDataPack, {
+    return this.http.post('https://lit-chamber-10871.herokuapp.com/admins/check/', checkAdminDataPack, {
       headers: {
         'Content-Type': 'application/json;charset=UTF-8'
       }
@@ -74,7 +74,7 @@ export class ServerService {
   }
 
   checkApplicationAdminPassword(checkAdminDataPack: ICheckAdmin) {
-    return this.http.post('http://localhost:3000/authorization/check/', checkAdminDataPack, {
+    return this.http.post('https://lit-chamber-10871.herokuapp.com/authorization/check/', checkAdminDataPack, {
       headers: {
         'Content-Type': 'application/json;charset=UTF-8'
       }
@@ -82,7 +82,7 @@ export class ServerService {
   }
 
   getPresence() {
-    return this.http.get('http://localhost:3000/presence', {
+    return this.http.get('https://lit-chamber-10871.herokuapp.com/presence', {
       headers: {
         'Content-Type': 'application/json;charset=UTF-8'
       }
@@ -90,7 +90,7 @@ export class ServerService {
   }
 
   getTransactionsList() {
-    return this.http.get('http://localhost:3000/list', {
+    return this.http.get('https://lit-chamber-10871.herokuapp.com/list', {
       headers: {
         'Content-Type': 'application/json;charset=UTF-8'
       }
@@ -98,7 +98,7 @@ export class ServerService {
   }
 
   getCharges() {
-    return this.http.get('http://localhost:3000/charges', {
+    return this.http.get('https://lit-chamber-10871.herokuapp.com/charges', {
       headers: {
         'Content-Type': 'application/json;charset=UTF-8'
       }
@@ -106,7 +106,7 @@ export class ServerService {
   }
 
   getChargesById(id) {
-    return this.http.get('http://localhost:3000/charges/' + id, {
+    return this.http.get('https://lit-chamber-10871.herokuapp.com/charges/' + id, {
       headers: {
         'Content-Type': 'application/json;charset=UTF-8'
       }
@@ -114,7 +114,7 @@ export class ServerService {
   }
 
   getArchives() {
-    return this.http.get('http://localhost:3000/archives', {
+    return this.http.get('https://lit-chamber-10871.herokuapp.com/archives', {
       headers: {
         'Content-Type': 'application/json;charset=UTF-8'
       }
@@ -122,7 +122,7 @@ export class ServerService {
   }
 
   getSemesters() {
-    return this.http.get('http://localhost:3000/semesters/', {
+    return this.http.get('https://lit-chamber-10871.herokuapp.com/semesters/', {
       headers: {
         'Content-Type': 'application/json;charset=UTF-8'
       }
@@ -130,7 +130,7 @@ export class ServerService {
   }
 
   getGroups() {
-    return this.http.get('http://localhost:3000/groups/', {
+    return this.http.get('https://lit-chamber-10871.herokuapp.com/groups/', {
       headers: {
         'Content-Type': 'application/json;charset=UTF-8'
       }
@@ -138,7 +138,7 @@ export class ServerService {
   }
 
   getGroupsHeadersById(id) {
-    return this.http.get('http://localhost:3000/groups/' + id, {
+    return this.http.get('https://lit-chamber-10871.herokuapp.com/groups/' + id, {
       headers: {
         'Content-Type': 'application/json;charset=UTF-8'
       }
@@ -146,7 +146,7 @@ export class ServerService {
   }
 
   getSemesterHeaders() {
-    return this.http.get('http://localhost:3000/semesters/headers', {
+    return this.http.get('https://lit-chamber-10871.herokuapp.com/semesters/headers', {
       headers: {
         'Content-Type': 'application/json;charset=UTF-8'
       }
@@ -154,7 +154,7 @@ export class ServerService {
   }
 
   getSemesterDetails() {
-    return this.http.get('http://localhost:3000/semesters/details', {
+    return this.http.get('https://lit-chamber-10871.herokuapp.com/semesters/details', {
       headers: {
         'Content-Type': 'application/json;charset=UTF-8'
       }
@@ -163,7 +163,7 @@ export class ServerService {
 
   getUsersInGroupByIdGroup(group) {
     return this.http.get(
-      'http://localhost:3000/groups/findbyidgroup/' + group,
+      'https://lit-chamber-10871.herokuapp.com/groups/findbyidgroup/' + group,
       {
         headers: {
           'Content-Type': 'application/json;charset=UTF-8'
@@ -175,7 +175,7 @@ export class ServerService {
   // Stats all
 
   getStatOfDeclaredCharges() {
-    return this.http.get('http://localhost:3000/statistics/charges', {
+    return this.http.get('https://lit-chamber-10871.herokuapp.com/statistics/charges', {
       headers: {
         'Content-Type': 'application/json;charset=UTF-8'
       }
@@ -183,7 +183,7 @@ export class ServerService {
   }
 
   getStatUniversity() {
-    return this.http.get('http://localhost:3000/statistics/universities', {
+    return this.http.get('https://lit-chamber-10871.herokuapp.com/statistics/universities', {
       headers: {
         'Content-Type': 'application/json;charset=UTF-8'
       }
@@ -191,7 +191,7 @@ export class ServerService {
   }
 
   getStatGender() {
-    return this.http.get('http://localhost:3000/statistics/gender', {
+    return this.http.get('https://lit-chamber-10871.herokuapp.com/statistics/gender', {
       headers: {
         'Content-Type': 'application/json;charset=UTF-8'
       }
@@ -199,7 +199,7 @@ export class ServerService {
   }
 
   getStatArchivesGender() {
-    return this.http.get('http://localhost:3000/statistics/archives/gender', {
+    return this.http.get('https://lit-chamber-10871.herokuapp.com/statistics/archives/gender', {
       headers: {
         'Content-Type': 'application/json;charset=UTF-8'
       }
@@ -207,7 +207,7 @@ export class ServerService {
   }
 
   getStatPeople() {
-    return this.http.get('http://localhost:3000/statistics/people', {
+    return this.http.get('https://lit-chamber-10871.herokuapp.com/statistics/people', {
       headers: {
         'Content-Type': 'application/json;charset=UTF-8'
       }
@@ -218,7 +218,7 @@ export class ServerService {
 
   getStatPresenceAllById(id) {
     return this.http.get(
-      'http://localhost:3000/statistics/presence/all/' + id,
+      'https://lit-chamber-10871.herokuapp.com/statistics/presence/all/' + id,
       {
         headers: {
           'Content-Type': 'application/json;charset=UTF-8'
@@ -229,7 +229,7 @@ export class ServerService {
 
   getStatPresenceGroupByIdAndIdSemester(id, id_semester) {
     return this.http.get(
-      'http://localhost:3000/statistics/people/' + id + '/' + id_semester,
+      'https://lit-chamber-10871.herokuapp.com/statistics/people/' + id + '/' + id_semester,
       {
         headers: {
           'Content-Type': 'application/json;charset=UTF-8'
@@ -239,7 +239,7 @@ export class ServerService {
   }
 
   getStatPresenceById(id) {
-    return this.http.get('http://localhost:3000/statistics/presence/' + id, {
+    return this.http.get('https://lit-chamber-10871.herokuapp.com/statistics/presence/' + id, {
       headers: {
         'Content-Type': 'application/json;charset=UTF-8'
       }
@@ -249,7 +249,7 @@ export class ServerService {
   // post
 
   updateUser(id, data) {
-    return this.http.post('http://localhost:3000/users/' + id, data, {
+    return this.http.post('https://lit-chamber-10871.herokuapp.com/users/' + id, data, {
       headers: {
         'Content-Type': 'application/json;charset=UTF-8'
       }
@@ -257,7 +257,7 @@ export class ServerService {
   }
 
   postNote(note) {
-    return this.http.post('http://localhost:3000/notes/', note, {
+    return this.http.post('https://lit-chamber-10871.herokuapp.com/notes/', note, {
       headers: {
         'Content-Type': 'application/json;charset=UTF-8'
       }
@@ -265,7 +265,7 @@ export class ServerService {
   }
 
   postNotes(note) {
-    return this.http.post('http://localhost:3000/notes/add', note, {
+    return this.http.post('https://lit-chamber-10871.herokuapp.com/notes/add', note, {
       headers: {
         'Content-Type': 'application/json;charset=UTF-8'
       }
@@ -273,7 +273,7 @@ export class ServerService {
   }
 
   deleteNote(note) {
-    return this.http.post('http://localhost:3000/notes/delete', note, {
+    return this.http.post('https://lit-chamber-10871.herokuapp.com/notes/delete', note, {
       headers: {
         'Content-Type': 'application/json;charset=UTF-8'
       }
@@ -281,7 +281,7 @@ export class ServerService {
   }
 
   updateArchive(idArray : any) {
-    return this.http.post('http://localhost:3000/archives/add', idArray, {
+    return this.http.post('https://lit-chamber-10871.herokuapp.com/archives/add', idArray, {
       headers: {
         'Content-Type': 'application/json;charset=UTF-8'
       }
@@ -290,7 +290,7 @@ export class ServerService {
 
   removeFromGroup(removeGroupPack: IGroupChangePack) {
     return this.http.post(
-      'http://localhost:3000/members/remove/' + removeGroupPack.id_group,
+      'https://lit-chamber-10871.herokuapp.com/members/remove/' + removeGroupPack.id_group,
       removeGroupPack.id_user,
       {
         headers: {
@@ -302,7 +302,7 @@ export class ServerService {
 
   addToGroup(newGroupPack: IGroupChangePack) {
     return this.http.post(
-      'http://localhost:3000/members/add/' + newGroupPack.id_group,
+      'https://lit-chamber-10871.herokuapp.com/members/add/' + newGroupPack.id_group,
       newGroupPack.id_user,
       {
         headers: {
@@ -312,7 +312,7 @@ export class ServerService {
     );
   }
   unarchiveUsers(dataPack: IArchivesRevertDataPack) {
-    return this.http.post('http://localhost:3000/archives/revert/', dataPack, {
+    return this.http.post('https://lit-chamber-10871.herokuapp.com/archives/revert/', dataPack, {
       headers: {
         'Content-Type': 'application/json;charset=UTF-8'
       }
@@ -320,14 +320,14 @@ export class ServerService {
   }
 
   deleteUsers(dataPack: IArchivesDeleteDataPack) {
-    return this.http.post('http://localhost:3000/users/delete/', dataPack, {
+    return this.http.post('https://lit-chamber-10871.herokuapp.com/users/delete/', dataPack, {
       headers: {
         'Content-Type': 'application/json;charset=UTF-8'
       }
     });
   }
   updateSemesterDate(newData: ISemesterChangeValuePack) {
-    return this.http.post('http://localhost:3000/semesters/change/', newData, {
+    return this.http.post('https://lit-chamber-10871.herokuapp.com/semesters/change/', newData, {
       headers: {
         'Content-Type': 'application/json;charset=UTF-8'
       }
@@ -335,7 +335,7 @@ export class ServerService {
   }
 
   addSemester(message) {
-    return this.http.post('http://localhost:3000/semesters/add/', message, {
+    return this.http.post('https://lit-chamber-10871.herokuapp.com/semesters/add/', message, {
       headers: {
         'Content-Type': 'application/json;charset=UTF-8'
       }
@@ -343,7 +343,7 @@ export class ServerService {
   }
 
   deleteSemesters(message) {
-    return this.http.post('http://localhost:3000/semesters/remove/', message, {
+    return this.http.post('https://lit-chamber-10871.herokuapp.com/semesters/remove/', message, {
       headers: {
         'Content-Type': 'application/json;charset=UTF-8'
       }
@@ -351,7 +351,7 @@ export class ServerService {
   }
 
   deleteGroups(dataPack: IGroupChangeDataPack) {
-    return this.http.post('http://localhost:3000/groups/remove/', dataPack, {
+    return this.http.post('https://lit-chamber-10871.herokuapp.com/groups/remove/', dataPack, {
       headers: {
         'Content-Type': 'application/json;charset=UTF-8'
       }
@@ -359,7 +359,7 @@ export class ServerService {
   }
 
   updateGroup(updateGroupInfoPack: IGroupChangeValuePack) {
-    return this.http.post('http://localhost:3000/groups/change/', updateGroupInfoPack, {
+    return this.http.post('https://lit-chamber-10871.herokuapp.com/groups/change/', updateGroupInfoPack, {
       headers: {
         'Content-Type': 'application/json;charset=UTF-8'
       }
@@ -367,7 +367,7 @@ export class ServerService {
   }
 
   addGroup(newGroup: IGroupDetails) {
-    return this.http.post('http://localhost:3000/groups/add/', newGroup, {
+    return this.http.post('https://lit-chamber-10871.herokuapp.com/groups/add/', newGroup, {
       headers: {
         'Content-Type': 'application/json;charset=UTF-8'
       }
@@ -376,7 +376,7 @@ export class ServerService {
 
   updateInstallment(updateServerInfoPack: IInstallmentChangeValuePack) {
     return this.http.post(
-      'http://localhost:3000/installment/change/',
+      'https://lit-chamber-10871.herokuapp.com/installment/change/',
       updateServerInfoPack,
       {
         headers: {
@@ -387,7 +387,7 @@ export class ServerService {
   }
 
   addInstallment(newInstallments: IInstallments) {
-    return this.http.post('http://localhost:3000/installment/add/', newInstallments, {
+    return this.http.post('https://lit-chamber-10871.herokuapp.com/installment/add/', newInstallments, {
       headers: {
         'Content-Type': 'application/json;charset=UTF-8'
       }
@@ -396,7 +396,7 @@ export class ServerService {
 
   deleteInstallment(message) {
     return this.http.post(
-      'http://localhost:3000/installment/remove/',
+      'https://lit-chamber-10871.herokuapp.com/installment/remove/',
       message,
       {
         headers: {
@@ -406,7 +406,7 @@ export class ServerService {
     );
   }
   deletePageAdmins(adminsToDelete: IAdminsDeleteDataPack) {
-    return this.http.post('http://localhost:3000/admins/remove/', adminsToDelete, {
+    return this.http.post('https://lit-chamber-10871.herokuapp.com/admins/remove/', adminsToDelete, {
       headers: {
         'Content-Type': 'application/json;charset=UTF-8'
       }
@@ -414,7 +414,7 @@ export class ServerService {
   }
   deleteApplicationAdmins(message) {
     return this.http.post(
-      'http://localhost:3000/authorization/remove/',
+      'https://lit-chamber-10871.herokuapp.com/authorization/remove/',
       message,
       {
         headers: {
@@ -425,7 +425,7 @@ export class ServerService {
   }
 
   addPageAdmin(newAdmin: IAdministrator) {
-    return this.http.post('http://localhost:3000/admins/add/', newAdmin, {
+    return this.http.post('https://lit-chamber-10871.herokuapp.com/admins/add/', newAdmin, {
       headers: {
         'Content-Type': 'application/json;charset=UTF-8'
       }
@@ -433,7 +433,7 @@ export class ServerService {
   }
 
   addApplicationAdmin(newAdmin: IAdministrator) {
-    return this.http.post('http://localhost:3000/authorization/add/', newAdmin, {
+    return this.http.post('https://lit-chamber-10871.herokuapp.com/authorization/add/', newAdmin, {
       headers: {
         'Content-Type': 'application/json;charset=UTF-8'
       }
@@ -441,7 +441,7 @@ export class ServerService {
   }
 
   updatePageAdmin(message) {
-    return this.http.post('http://localhost:3000/admins/change/', message, {
+    return this.http.post('https://lit-chamber-10871.herokuapp.com/admins/change/', message, {
       headers: {
         'Content-Type': 'application/json;charset=UTF-8'
       }
@@ -449,7 +449,7 @@ export class ServerService {
   }
   updateApplicationAdmin(message) {
     return this.http.post(
-      'http://localhost:3000/authorization/change/',
+      'https://lit-chamber-10871.herokuapp.com/authorization/change/',
       message,
       {
         headers: {
@@ -460,7 +460,7 @@ export class ServerService {
   }
   generateApplicationAdminsPass(message) {
     return this.http.post(
-      'http://localhost:3000/authorization/generate/',
+      'https://lit-chamber-10871.herokuapp.com/authorization/generate/',
       message,
       {
         headers: {
@@ -471,7 +471,7 @@ export class ServerService {
   }
 
   generatePageAdminsPass(message) {
-    return this.http.post('http://localhost:3000/admins/generate/', message, {
+    return this.http.post('https://lit-chamber-10871.herokuapp.com/admins/generate/', message, {
       headers: {
         'Content-Type': 'application/json;charset=UTF-8'
       }
@@ -479,7 +479,7 @@ export class ServerService {
   }
 
   generatePass(message) {
-    return this.http.post('http://localhost:3000/users/generate', message, {
+    return this.http.post('https://lit-chamber-10871.herokuapp.com/users/generate', message, {
       headers: {
         'Content-Type': 'application/json;charset=UTF-8'
       }
@@ -487,7 +487,7 @@ export class ServerService {
   }
 
   login(message) {
-    return this.http.post('http://localhost:3000/login/', message, {
+    return this.http.post('https://lit-chamber-10871.herokuapp.com/login/', message, {
       headers: {
         'Content-Type': 'application/json;charset=UTF-8'
       }
@@ -495,7 +495,7 @@ export class ServerService {
   }
 
   logout() {
-    return this.http.get('http://localhost:3000/logout/', {
+    return this.http.get('https://lit-chamber-10871.herokuapp.com/logout/', {
       headers: {
         'Content-Type': 'application/json;charset=UTF-8'
       }
@@ -512,7 +512,7 @@ export class ServerService {
   // post - validators
 
   checkLogin(login: ICheckLogin): Observable<ICheckLoginError | null> {
-    return this.http.post('http://localhost:3000/users/exist/login', login, {
+    return this.http.post('https://lit-chamber-10871.herokuapp.com/users/exist/login', login, {
       headers: {
         'Content-Type': 'application/json;charset=UTF-8'
       }
@@ -520,7 +520,7 @@ export class ServerService {
   }
 
   checkEmail(email: ICheckEmail): Observable<ICheckEmailError | null>  {
-    return this.http.post('http://localhost:3000/users/exist/email', email, {
+    return this.http.post('https://lit-chamber-10871.herokuapp.com/users/exist/email', email, {
       headers: {
         'Content-Type': 'application/json;charset=UTF-8'
       }
@@ -528,7 +528,7 @@ export class ServerService {
   }
 
   checkPhone(phone: ICheckPhone): Observable<ICheckPhoneError | null>  {
-    return this.http.post('http://localhost:3000/users/exist/phone', phone, {
+    return this.http.post('https://lit-chamber-10871.herokuapp.com/users/exist/phone', phone, {
       headers: {
         'Content-Type': 'application/json;charset=UTF-8'
       }
@@ -536,7 +536,7 @@ export class ServerService {
   }
 
   checkKey(key: ICheckKey): Observable<ICheckKeyError | null>  {
-    return this.http.post('http://localhost:3000/users/exist/key', key, {
+    return this.http.post('https://lit-chamber-10871.herokuapp.com/users/exist/key', key, {
       headers: {
         'Content-Type': 'application/json;charset=UTF-8'
       }
@@ -546,7 +546,7 @@ export class ServerService {
   // post
 
   addUser(newUser: IUser): Observable<null>    {
-    return this.http.post('http://localhost:3000/users/add', newUser, {
+    return this.http.post('https://lit-chamber-10871.herokuapp.com/users/add', newUser, {
       headers: {
         'Content-Type': 'application/json;charset=UTF-8'
       }
@@ -556,7 +556,7 @@ export class ServerService {
   // put
 
   putUserData(newUser: IUser): Observable<null>    {
-    return this.http.put('http://localhost:3000/users/user', newUser, {
+    return this.http.put('https://lit-chamber-10871.herokuapp.com/users/user', newUser, {
       headers: {
         'Content-Type': 'application/json;charset=UTF-8'
       }
@@ -564,7 +564,7 @@ export class ServerService {
   }
 
   putUserPassword(newPass: INewUserPass): Observable<null>    {
-    return this.http.put('http://localhost:3000/users/password', newPass, {
+    return this.http.put('https://lit-chamber-10871.herokuapp.com/users/password', newPass, {
       headers: {
         'Content-Type': 'application/json;charset=UTF-8'
       }
@@ -572,7 +572,7 @@ export class ServerService {
   }
 
   putUserLogin(newLogin: INewUserLogin): Observable<null>    {
-    return this.http.put('http://localhost:3000/users/login', newLogin, {
+    return this.http.put('https://lit-chamber-10871.herokuapp.com/users/login', newLogin, {
       headers: {
         'Content-Type': 'application/json;charset=UTF-8'
       }
@@ -580,7 +580,7 @@ export class ServerService {
   }
 
   putUserKeys(newKey: INewUserKeys): Observable<null>    {
-    return this.http.put('http://localhost:3000/users/key', newKey, {
+    return this.http.put('https://lit-chamber-10871.herokuapp.com/users/key', newKey, {
       headers: {
         'Content-Type': 'application/json;charset=UTF-8'
       }
@@ -597,7 +597,7 @@ export class ServerService {
 
 
     deleteUser(id): Observable<null> {
-      return this.http.delete('http://localhost:3000/users/delete/' + id, {
+      return this.http.delete('https://lit-chamber-10871.herokuapp.com/users/delete/' + id, {
         headers: {
           'Content-Type': 'application/json;charset=UTF-8'
         }
